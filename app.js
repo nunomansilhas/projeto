@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
 require('./app/routes/cliente.routes.js')(app);
 require('./app/routes/funcionario.routes.js')(app);
 require('./app/routes/produto.routes.js')(app);
-require('./app/routes/tipoProduto.routes.js')(app);
+require('./app/routes/tipo_produto.routes.js')(app);
 require('./app/routes/movimentacao.routes.js')(app);
 
 // ativação do servidor, onde serão recebidos os pedidos, na porta definida
