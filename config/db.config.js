@@ -2,5 +2,5 @@ module.exports = {
     HOST: "localhost",
     USER: "",
     PASSWORD: "",
-    DB: "apcvc"
+    DB: "db_projeto"
   };

@@ -1,4 +1,4 @@
-const TipoProduto = require("../models/tipo_produto.model.js");
+const TipoProduto = require("../../models/tipo_produto.model.js");
 
 exports.create = (req, res) => {
   if (!req.body) {
