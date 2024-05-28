@@ -16,13 +16,13 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/nunomansilhas/apcvc.git"
+        "url": "git+https://github.com/nunomansilhas/projeto.git"
     },
     "keywords": [
-        "apcvc"
+        "projeto-apcvc"
     ],
     "bugs": {
-        "url": "https://github.com/nunomansilhas/apcvc/issues"
+        "url": "https://github.com/nunomansilhas/projeto/issues"
     },
-    "homepage": "https://github.com/nunomansilhas/apcvc#readme"
+    "homepage": "https://github.com/nunomansilhas/projeto#readme"
 }
