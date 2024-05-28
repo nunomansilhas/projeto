@@ -1,0 +1,28 @@
+{
+    "name": "apcvc-inventory-managment",
+    "version": "0.1.2",
+    "description": "Node.js application for managing inventory.",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "author": "Nuno Mansilhas",
+    "license": "ISC",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "mysql2": "^2.1.0",
+        "sequelize": "^6.6.2"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nunomansilhas/apcvc.git"
+    },
+    "keywords": [
+        "apcvc"
+    ],
+    "bugs": {
+        "url": "https://github.com/nunomansilhas/apcvc/issues"
+    },
+    "homepage": "https://github.com/nunomansilhas/apcvc#readme"
+}
