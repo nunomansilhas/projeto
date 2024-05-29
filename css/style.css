@@ -1791,8 +1791,8 @@ Login Pages
   padding: 30px 0;
 }
 .login-form form .top .icon {
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: auto;
 }
 .login-form form .top h1,
 .login-form form .top h4 {
