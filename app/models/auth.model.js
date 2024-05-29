@@ -1,4 +1,3 @@
-
 const sql = require("./db.js");
 
 const Auth = function(auth) {
@@ -15,6 +14,7 @@ Auth.findByUsername = (username, result) => {
     }
 
     if (res.length) {
+      console.log(`User found in database: ${JSON.stringify(res[0])}`);
       result(null, res[0]);
       return;
     }

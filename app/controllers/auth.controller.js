@@ -1,4 +1,3 @@
-
 const Auth = require("../models/auth.model.js");
 const bcrypt = require('bcrypt');
 
@@ -13,6 +12,8 @@ exports.login = (req, res) => {
     return;
   }
 
+  console.log(`Attempting login with username: ${username}`);
+
   // Check if the user exists
   Auth.findByUsername(username, (err, user) => {
     if (err) {
@@ -24,8 +25,20 @@ exports.login = (req, res) => {
       return;
     }
 
+    console.log(`User found: ${JSON.stringify(user)}`);
+    
+    const storedPasswordHash = user.Senha;
+    console.log(`Stored password hash: "${storedPasswordHash}"`);
+    console.log(`Password to compare: "${password}"`);
+
     // Check the password
-    bcrypt.compare(password, user.Senha, (err, result) => {
+    bcrypt.compare(password, storedPasswordHash, (err, result) => {
+      if (err) {
+        console.error('Error during bcrypt comparison:', err);
+        res.status(500).send({ message: "Error during password comparison" });
+        return;
+      }
+
       if (result) {
         // Passwords match
         res.send({ success: true, message: "Login successful" });
