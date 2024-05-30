@@ -10,7 +10,7 @@
   <link href="css/root.css" rel="stylesheet">
 </head>
 <body>
-  <div class="loading"><img src="img/loading.gif" alt="imagem de carregamento"></div>
+  
   <div id="top" class="clearfix">
     <div class="applogo">
       <a href="#" class="logo">APCVC</a>
@@ -42,176 +42,46 @@
       <div class="row">
         <!-- Start Files -->
         <div class="col-md-12 col-lg-6">
-            <div class="panel panel-widget" style="height:450px;">
-              <div class="panel-title">
-                Resumo de Inventário
-                <ul class="panel-tools">
-                  <li><a class="icon"><i class="fa fa-refresh"></i></a></li>
-                </ul>
-              </div>
-              <div class="panel-body table-responsive">
-      
-                <table class="table table-dic table-hover ">
-                  <tbody>
-                    <tr>
-                      <td><i class="fa fa-folder-o"></i>Projects</td>
-                      <td>Folder</td>
-                      <td class="text-r">27/2/2015 12:34 AM</td>
-                    </tr>
-                    <tr>
-                      <td><i class="fa fa-file-archive-o"></i>Backup</td>
-                      <td>Zip</td>
-                      <td class="text-r">27/2/2015 12:34 AM</td>
-                    </tr>
-                    <tr>
-                      <td><i class="fa fa-file-code-o"></i>Kode Theme</td>
-                      <td>Html</td>
-                      <td class="text-r">27/2/2015 12:34 AM</td>
-                    </tr>
-                    <tr>
-                      <td><i class="fa fa-file-pdf-o"></i>Documents</td>
-                      <td>Pdf</td>
-                      <td class="text-r">27/2/2015 12:34 AM</td>
-                    </tr>
-                    <tr>
-                      <td><i class="fa fa-folder-o"></i>Themes</td>
-                      <td>Folder</td>
-                      <td class="text-r">27/2/2015 12:34 AM</td>
-                    </tr>
-                    <tr>
-                      <td><i class="fa fa-folder-o"></i>Uploaded Files</td>
-                      <td>Folder</td>
-                      <td class="text-r">27/2/2015 12:34 AM</td>
-                    </tr>
-                    <tr>
-                      <td><i class="fa fa-folder-o"></i>Personal Files</td>
-                      <td>Folder</td>
-                      <td class="text-r">27/2/2015 12:34 AM</td>
-                    </tr>
-                    <tr>
-                      <td><i class="fa fa-folder-o"></i>Personal Files</td>
-                      <td>Folder</td>
-                      <td class="text-r">27/2/2015 12:34 AM</td>
-                    </tr>
-                    <tr>
-                      <td><i class="fa fa-folder-o"></i>Personal Files</td>
-                      <td>Folder</td>
-                      <td class="text-r">27/2/2015 12:34 AM</td>
-                    </tr>
-                    <tr>
-                      <td><i class="fa fa-folder-o"></i>Personal Files</td>
-                      <td>Folder</td>
-                      <td class="text-r">27/2/2015 12:34 AM</td>
-                    </tr>
-                    <tr>
-                      <td><i class="fa fa-folder-o"></i>Personal Files</td>
-                      <td>Folder</td>
-                      <td class="text-r">27/2/2015 12:34 AM</td>
-                    </tr>
-                    <tr>
-                      <td><i class="fa fa-folder-o"></i>Personal Files</td>
-                      <td>Folder</td>
-                      <td class="text-r">27/2/2015 12:34 AM</td>
-                    </tr>
-                    
-                  </tbody>
-                </table>          
-      
-              </div>
+          <div class="panel panel-widget" style="height:auto;">
+            <div class="panel-title">
+              Resumo de Inventário
+              <ul class="panel-tools">
+                <li><a class="icon"><i class="fa fa-refresh"></i></a></li>
+              </ul>
             </div>
+            <div class="panel-body table-responsive">
+              <table class="table table-dic table-hover">
+                <thead>
+                  <tr>
+                    <td>Produto</td>
+                    <td>Beneficiários</td>
+                    <td>Funcionário</td>
+                    <td class="text-r">Devolução</td>
+                  </tr>
+                </thead>
+                <tbody id="inventory-summary">
+                  <!-- Inventory items will be inserted here by the script -->
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
         <!-- End Files -->
     
         <!-- Start Files -->
         <div class="col-md-12 col-lg-6">
-            <div class="panel panel-widget" style="height:450px;">
+            <div class="panel panel-widget" style="height:auto;">
               <div class="panel-title">
-                Atividades e Notificações <span class="label label-danger">29</span>
+                Atividades e Notificações
                 <ul class="panel-tools">
                   <li><a class="icon"><i class="fa fa-refresh"></i></a></li>
                 </ul>
               </div>
               <div class="panel-body">
-                <ul class="mailbox-inbox">
-        
-                    <li>
-                      <a href="#" class="item clearfix">
-                        <img src="img/profileimg.png" alt="img" class="img">
-                        <span class="from">Jonathan Doe</span>
-                        Hello, m8 how is goin ?
-                        <span class="date">22 May</span>
-                        <span class="right label label-default">42.8%</span>
-                      </a>
-                    </li>
-        
-                    <li>
-                      <a href="#" class="item clearfix">
-                        <img src="img/profileimg.png" alt="img" class="img">
-                        <span class="from">Max Doe </span>
-                        Problems look mighty small...
-                        <span class="date">22 May</span>
-                        <span class="right label label-default">42.8%</span>
-                      </a>
-                    </li>
-        
-                    <li>
-                      <a href="#" class="item clearfix">
-                        <img src="img/profileimg.png" alt="img" class="img">
-                        <span class="from">James Throwing</span>
-                        New job offer ?
-                        <span class="date">22 May</span>
-                        <span class="right label label-default">42.8%</span>
-                      </a>
-                    </li>
-        
-                    <li>
-                      <a href="#" class="item clearfix">
-                        <img src="img/profileimg.png" alt="img" class="img">
-                        <span class="from">Timmy Jefsin</span>
-                        Tonight Party
-                        <span class="date">22 May</span>
-                        <span class="right label label-default">42.8%</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" class="item clearfix">
-                        <img src="img/profileimg.png" alt="img" class="img">
-                        <span class="from">Timmy Jefsin</span>
-                        Tonight Party
-                        <span class="date">22 May</span>
-                        <span class="right label label-default">42.8%</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" class="item clearfix">
-                        <img src="img/profileimg.png" alt="img" class="img">
-                        <span class="from">Timmy Jefsin</span>
-                        Tonight Party
-                        <span class="date">22 May</span>
-                        <span class="right label label-default">42.8%</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" class="item clearfix">
-                        <img src="img/profileimg.png" alt="img" class="img">
-                        <span class="from">Timmy Jefsin</span>
-                        Tonight Party
-                        <span class="date">22 May</span>
-                        <span class="right label label-default">42.8%</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" class="item clearfix">
-                        <img src="img/profileimg.png" alt="img" class="img">
-                        <span class="from">Timmy Jefsin</span>
-                        Tonight Party
-                        <span class="date">22 May</span>
-                        <span class="right label label-default">42.8%</span>
-                      </a>
-                    </li>     
+                <ul class="mailbox-inbox" id="notification-list">
+                  <!-- Notification items will be dynamically generated here -->
                 </ul>
-        
-                </div>
+              </div>
             </div>
         </div>
         <!-- End Files -->
@@ -226,25 +96,30 @@
       </div>
     </div>
   </div>
-  
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap/bootstrap.min.js"></script>
+
+
 <script src="js/plugins.js"></script>
-<script src="js/bootstrap-select/bootstrap-select.js"></script>
-<script src="js/bootstrap-toggle/bootstrap-toggle.min.js"></script>
-<script src="js/bootstrap-wysihtml5/wysihtml5-0.3.0.min.js"></script>
-<script src="js/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
-<script src="js/datatables/datatables.min.js"></script>
-<script src="js/sweet-alert/sweet-alert.min.js"></script>
-<script src="js/jquery-ui/jquery-ui.min.js"></script>
-<script src="js/moment/moment.min.js"></script>
-<script src="js/full-calendar/fullcalendar.js"></script>
-<script src="js/date-range-picker/daterangepicker.js"></script>
+<!-- Possibly unused -->
+<!--<script src="js/jquery.min.js"></script>-->
+<!--<script src="js/bootstrap/bootstrap.min.js"></script>-->
+<!-- <script src="js/bootstrap-select/bootstrap-select.js"></script> -->
+<!-- <script src="js/bootstrap-toggle/bootstrap-toggle.min.js"></script> -->
+<!-- <script src="js/bootstrap-wysihtml5/wysihtml5-0.3.0.min.js"></script> -->
+<!-- <script src="js/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script> -->
+<!-- <script src="js/datatables/datatables.min.js"></script> -->
+<!-- <script src="js/sweet-alert/sweet-alert.min.js"></script> -->
+<!-- <script src="js/jquery-ui/jquery-ui.min.js"></script> -->
+<!-- <script src="js/moment/moment.min.js"></script> -->
+<!-- <script src="js/full-calendar/fullcalendar.js"></script> -->
+<!-- <script src="js/date-range-picker/daterangepicker.js"></script> -->
 
 <script src="scripts/menu/breadcrumb.js"></script>
 <script src="scripts/menu/quickmenu.js"></script>
 <script src="scripts/menu/sidebar.js"></script>
 <script src="scripts/menu/profile.js"></script>
+
+<script src="scripts/get-data-index-notifications.js"></script>
+<script src="scripts/get-data-index-atividades.js"></script>
 
 </body>
 </html>

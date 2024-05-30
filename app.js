@@ -27,6 +27,7 @@ require('./app/routes/produto.routes.js')(app);
 require('./app/routes/tipo_produto.routes.js')(app);
 require('./app/routes/movimentacao.routes.js')(app);
 require('./app/routes/auth.routes.js')(app);
+require('./app/routes/notificacao.routes.js')(app);
 
 // ativação do servidor, onde serão recebidos os pedidos, na porta definida
 app.listen(PORT, () => {

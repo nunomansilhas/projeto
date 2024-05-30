@@ -2,10 +2,6 @@
 /* ================================================
 Google Web Fonts
 ================================================ */
-/* Montserrat */
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
-/* Open Sans */
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap');
 
 /* === Icons === */
 /* Font Awesome */
@@ -29,30 +25,31 @@ Main Css
 /* ================================================
 Plugin Css
 ================================================ */
-/* Awesome Bootstrap Checkbox */
+/* Awesome Bootstrap Checkbox 
 @import url('plugin/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css');
 
-/* Bootstrap Select */
+
 @import url('plugin/bootstrap-select/bootstrap-select.css');
 
-/* Bootstrap Select */
+
 @import url('plugin/bootstrap-toggle/bootstrap-toggle.min.css');
 
-/* Bootstrap wysihtml5 */
+
 @import url('plugin/bootstrap-wysihtml5/bootstrap-wysihtml5.css');
 
-/* Summernote */
+
 @import url('plugin/summernote/summernote.css');
 @import url('plugin/summernote/summernote-bs3.css');
 
-/* Sweet Alert */
+
 @import url('plugin/sweet-alert/sweet-alert.css');
 
-/* Data Tables */
+
 @import url('plugin/datatables/datatables.css');
 
-/* Date Range Picker */
+ Date Range Picker 
 @import url('plugin/date-range-picker/daterangepicker-bs3.css');
 
-/* Full Calendar */
+
 @import url('plugin/fullcalendar/fullcalendar.css');
+*/
