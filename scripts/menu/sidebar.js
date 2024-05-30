@@ -2,17 +2,17 @@ const sidebarItems = [
     {
       title: 'PRINCIPAL',
       items: [
-        { href: 'views/user/painel-de-control.html', iconClass: 'fa fa-home', name: 'Painel de Controle' },
-        { href: 'views/user/produtos.html', iconClass: 'fa fa-archive', name: 'Produtos' },
-        { href: 'views/user/solicitacoes.html', iconClass: 'fa fa-clipboard', name: 'Solicitações' },
-        { href: 'views/user/beneficiarios.html', iconClass: 'fa fa-users', name: 'Beneficiários' }
+        { href: 'index.html', iconClass: 'fa fa-home', name: 'Painel de Controlo' },
+        { href: 'produtos.html', iconClass: 'fa fa-archive', name: 'Produtos' },
+        { href: 'solicitacoes.html', iconClass: 'fa fa-clipboard', name: 'Solicitações' },
+        { href: 'beneficiarios.html', iconClass: 'fa fa-users', name: 'Beneficiários' }
       ]
     },
     {
       title: 'ADMIN',
       items: [
-        { href: 'views/admin/funcionarios.html', iconClass: 'fa fa-male', name: 'Funcionários' },
-        { href: 'views/admin/categorias.html', iconClass: 'fa fa-cog', name: 'Categorias' }
+        { href: 'funcionarios.html', iconClass: 'fa fa-male', name: 'Funcionários' },
+        { href: 'categorias.html', iconClass: 'fa fa-cog', name: 'Categorias' }
       ]
     }
   ];
