@@ -8,6 +8,7 @@
   <meta name="keywords" content="palavras-chave" />
   <title>APCVC - Gestão de Inventário</title>
   <link href="css/root.css" rel="stylesheet">
+  <link rel="stylesheet" href="//cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
 </head>
 <body>
   <div class="loading"><img src="img/loading.gif" alt="imagem de carregamento"></div>
@@ -31,15 +32,35 @@
   <div class="sidebar clearfix" id="sidebar"></div>
   <div class="content">
     <div class="page-header">
-      <h1 class="title">Página em Branco</h1>
+      <h1 class="title">Produtos</h1>
       <ol class="breadcrumb" id="breadcrumb"></ol>
       <div class="right">
         <div class="btn-group" role="group" aria-label="..." id="breadcrumb-buttons">
         </div>
       </div>
     </div>
-    <div class="container-default" >
-      
+    <div class="container-default">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            <div class="panel-title">Listagem de Produtos</div>
+            <div class="panel-body table-responsive">
+              <table id="produtosTable" class="table display dataTable no-footer">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Disponibilidade</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="row footer">
       <div class="col-md-6 text-left">
@@ -50,25 +71,17 @@
       </div>
     </div>
   </div>
-  
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap/bootstrap.min.js"></script>
-<script src="js/plugins.js"></script>
-<script src="js/bootstrap-select/bootstrap-select.js"></script>
-<script src="js/bootstrap-toggle/bootstrap-toggle.min.js"></script>
-<script src="js/bootstrap-wysihtml5/wysihtml5-0.3.0.min.js"></script>
-<script src="js/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
-<script src="js/datatables/datatables.min.js"></script>
-<script src="js/sweet-alert/sweet-alert.min.js"></script>
-<script src="js/jquery-ui/jquery-ui.min.js"></script>
-<script src="js/moment/moment.min.js"></script>
-<script src="js/full-calendar/fullcalendar.js"></script>
-<script src="js/date-range-picker/daterangepicker.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/plugins.js"></script>
+  <script src="js/bootstrap/bootstrap.min.js"></script>
+  <script src="js/datatables/dataTables.bootstrap5.min.js"></script>
+  <script src="js/datatables/datatables.min.js"></script>
 
-<script src="scripts/menu/breadcrumb.js"></script>
-<script src="scripts/menu/quickmenu.js"></script>
-<script src="scripts/menu/sidebar.js"></script>
-<script src="scripts/menu/profile.js"></script>
+  <script src="scripts/menu/breadcrumb.js"></script>
+  <script src="scripts/menu/quickmenu.js"></script>
+  <script src="scripts/menu/sidebar.js"></script>
+  <script src="scripts/menu/profile.js"></script>
 
+  <script src="scripts/get-data-produtos-de-apoio.js"></script>
 </body>
 </html>
