@@ -8,6 +8,7 @@
   <meta name="keywords" content="palavras-chave" />
   <title>APCVC - Gestão de Inventário</title>
   <link href="css/root.css" rel="stylesheet">
+  <link href="css/costum.css" rel="stylesheet">
 </head>
 <body>
   <div class="loading"><img src="img/loading.gif" alt="imagem de carregamento"></div>
@@ -29,18 +30,75 @@
     </ul>
   </div>
   <div class="sidebar clearfix" id="sidebar"></div>
-  <div class="content">
+<div class="content">
     <div class="page-header">
-      <h1 class="title">Produtos</h1>
-      <ol class="breadcrumb" id="breadcrumb"></ol>
-      <div class="right">
-        <div class="btn-group" role="group" aria-label="..." id="breadcrumb-buttons">
+        <h1 class="title">Produtos</h1>
+        <ol class="breadcrumb" id="breadcrumb"></ol>
+        <div class="right">
+            <div class="btn-group" role="group" aria-label="..." id="breadcrumb-buttons">
         </div>
       </div>
     </div>
     <div class="container-default">
-      
+        <div class="row">
+            <div class="col-md-12">
+              <div class="panel panel-default">
+                <div class="panel-title">Formulário para Adicionar Produto</div>
+                <div class="panel-body">
+                    <form id="produtoForm" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="idproduto" class="form-label">ID do Produto:</label>
+                                    <input type="text" class="form-control form-control-line" id="idproduto" name="idproduto" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nomeproduto" class="form-label">Nome do Produto:</label>
+                                    <input type="text" class="form-control form-control-line" id="nomeproduto" name="nomeproduto" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="descricao" class="form-label">Descrição:</label>
+                                    <textarea class="form-control form-control-line" rows="2" id="descricao" name="descricao"></textarea>
+                                </div>
+                            </div>
+                    
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="tipoproduto" class="form-label">Tipo de Produto:</label>
+                                    <select class="selectpicker form-control form-control-line" data-live-search="true" id="tipoproduto" name="tipoproduto">
+                                        <option>Selecionar Opção</option>
+                                        <!-- Add options dynamically if needed -->
+                                    </select>
+                                </div>
+                                <label class="form-label">Disponibilidade:</label>
+                                <div class="radio radio-info">
+                                    <input type="radio" id="inlineRadio1" value="option1" name="disponibilidade" checked>
+                                    <label for="inlineRadio1">Sim</label>
+                                </div>
+                                <div class="radio radio-danger">
+                                    <input type="radio" id="inlineRadio2" value="option2" name="disponibilidade">
+                                    <label for="inlineRadio2">Não</label>
+                                </div>
+                                <label class="form-label">Quantidade:</label>
+                                <input type="number" class="form-control form-control-line" id="quantidade" name="quantidade">
+                            </div>
+                    
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Imagens do Produto:</label>
+                                    <div id="dropArea" class="drop-area">
+                                        <!-- Add styling for drop area -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-defaults">Criar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
     <div class="row footer">
       <div class="col-md-6 text-left">
         Copyright © 2024 <a href="https://apcvc.pt/" target="_blank">APCVC</a> - Todos os direitos reservados.
@@ -54,10 +112,24 @@
   <script src="js/plugins.js"></script>
   <script src="js/bootstrap/bootstrap.min.js"></script>
 
+<!-- Possibly unused -->
+    <script src="js/bootstrap-select/bootstrap-select.js"></script> 
+<!-- <script src="js/bootstrap-toggle/bootstrap-toggle.min.js"></script> -->
+<!-- <script src="js/bootstrap-wysihtml5/wysihtml5-0.3.0.min.js"></script> -->
+<!-- <script src="js/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script> -->
+<!-- <script src="js/datatables/datatables.min.js"></script> -->
+<!-- <script src="js/sweet-alert/sweet-alert.min.js"></script> -->
+<!-- <script src="js/jquery-ui/jquery-ui.min.js"></script> -->
+<!-- <script src="js/moment/moment.min.js"></script> -->
+<!-- <script src="js/full-calendar/fullcalendar.js"></script> -->
+<!-- <script src="js/date-range-picker/daterangepicker.js"></script> -->
   <script src="scripts/menu/breadcrumb.js"></script>
   <script src="scripts/menu/quickmenu.js"></script>
   <script src="scripts/menu/sidebar.js"></script>
   <script src="scripts/menu/profile.js"></script>
+
+  <script src="js/costum/dropfile.js"></script>
+  <script src="scripts/get-categorias.js"></script>
 
 </body>
 </html>

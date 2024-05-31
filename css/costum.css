@@ -1,0 +1,40 @@
+.drop-area {
+            border: 2px dashed #cccccc;
+            padding: 10px;
+            height: 250px;
+            overflow-y: auto;
+        }
+
+        .highlight {
+            background-color: #f0f0f0;
+        }
+
+        .image-container {
+            position: relative;
+            display: inline-block;
+            width: 100px; /* Set a fixed width for image containers */
+            height: 100px; /* Set a fixed height for image containers */
+            margin-right: 10px;
+            border-radius: 10px; /* Add rounded corners */
+            overflow: hidden; /* Hide overflow to ensure images fit within containers */
+        }
+
+        .image-container img {
+            width: 100%; /* Make the images fill their containers */
+            height: auto;
+            border-radius: 10px; /* Maintain rounded corners for images */
+            object-fit: cover; /* Ensure the image covers the container without stretching */
+        }
+
+        .delete-button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: red;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            text-align: center;
+            cursor: pointer;
+        }
