@@ -5,23 +5,31 @@ exports.create = (req, res) => {
     res.status(400).send({
       message: "Content can not be empty!"
     });
+    return;
   }
 
+  // Criar um novo Produto com os dados recebidos
   const produto = new Produto({
+    id: req.body.idProduto, // Adicione este campo se necessário no modelo Produto
     nome: req.body.nome,
     descricao: req.body.descricao,
     tipoProdutoId: req.body.tipoProdutoId,
-    disponibilidade: req.body.disponibilidade
+    disponibilidade: req.body.disponibilidade,
+    quantidade: req.body.quantidade, // Certifique-se de que o modelo Produto suporta esse campo
+    img: req.body.img // Certifique-se de que o modelo Produto suporta esse campo
   });
 
   Produto.create(produto, (err, data) => {
-    if (err)
+    if (err) {
       res.status(500).send({
         message: err.message || "Some error occurred while creating the Produto."
       });
-    else res.send(data);
+    } else {
+      res.send(data);
+    }
   });
 };
+
 
 exports.findAll = (req, res) => {
   Produto.getAll((err, data) => {

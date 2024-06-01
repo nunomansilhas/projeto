@@ -1,10 +1,12 @@
 const sql = require("./db.js");
 
 const Produto = function(produto) {
+  this.id = produto.id;
   this.nome = produto.nome;
   this.descricao = produto.descricao;
   this.tipoProdutoId = produto.tipoProdutoId;
   this.disponibilidade = produto.disponibilidade;
+  this.quantidade = produto.quantidade;
 };
 
 Produto.create = (newProduto, result) => {
