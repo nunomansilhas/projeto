@@ -15,7 +15,8 @@ exports.create = (req, res) => {
     descricao: req.body.descricao,
     tipoProdutoId: req.body.tipoProdutoId,
     disponibilidade: req.body.disponibilidade,
-    quantidade: req.body.quantidade, // Certifique-se de que o modelo Produto suporta esse campo
+    quantidade: req.body.quantidade,
+    donativo: req.body.donativo, // Certifique-se de que o modelo Produto suporta esse campo
     img: req.body.img // Certifique-se de que o modelo Produto suporta esse campo
   });
 

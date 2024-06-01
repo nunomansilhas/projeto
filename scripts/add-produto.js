@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const tipoProdutoId = formData.get('tipoproduto');
         const disponibilidade = formData.get('disponibilidade');
         const quantidade = formData.get('quantidade');
+        const donativo = formData.get('donativo');
         const imgFile = fileInput.files[0]; // Recuperar o arquivo de imagem do input
 
         console.log('Form Data:', {
@@ -22,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tipoProdutoId,
             disponibilidade,
             quantidade,
+            donativo,
             imgFile
         });
 
@@ -44,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const url = 'http://localhost:3000/api/produtos';
 
-                    const payload = { idProduto, nome, descricao, tipoProdutoId, disponibilidade, quantidade, img };
+                    const payload = { idProduto, nome, descricao, tipoProdutoId, disponibilidade, quantidade, donativo };
                     console.log('Payload:', payload);
 
                     const response = await fetch(url, {
@@ -73,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const url = 'http://localhost:3000/api/produtos';
 
-                const payload = { idProduto, nome, descricao, tipoProdutoId, disponibilidade, quantidade, img };
+                const payload = { idProduto, nome, descricao, tipoProdutoId, disponibilidade, quantidade, donativo };
                 console.log('Payload:', payload);
 
                 const response = await fetch(url, {

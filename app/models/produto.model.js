@@ -7,6 +7,7 @@ const Produto = function(produto) {
   this.tipoProdutoId = produto.tipoProdutoId;
   this.disponibilidade = produto.disponibilidade;
   this.quantidade = produto.quantidade;
+  this.donativo = produto.donativo;
 };
 
 Produto.create = (newProduto, result) => {
