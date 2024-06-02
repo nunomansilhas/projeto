@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 01-Jun-2024 às 00:07
--- Versão do servidor: 10.4.28-MariaDB
--- versão do PHP: 8.0.28
+-- Tempo de geração: 02-Jun-2024 às 17:23
+-- Versão do servidor: 10.4.32-MariaDB
+-- versão do PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -52,6 +52,7 @@ INSERT INTO `clientes` (`ID`, `Nome`, `Morada`, `Email`, `Telemovel`) VALUES
 CREATE TABLE `funcionarios` (
   `ID` int(11) NOT NULL,
   `Nome` varchar(255) NOT NULL,
+  `username` varchar(150) NOT NULL,
   `profileImg` varchar(150) NOT NULL,
   `Cargo` enum('Administrador','Gestor','Assistente') NOT NULL,
   `Email` varchar(255) NOT NULL,
@@ -62,9 +63,10 @@ CREATE TABLE `funcionarios` (
 -- Extraindo dados da tabela `funcionarios`
 --
 
-INSERT INTO `funcionarios` (`ID`, `Nome`, `profileImg`, `Cargo`, `Email`, `Senha`) VALUES
-(1, 'Pedro Costa', 'img/profileimg1.png', 'Administrador', 'pedro@example.com', 'password123'),
-(2, 'Marta Rodrigues', 'img/profileimg2.png', 'Gestor', 'marta@example.com', 'password456');
+INSERT INTO `funcionarios` (`ID`, `Nome`, `username`, `profileImg`, `Cargo`, `Email`, `Senha`) VALUES
+(1, 'Pedro Costa', 'pedrocosta', 'img/profileimg1.png', 'Administrador', 'pedro@example.com', '$2b$10$N9qo8uLOickgx2ZMRZo4ieWAW8i3JaFgNf3nN5Xg7ZX6O7t6aP3Wy'),
+(2, 'Marta Rodrigues', 'martarodrigues', 'img/profileimg2.png', 'Gestor', 'marta@example.com', 'password456'),
+(3, 'Nuno Mansilhas', 'nunomansilhas', '', 'Administrador', 'Nuno@example.com', '$2b$10$3jt91pinI7cx8oS1b2d8nu.LafnH4WIk3.TiWsJlbjCwogdq7am72');
 
 -- --------------------------------------------------------
 
@@ -78,13 +80,6 @@ CREATE TABLE `imagensprodutosdeapoio` (
   `imageUrl` varchar(150) NOT NULL,
   `mainImg` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Extraindo dados da tabela `imagensprodutosdeapoio`
---
-
-INSERT INTO `imagensprodutosdeapoio` (`id`, `idProduto`, `imageUrl`, `mainImg`) VALUES
-(1, '1', 'img\\1717189873480-WhatsApp Image 2023-08-25 at 00.16.33_4ee9b5d1.png', 1);
 
 -- --------------------------------------------------------
 
@@ -140,9 +135,22 @@ CREATE TABLE `produtosdeapoio` (
   `Nome` varchar(255) NOT NULL,
   `Descricao` text NOT NULL,
   `TipoProdutoID` int(11) NOT NULL,
-  `Disponibilidade` tinyint(1) NOT NULL,
+  `Disponibilidade` varchar(50) NOT NULL,
+  `quantidade` int(11) NOT NULL,
+  `donativo` varchar(150) NOT NULL,
   `data_de_criacao` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Extraindo dados da tabela `produtosdeapoio`
+--
+
+INSERT INTO `produtosdeapoio` (`ID`, `Nome`, `Descricao`, `TipoProdutoID`, `Disponibilidade`, `quantidade`, `donativo`, `data_de_criacao`) VALUES
+('', 'sdfas', 'asdfa', 1, 'Não', 0, 'Sim', '2024-06-01 20:11:39'),
+('sadadasd', 'sadad', '', 0, 'Sim', 0, '', '2024-06-01 12:17:41'),
+('sd', 'sd', '', 0, 'Sim', 0, '', '2024-06-01 12:02:27'),
+('sds', 'sd', '', 0, 'Sim', 0, '', '2024-06-01 12:02:43'),
+('testsder', 'rfdvewfr', 'dregretre', 1, 'Não', 5, '', '2024-06-01 02:01:05');
 
 -- --------------------------------------------------------
 
@@ -227,7 +235,7 @@ ALTER TABLE `clientes`
 -- AUTO_INCREMENT de tabela `funcionarios`
 --
 ALTER TABLE `funcionarios`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `imagensprodutosdeapoio`
