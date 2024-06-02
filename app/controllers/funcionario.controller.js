@@ -1,28 +1,43 @@
+const bcrypt = require('bcrypt');
 const Funcionario = require("../models/funcionario.model.js");
 
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   if (!req.body) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
+    return;
   }
 
-  const funcionario = new Funcionario({
-    nome: req.body.nome,
-    cargo: req.body.cargo,
-    email: req.body.email,
-    senha: req.body.senha
-  });
+  try {
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(req.body.senha, 10);
 
-  Funcionario.create(funcionario, (err, data) => {
-    if (err)
-      res.status(500).send({
-        message: err.message || "Some error occurred while creating the Funcionario."
-      });
-    else res.send(data);
-  });
+    // Create a Funcionario
+    const funcionario = new Funcionario({
+      nome: req.body.nome,
+      username: req.body.username,  // Adicionei username aqui, caso você precise
+      cargo: req.body.cargo,
+      email: req.body.email,
+      senha: hashedPassword
+    });
+
+    // Save Funcionario in the database
+    Funcionario.create(funcionario, (err, data) => {
+      if (err)
+        res.status(500).send({
+          message: err.message || "Some error occurred while creating the Funcionario."
+        });
+      else res.send(data);
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: "Error encrypting the password."
+    });
+  }
 };
 
+// Outros métodos permanecem inalterados...
 exports.findAll = (req, res) => {
   Funcionario.getAll((err, data) => {
     if (err)
@@ -54,6 +69,7 @@ exports.update = (req, res) => {
     res.status(400).send({
       message: "Content can not be empty!"
     });
+    return;
   }
 
   Funcionario.updateById(

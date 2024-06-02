@@ -1,10 +1,11 @@
 const sql = require("./db.js");
 
 const Funcionario = function(funcionario) {
-  this.nome = funcionario.nome;
-  this.cargo = funcionario.cargo;
-  this.email = funcionario.email;
-  this.senha = funcionario.senha;
+  this.nome     = funcionario.nome;
+  this.username = funcionario.username;
+  this.cargo    = funcionario.cargo;
+  this.email    = funcionario.email;
+  this.senha    = funcionario.senha;
 };
 
 Funcionario.create = (newFuncionario, result) => {
@@ -101,6 +102,24 @@ Funcionario.removeAll = result => {
 
     console.log(`deleted ${res.affectedRows} funcionarios`);
     result(null, res);
+  });
+};
+
+Funcionario.findByUsername = (username, result) => {
+  sql.query("SELECT * FROM funcionarios WHERE username = ?", [username], (err, res) => {
+      if (err) {
+          console.log("Erro: ", err);
+          result(err, null);
+          return;
+      }
+
+      if (res.length) {
+          console.log("Encontrado funcionário: ", res[0]);
+          result(null, res[0]);
+          return;
+      }
+
+      result({ kind: "not_found" }, null);
   });
 };
 

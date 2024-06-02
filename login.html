@@ -39,12 +39,13 @@
   </div>
 
   <script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
 
-      fetch('http://localhost:3000/api/login', {  // Ensure this URL matches your route
+      fetch('http://localhost:3000/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -54,10 +55,10 @@
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          // Redirect to the main page or dashboard
-          window.location.href = 'index.html';
+          console.log(data);
+          // window.location.href = 'index.html'; Redirect to your main application page
         } else {
-          alert('Login failed: ' + data.message);
+          alert(data.message);
         }
       })
       .catch(error => console.error('Error:', error));
