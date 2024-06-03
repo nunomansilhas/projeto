@@ -47,22 +47,34 @@
 
       fetch('http://localhost:3000/api/login', {
         method: 'POST',
+        credentials: 'include', // Inclui cookies na requisição
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ username, password })
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          console.log(data);
-          // window.location.href = 'index.html'; Redirect to your main application page
+      .then(response => {
+        if (response.ok) {
+          return response.json();
         } else {
-          alert(data.message);
+          throw new Error('Login failed');
         }
       })
-      .catch(error => console.error('Error:', error));
+      .then(data => {
+        console.log('Login response:', data);
+        if (data.success) {
+          console.log('User is logged in:', data.user);
+          // Redirecionar para outra página após login bem-sucedido
+          window.location.href = './index.html';
+        } else {
+          console.log('Login failed:', data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
     });
   </script>
+
 </body>
 </html>

@@ -1,17 +1,10 @@
+// login.controller.js
+
 const sql = require("../models/db.js");
 const bcrypt = require('bcrypt');
 
 // Login function
 exports.login = (req, res) => {
-    // Verificar se a sessão já está ativa
-    if (req.session && req.session.user) {
-        return res.send({
-            success: true,
-            message: "Already logged in.",
-            user: req.session.user
-        });
-    }
-
     const { username, password } = req.body;
 
     if (!username || !password) {
@@ -38,6 +31,8 @@ exports.login = (req, res) => {
 
         const user = results[0];
 
+        console.log("User found in database: ", user);
+
         bcrypt.compare(password, user.Senha, (err, isMatch) => {
             if (err) {
                 console.error("Error comparing password: ", err);
@@ -46,6 +41,10 @@ exports.login = (req, res) => {
                 });
             }
 
+            console.log("Stored password hash: ", user.Senha);
+            console.log("Password to compare: ", password);
+            console.log("Password match result: ", isMatch);
+
             if (!isMatch) {
                 return res.status(401).send({
                     success: false,
@@ -53,7 +52,7 @@ exports.login = (req, res) => {
                 });
             }
 
-            // Criar sessão
+            // Create session
             req.session.user = {
                 id: user.ID,
                 nome: user.Nome,
@@ -61,29 +60,35 @@ exports.login = (req, res) => {
                 profileImg: user.profileImg,
                 cargo: user.Cargo,
                 email: user.Email
-            };
-
-            return res.send({
+              };
+              
+              console.log('Session created for user:', req.session.user); // Verifica se a sessão do usuário foi criada com sucesso
+            
+              return res.send({
                 success: true,
-                message: "Login successful.",
+                message: 'Login successful.',
                 user: req.session.user
-            });
+              });
         });
     });
 };
 
-// Logout function
 exports.logout = (req, res) => {
+    // Destrua a sessão do usuário
     req.session.destroy(err => {
         if (err) {
-            return res.status(500).send({
+            console.error('Error destroying session:', err);
+            res.status(500).send({
                 success: false,
-                message: "Could not log out. Please try again."
+                message: 'Error logging out.'
+            });
+        } else {
+            res.clearCookie('connect.sid'); // Limpe o cookie da sessão
+            res.send({
+                success: true,
+                message: 'Logged out successfully.'
             });
         }
-        res.send({
-            success: true,
-            message: "Logout successful."
-        });
     });
 };
+

@@ -16,9 +16,9 @@ app.use(cors(corsOptions));
 // Configuração do express-session
 app.use(session({
   secret: 'your_secret_key',
-  resave: true,
+  resave: false,
   saveUninitialized: true,
-  cookie: { secure: true } // Para desenvolvimento, em produção use secure: true com HTTPS
+  cookie: { secure: false } // Para desenvolvimento, em produção use secure: true com HTTPS
 }));
 
 // Tratamento (parse) de pedidos de content-type - application/json
@@ -30,20 +30,16 @@ app.use(express.urlencoded({ extended: true }));
 // Serve uploaded files
 app.use('/img', express.static(path.join(__dirname, 'img')));
 
-// Importação da rota de login sem proteção de middleware
+// Importação das routes com um argumento de inicialização
 require('./app/routes/login.routes.js')(app);
 
-// Aplica o middleware de autenticação a todas as rotas abaixo desta linha
-app.use(authMiddleware);
-
-// Importação das routes com um argumento de inicialização
-require('./app/routes/cliente.routes.js')(app);
-require('./app/routes/funcionario.routes.js')(app);
-require('./app/routes/produto.routes.js')(app);
-require('./app/routes/tipo_produto.routes.js')(app);
-require('./app/routes/movimentacao.routes.js')(app);
-require('./app/routes/notificacao.routes.js')(app);
-require('./app/routes/upload.routes.js')(app);
+require('./app/routes/cliente.routes.js')(app, authMiddleware);
+require('./app/routes/funcionario.routes.js')(app, authMiddleware);
+require('./app/routes/produto.routes.js')(app, authMiddleware);
+require('./app/routes/tipo_produto.routes.js')(app, authMiddleware);
+require('./app/routes/movimentacao.routes.js')(app, authMiddleware);
+require('./app/routes/notificacao.routes.js')(app, authMiddleware);
+require('./app/routes/upload.routes.js')(app, authMiddleware);
 
 // Ativação do servidor, onde serão recebidos os pedidos, na porta definida
 app.listen(PORT, () => {
