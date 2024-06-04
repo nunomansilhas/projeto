@@ -34,36 +34,49 @@ function generateProfileMenu(items) {
       link.innerHTML += item.name;
       listItem.appendChild(link);
       profileMenu.appendChild(listItem);
+
+      // Adicionar listeners para "Bloquear" e "Sair"
+      if (item.name === 'Sair') {
+        link.addEventListener('click', function(event) {
+          event.preventDefault();
+          fetch('http://localhost:3000/api/login/logout', {
+            method: 'POST',
+            credentials: 'include' // Include cookies in the request
+          })
+          .then(response => {
+            if (response.ok) {
+              window.location.href = './login.html'; // Redirect to login page after logout
+            } else {
+              console.error('Logout failed');
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+        });
+      }
+
+      if (item.name === 'Bloquear') {
+        link.addEventListener('click', function(event) {
+          event.preventDefault();
+          fetch('http://localhost:3000/api/login/lock', {
+            method: 'POST',
+            credentials: 'include' // Include cookies in the request
+          })
+          .then(response => {
+            if (response.ok) {
+              window.location.href = './lockscreen.html'; // Redirect to lock screen page after lock
+            } else {
+              console.error('Lock failed');
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+        });
+      }
     }
   });
-
-  // Adicione o item "Sair" ao menu do perfil
-  const logoutItem = document.createElement('li');
-  const logoutLink = document.createElement('a');
-  logoutLink.href = '#'; // Prevent default link action
-  logoutLink.addEventListener('click', function(event) {
-    event.preventDefault();
-    fetch('http://localhost:3000/api/login/logout', {
-      method: 'POST',
-      credentials: 'include' // Include cookies in the request
-    })
-    .then(response => {
-      if (response.ok) {
-        window.location.href = './login.html'; // Redirect to login page after logout
-      } else {
-        console.error('Logout failed');
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
-  });
-  const logoutIcon = document.createElement('i');
-  logoutIcon.className = 'fa falist fa-power-off';
-  logoutLink.appendChild(logoutIcon);
-  logoutLink.innerHTML += 'Sair';
-  logoutItem.appendChild(logoutLink);
-  profileMenu.appendChild(logoutItem);
 }
 
 // Função para buscar os dados do usuário da sessão
@@ -98,6 +111,7 @@ const profileMenuItems = [
   { href: '#', iconClass: 'fa falist fa-wrench', name: 'Definições' },
   { divider: true },
   { href: '#', iconClass: 'fa falist fa-lock', name: 'Bloquear' },
+  { href: '#', iconClass: 'fa falist fa-power-off', name: 'Sair' }
 ];
 
 // Buscar os dados do usuário e atualizar o perfil no carregamento da página

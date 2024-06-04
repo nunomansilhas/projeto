@@ -92,3 +92,14 @@ exports.logout = (req, res) => {
     });
 };
 
+exports.lock = (req, res) => {
+  if (req.session && req.session.user) {
+    req.session.user.locked = true;
+    res.send({ success: true });
+  } else {
+    res.status(401).send({
+      success: false,
+      message: 'Unauthorized. Please log in.'
+    });
+  }
+};
