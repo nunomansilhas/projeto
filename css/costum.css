@@ -1,40 +1,58 @@
 .drop-area {
-            border: 2px dashed #cccccc;
-            padding: 10px;
-            height: 250px;
-            overflow-y: auto;
-        }
+    border: 2px dashed #cccccc;
+    padding: 10px;
+    height: 250px;
+    overflow-y: auto;
+    text-align: center; /* Centraliza o texto */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px; /* Espaço inferior entre a drop area e a pré-visualização */
+}
 
-        .highlight {
-            background-color: #f0f0f0;
-        }
+.highlight {
+    background-color: #f0f0f0;
+}
 
-        .image-container {
-            position: relative;
-            display: inline-block;
-            width: 100px; /* Set a fixed width for image containers */
-            height: 100px; /* Set a fixed height for image containers */
-            margin-right: 10px;
-            border-radius: 10px; /* Add rounded corners */
-            overflow: hidden; /* Hide overflow to ensure images fit within containers */
-        }
+.image-container {
+    position: relative;
+    display: inline-block;
+    width: 100px; /* Largura fixa para os contêineres de imagem */
+    height: 100px; /* Altura fixa para os contêineres de imagem */
+    margin-right: 10px;
+    margin-bottom: 10px; /* Espaço inferior entre as imagens */
+    border-radius: 10px; /* Bordas arredondadas */
+    overflow: hidden; /* Esconde o overflow para garantir que as imagens caibam dentro dos contêineres */
+}
 
-        .image-container img {
-            width: 100%; /* Make the images fill their containers */
-            height: auto;
-            border-radius: 10px; /* Maintain rounded corners for images */
-            object-fit: cover; /* Ensure the image covers the container without stretching */
-        }
+.image-container img {
+    width: 100%; /* Faz com que as imagens preencham seus contêineres */
+    height: auto;
+    border-radius: 10px; /* Mantém as bordas arredondadas para as imagens */
+    object-fit: cover; /* Garante que a imagem cubra o contêiner sem esticar */
+}
 
-        .delete-button {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background-color: red;
-            color: white;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            text-align: center;
-            cursor: pointer;
-        }
+.delete-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: red;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    text-align: center;
+    cursor: pointer;
+}
+
+
+.kode-alert {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 15px;
+    background-color: #5cb85c;
+    color: white;
+    border-radius: 5px;
+    display: none;
+}

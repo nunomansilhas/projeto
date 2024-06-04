@@ -1,8 +1,3 @@
-/*================================================================================
-	Item Name: Kode
-	Author: Bragher
-	Author URL: http://www.themeforest.net/user/bragher
-================================================================================*/
 
 /* ================================================
 Google Web Fonts
@@ -50,9 +45,9 @@ Plugin Css
 @import url('plugin/summernote/summernote.css');
 @import url('plugin/summernote/summernote-bs3.css');
 */
-/* Sweet Alert 
+/* Sweet Alert */
 @import url('plugin/sweet-alert/sweet-alert.css');
-*/
+
 /* Data Tables */
 @import url('plugin/datatables/datatables.css');
 

@@ -12,6 +12,7 @@
 </head>
 <body>
   <div class="loading"><img src="img/loading.gif" alt="imagem de carregamento"></div>
+ 
   <div id="top" class="clearfix">
     <div class="applogo">
       <a href="#" class="logo">APCVC</a>
@@ -86,9 +87,9 @@
                             <div class="col-md-4">
                               <div class="form-group">
                                   <label class="form-label">Imagens do Produto:</label>
-                                  <input type="file" id="fileInput" name="img" class="form-control"> <!-- Altere para 'img' -->
+                                  <input type="file" id="fileInput" name="img[]" class="form-control" multiple> <!-- Adicione 'multiple' e mude name para 'img[]' -->
                               </div>
-                          </div>
+                            </div>                          
                         </div>
                         <button type="submit" class="btn btn-default">Criar</button>
                     </form>
@@ -97,6 +98,7 @@
             </div>
         </div>
     </div>
+    <div id="alertContainer"></div>
     <div class="row footer">
       <div class="col-md-6 text-left">
         Copyright © 2024 <a href="https://apcvc.pt/" target="_blank">APCVC</a> - Todos os direitos reservados.
@@ -105,6 +107,7 @@
         Design e Desenvolvimento por <a href="https://nunomansilhas.pt" target="_blank">Nuno Mansilhas</a>
       </div>
     </div>
+    
   </div>
   <script src="js/jquery.min.js"></script>
   <script src="js/plugins.js"></script>
@@ -113,8 +116,20 @@
   <script src="scripts/menu/quickmenu.js"></script>
   <script src="scripts/menu/sidebar.js"></script>
   <script src="scripts/menu/profile.js"></script>
-  <script src="js/costum/dropfile.js"></script>
+
   <script src="scripts/get-categorias.js"></script>
   <script src="scripts/add-produto.js"></script>
+
+  <!-- ================================================
+Sweet Alert  <script src="js/costum/dropfile.js"></script>
+================================================ -->
+<script src="js/sweet-alert/sweet-alert.min.js"></script>
+
+<!-- ================================================
+Kode Alert
+================================================ -->
+<script src="js/kode-alert/main.js"></script>
+
+
 </body>
 </html>

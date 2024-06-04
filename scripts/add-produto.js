@@ -1,43 +1,63 @@
 document.addEventListener('DOMContentLoaded', () => {
     const produtoForm = document.querySelector('#produtoForm');
     const fileInput = document.querySelector('#fileInput');
+    const alertContainer = document.getElementById('alertContainer');
+
+    // Função para mostrar alerta
+    function showAlert(message) {
+        const alertDiv = document.createElement('div');
+        alertDiv.classList.add('kode-alert');
+        alertDiv.innerHTML = `<h4>${message}</h4>`;
+        alertContainer.appendChild(alertDiv);
+        $(alertDiv).fadeIn();
+
+        // Remove o alerta após 3 segundos
+        setTimeout(() => {
+            $(alertDiv).fadeOut(() => {
+                alertDiv.remove();
+            });
+        }, 3000);
+    }
 
     // Função para enviar notificação
     async function enviarNotificacao(nomeProduto) {
-        const response = await fetch('http://localhost:3000/api/login', {
-            credentials: 'include' // Necessário para enviar cookies de sessão
-        });
-
-        if (!response.ok) {
-            throw new Error('Not authenticated');
-        }
-
-        const data = await response.json();
-        if (data.user) {
-            const notificacaoPayload = {
-                id_utilizador: data.user.id,
-                tipo_acao: 'Adicionado',
-                descricao_acao: `Funcionario ${data.user.nome} Adicionou um novo Produto de Apoio (${nomeProduto})`,
-                status: 'Adicionado'
-            };
-
-            const response_not = await fetch('http://localhost:3000/api/notificacoes', {
-                method: 'POST',
-                body: JSON.stringify(notificacaoPayload),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+        try {
+            const response = await fetch('http://localhost:3000/api/login', {
+                credentials: 'include' // Necessário para enviar cookies de sessão
             });
 
-            if (!response_not.ok) {
-                throw new Error('Failed to create notification');
+            if (!response.ok) {
+                throw new Error('Not authenticated');
             }
 
-            console.log('Notificação criada com sucesso');
+            const data = await response.json();
+            if (data.user) {
+                const notificacaoPayload = {
+                    id_utilizador: data.user.id,
+                    tipo_acao: 'Adicionado',
+                    descricao_acao: `Funcionario ${data.user.nome} Adicionou um novo Produto de Apoio (${nomeProduto})`,
+                    status: 'Adicionado'
+                };
+
+                const response_not = await fetch('http://localhost:3000/api/notificacoes', {
+                    method: 'POST',
+                    body: JSON.stringify(notificacaoPayload),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response_not.ok) {
+                    throw new Error('Failed to create notification');
+                }
+
+                console.log('Notificação criada com sucesso');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            window.location.href = './login.html';
         }
-        
     }
-    
 
     // Função para enviar produto
     async function enviarProduto(payload) {
@@ -59,64 +79,56 @@ document.addEventListener('DOMContentLoaded', () => {
         return productData.id;
     }
 
-    // Função para fazer upload de imagem
-    async function fazerUploadImagem(imgFile, idProduto) {
-        const imageFormData = new FormData();
-        imageFormData.append('img', imgFile);
-        imageFormData.append('idProduto', idProduto); // Adiciona idProduto ao FormData
+    // Função para fazer upload de múltiplas imagens
+    async function fazerUploadImagens(imgFiles, idProduto) {
+        const uploadPromises = Array.from(imgFiles).map(async (imgFile) => {
+            const imageFormData = new FormData();
+            imageFormData.append('img', imgFile);
+            imageFormData.append('idProduto', idProduto); // Adiciona idProduto ao FormData
 
-        const response = await fetch('http://localhost:3000/api/upload', {
-            method: 'POST',
-            body: imageFormData
+            const response = await fetch('http://localhost:3000/api/upload', {
+                method: 'POST',
+                body: imageFormData
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to upload image');
+            }
+
+            const uploadData = await response.json();
+            console.log('Imagem enviada com sucesso:', uploadData.path);
+            return uploadData.path;
         });
 
-        if (!response.ok) {
-            throw new Error('Failed to upload image');
-        }
-
-        const uploadData = await response.json();
-        console.log('Imagem enviada com sucesso:', uploadData.path);
-        return uploadData.path;
+        return Promise.all(uploadPromises);
     }
 
     produtoForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-    
+
         const formData = new FormData(produtoForm);
         const idProduto = formData.get('idproduto');
-        const nome = formData.get('nomeproduto'); // Certifique-se de obter corretamente o nome do produto
+        const nome = formData.get('nomeproduto');
         const descricao = formData.get('descricao');
         const tipoProdutoId = formData.get('tipoproduto');
         const disponibilidade = formData.get('disponibilidade');
         const quantidade = formData.get('quantidade');
         const donativo = formData.get('donativo');
-        const imgFile = fileInput.files[0];
-        const userId = 1; // ID do utilizador em sessão
-    
-        console.log('Form Data:', {
-            idProduto,
-            nome,
-            descricao,
-            tipoProdutoId,
-            disponibilidade,
-            quantidade,
-            donativo,
-            imgFile
-        });
-    
+        const imgFiles = fileInput.files; // Obtenha todos os arquivos
+
         try {
             const payload = { idProduto, nome, descricao, tipoProdutoId, disponibilidade, quantidade, donativo };
             const produtoId = await enviarProduto(payload);
-    
-            if (imgFile) {
-                await fazerUploadImagem(imgFile, produtoId);
+
+            if (imgFiles.length > 0) {
+                await fazerUploadImagens(imgFiles, produtoId);
             }
-    
-            await enviarNotificacao(nome); // Garanta que o nome do produto seja passado corretamente aqui
-    
+
+            await enviarNotificacao(nome);
             produtoForm.reset();
+            showAlert('Produto criado com sucesso!'); // Mostra o alerta de sucesso
         } catch (error) {
             console.error('Error:', error);
         }
-    });    
+    });
 });
