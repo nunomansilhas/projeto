@@ -6,7 +6,6 @@ const Notificacao = function(notificacao) {
   this.id_utilizador = notificacao.id_utilizador;
   this.tipo_acao = notificacao.tipo_acao;
   this.descricao_acao = notificacao.descricao_acao;
-  this.data_acao = notificacao.data_acao;
   this.status = notificacao.status;
 };
 
@@ -26,7 +25,7 @@ Notificacao.create = (newNotificacao, result) => {
 
 // Método para buscar todas as notificações
 Notificacao.getAll = result => {
-  sql.query("SELECT * FROM notificacoes", (err, res) => {
+  sql.query("SELECT * FROM notificacoes ORDER BY data_acao DESC LIMIT 10", (err, res) => {
     if (err) {
       console.log("Erro: ", err);
       result(null, err);

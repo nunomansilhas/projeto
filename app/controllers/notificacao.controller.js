@@ -13,7 +13,6 @@ exports.create = (req, res) => {
     id_utilizador: req.body.id_utilizador,
     tipo_acao: req.body.tipo_acao,
     descricao_acao: req.body.descricao_acao,
-    data_acao: req.body.data_acao,
     status: req.body.status
   });
 

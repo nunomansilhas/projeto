@@ -9,7 +9,6 @@ exports.uploadImage = (req, res) => {
     const image = new Image({
         idProduto: req.body.idProduto, // Assuming you want to associate the image with a product
         imageUrl: imageUrl,
-        mainImg: true // Assuming this image is the main image, you can adjust this as needed
     });
 
     Image.create(image, (err, data) => {

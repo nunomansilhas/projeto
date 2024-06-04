@@ -3,7 +3,6 @@ const sql = require("./db.js");
 const Image = function(image) {
     this.idProduto = image.idProduto;
     this.imageUrl = image.imageUrl;
-    this.mainImg = image.mainImg;
 };
 
 Image.create = (newImage, result) => {
