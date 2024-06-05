@@ -29,5 +29,11 @@ module.exports = app => {
     // Rota para upload de imagem
     router.post("/", uploadMiddleware.single('img'), upload.uploadImage);
 
+    // Rota para deletar imagem
+    router.delete("/:id", upload.deleteImage);
+
+    // Rota para obter imagens associadas a um produto específico
+    router.get("/:productId", upload.getProductImages);
+
     app.use('/api/upload', router);
 };
