@@ -5,7 +5,7 @@ module.exports = app => {
     const fs = require('fs');
 
     // Define o caminho do diretório de destino
-    const uploadDir = path.join(__dirname, '..', 'img');
+    const uploadDir = path.join(__dirname, '..', '..', 'img', 'produtos');
 
     // Verifica se o diretório existe, caso contrário, cria-o
     if (!fs.existsSync(uploadDir)) {
