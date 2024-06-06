@@ -1,3 +1,5 @@
+import { confirmDelete, deleteProduct } from './acoes/produto-eliminar.js'; // Importando as funções de exclusão
+
 async function fetchTiposProdutos() {
   const response = await fetch('http://localhost:3000/api/tiposprodutos');
   return response.json();
@@ -61,103 +63,6 @@ async function populateDataTable() {
       }
     });
   });
-}
-
-// Função para exibir modal de confirmação
-function confirmDelete() {
-  return new Promise((resolve) => {
-    swal({
-      title: "Tem certeza?",
-      text: "Não será capaz de recuperar este item!",
-      type: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#DD6B55",
-      confirmButtonText: "Eliminar!",
-      cancelButtonText: "Cancelar!",
-      closeOnConfirm: false,
-      closeOnCancel: true
-    }, function(isConfirm) {
-      resolve(isConfirm);
-    });
-  });
-}
-
-// Função para excluir o produto e suas imagens associadas
-async function deleteProduct(productId, productName) {
-  try {
-    // Excluir o produto
-    const response = await fetch(`http://localhost:3000/api/produtos/${productId}`, {
-      method: 'DELETE'
-    });
-    if (!response.ok) {
-      throw new Error('Erro ao excluir o produto');
-    }
-
-    // Obter as imagens associadas ao produto
-    const imagesResponse = await fetch(`http://localhost:3000/api/upload/${productId}`);
-    if (!imagesResponse.ok) {
-      throw new Error('Erro ao obter as imagens do produto');
-    }
-    const images = await imagesResponse.json();
-
-    // Excluir as imagens associadas ao produto
-    for (const image of images) {
-      const imageResponse = await fetch(`http://localhost:3000/api/upload/${image.id}`, {
-        method: 'DELETE'
-      });
-      if (!imageResponse.ok) {
-        throw new Error('Erro ao excluir a imagem');
-      }
-    }
-
-    // Enviar notificação de exclusão
-    await enviarNotificacao('Excluído', `Funcionario excluiu o Produto de Apoio (${productName})`);
-
-    swal("Eliminado!", "O seu produto e imagens associadas foram eliminados com sucesso.", "success");
-  } catch (error) {
-    console.error('Error:', error);
-    swal("Erro", "Ocorreu um erro ao excluir o produto.", "error");
-  }
-}
-
-// Função para enviar notificação
-async function enviarNotificacao(tipoAcao, descricaoAcao) {
-  try {
-    const response = await fetch('http://localhost:3000/api/login', {
-      credentials: 'include' // Necessário para enviar cookies de sessão
-    });
-
-    if (!response.ok) {
-      throw new Error('Not authenticated');
-    }
-
-    const data = await response.json();
-    if (data.user) {
-      const notificacaoPayload = {
-        id_utilizador: data.user.id,
-        tipo_acao: tipoAcao,
-        descricao_acao: descricaoAcao,
-        status: tipoAcao
-      };
-
-      const response_not = await fetch('http://localhost:3000/api/notificacoes', {
-        method: 'POST',
-        body: JSON.stringify(notificacaoPayload),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (!response_not.ok) {
-        throw new Error('Failed to create notification');
-      }
-
-      console.log('Notificação criada com sucesso');
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    window.location.href = './login.html';
-  }
 }
 
 // Função para reinicializar e atualizar a tabela
