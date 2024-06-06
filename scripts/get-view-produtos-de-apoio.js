@@ -172,9 +172,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const confirmed = await confirmDelete();
     if (confirmed) {
       await deleteProduct(product.ID, product.Nome);
-      setTimeout(() => {
-        window.location.href = 'produtos.html'; // Redirecionar após 3 segundos
-      }, 3000); // 3000 milissegundos = 3 segundos
+      window.location.href = 'produtos.html'; // Redirecionar após exclusão
     }
   });
 } catch (error) {
@@ -182,3 +180,4 @@ document.addEventListener('DOMContentLoaded', async () => {
   window.location.href = 'produtos.html';
 }
 });
+

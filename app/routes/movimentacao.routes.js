@@ -8,10 +8,16 @@ module.exports = app => {
     router.get("/", movimentacoes.findAll);
   
     router.get("/:id", movimentacoes.findOne);
+
+    router.get("/produto/:id", movimentacoes.findOneByIdProduto);
   
     router.put("/:id", movimentacoes.update);
+
+    router.put("/produto/:id", movimentacoes.updateByIdProduto);
   
     router.delete("/:id", movimentacoes.delete);
+
+    router.delete("/produto/:id", movimentacoes.deleteByIdProduto);
   
     router.delete("/", movimentacoes.deleteAll);
   

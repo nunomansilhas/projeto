@@ -22,8 +22,27 @@ Movimentacao.create = (newMovimentacao, result) => {
   });
 };
 
+
 Movimentacao.findById = (id, result) => {
-  sql.query(`SELECT * FROM movimentacoesinventario WHERE id = ${id}`, (err, res) => {
+  sql.query("SELECT * FROM movimentacoesinventario WHERE id = ?", [id], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length) {
+      console.log("found movimentacao: ", res[0]);
+      result(null, res[0]);
+      return;
+    }
+
+    result({ kind: "not_found" }, null);
+  });
+};
+
+Movimentacao.findByIdProduto = (id, result) => {
+  sql.query(`SELECT * FROM movimentacoesinventario WHERE ProdutoDeApoioID = ?`, [id], (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -83,8 +102,55 @@ Movimentacao.updateById = (id, movimentacao, result) => {
   );
 };
 
+Movimentacao.updateByIdProduto = (id, movimentacao, result) => {
+  sql.query(
+    "UPDATE movimentacoesinventario SET tipoMovimentacao = ?, quantidade = ?, dataMovimentacao = ?, funcionarioId = ?, clienteId = ? WHERE ProdutoDeApoioID = ?",
+    [
+      movimentacao.tipoMovimentacao,
+      movimentacao.quantidade,
+      movimentacao.dataMovimentacao,
+      movimentacao.funcionarioId,
+      movimentacao.clienteId,
+      id
+    ],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      if (res.affectedRows == 0) {
+        result({ kind: "not_found" }, null);
+        return;
+      }
+
+      console.log("updated movimentacao: ", { id: id, ...movimentacao });
+      result(null, { id: id, ...movimentacao });
+    }
+  );
+};
+
 Movimentacao.remove = (id, result) => {
-  sql.query("DELETE FROM movimentacoesinventario WHERE id = ?", id, (err, res) => {
+  sql.query("DELETE FROM movimentacoesinventario WHERE id = ?", [id], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+
+    if (res.affectedRows == 0) {
+      result({ kind: "not_found" }, null);
+      return;
+    }
+
+    console.log("deleted movimentacao with id: ", id);
+    result(null, res);
+  });
+};
+
+Movimentacao.removeByIdProduto = (id, result) => {
+  sql.query("DELETE FROM movimentacoesinventario WHERE produtoDeApoioId = ?", [id], (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
