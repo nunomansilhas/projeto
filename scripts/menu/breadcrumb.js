@@ -15,6 +15,10 @@ const breadcrumbButtonsConfig = {
   'produtos-editar': [
     { href: 'produtos.html', iconClass: 'fa fa-list', name: 'Listagem de Produtos' }
   ],
+  'produtos-visualizar': [
+    { href: 'produtos.html', iconClass: 'fa fa-list', name: 'Listagem de Produtos' },
+    { href: 'solicitacoes-adicionar.html', iconClass: 'fa fa-list', name: 'Nova Solicitação' }
+  ]
   // Add other pages and their specific breadcrumb buttons here
 };
 
@@ -59,9 +63,11 @@ function generateBreadcrumbItems(currentPage, familyName) {
     items.push({ href: 'index.html', name: 'Painel de Controlo' });
     items.push({ href: 'produtos.html', name: 'Produtos' });
     if (currentPage === 'produtos-adicionar') {
-      items.push({ href: 'produtos-adicionar.html', name: 'Adicionar Produto', active: true });
+      items.push({ href: '#', name: 'Adicionar Produto', active: true });
     } else if (currentPage === 'produtos-editar') {
-      items.push({ href: 'produtos-editar.html', name: 'Editar Produto', active: true });
+      items.push({ href: '#', name: 'Editar Produto', active: true });
+    } else if (currentPage === 'produtos-visualizar') {
+      items.push({ href: '#', name: 'Visualizar Produto', active: true });
     } else {
       items.push({ href: '#', name: 'Listagem de Produtos', active: true });
     }
