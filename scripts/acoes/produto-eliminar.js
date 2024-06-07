@@ -30,12 +30,14 @@ async function deleteProduct(productId, productName) {
       throw new Error('Erro ao excluir o produto');
     }
 
-    // Excluir movimentacoes do produto
+    // Tentar excluir movimentações do produto
     const movimentacaoResponse = await fetch(`http://localhost:3000/api/movimentacoes/produto/${productId}`, {
       method: 'DELETE'
     });
-    if (!movimentacaoResponse.ok) {
-      throw new Error('Erro ao excluir as movimentacoes do produto');
+    
+    // Checar se a resposta não foi ok e não foi "Not Found"
+    if (!movimentacaoResponse.ok && movimentacaoResponse.status !== 404) {
+      throw new Error('Erro ao excluir as movimentações do produto');
     }
 
     // Obter as imagens associadas ao produto

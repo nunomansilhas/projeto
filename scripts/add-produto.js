@@ -79,29 +79,46 @@ document.addEventListener('DOMContentLoaded', () => {
         return productData.id;
     }
 
-    // Função para fazer upload de múltiplas imagens
     async function fazerUploadImagens(imgFiles, idProduto) {
         const uploadPromises = Array.from(imgFiles).map(async (imgFile) => {
             const imageFormData = new FormData();
-            imageFormData.append('img', imgFile);
+            const randomName = generateRandomName();
+            const fileExtension = imgFile.name.split('.').pop(); // Get the file extension
+            const imageName = `${randomName}.${fileExtension}`; // Construct the new image name
+            imageFormData.append('img', imgFile, imageName); // Append the file with the new name
             imageFormData.append('idProduto', idProduto); // Adiciona idProduto ao FormData
-
+            imageFormData.append('customPath', 'img/produtos/'); // Always use 'img/produtos/' path
+        
             const response = await fetch('http://localhost:3000/api/upload', {
                 method: 'POST',
                 body: imageFormData
             });
-
+        
             if (!response.ok) {
                 throw new Error('Failed to upload image');
             }
-
+        
             const uploadData = await response.json();
             console.log('Imagem enviada com sucesso:', uploadData.path);
             return uploadData.path;
         });
-
+    
         return Promise.all(uploadPromises);
     }
+    
+       
+    // Function to generate a random 15-character string
+    function generateRandomName() {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let randomName = '';
+        for (let i = 0; i < 15; i++) {
+            randomName += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return randomName;
+    }
+    
+
+    
 
     produtoForm.addEventListener('submit', async (e) => {
         e.preventDefault();

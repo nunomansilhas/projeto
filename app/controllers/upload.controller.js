@@ -7,10 +7,12 @@ exports.uploadImage = (req, res) => {
         return res.status(400).send({ message: "No file uploaded." });
     }
 
-    const imageUrl = req.file.path;
+    // Gerar o caminho relativo
+    const relativePath = path.join('img/produtos', req.file.filename).replace(/\\/g, '/');
+    
     const image = new Image({
         idProduto: req.body.idProduto,
-        imageUrl: imageUrl,
+        imageUrl: relativePath, // Usar o caminho relativo aqui
     });
 
     Image.create(image, (err, data) => {
@@ -19,7 +21,7 @@ exports.uploadImage = (req, res) => {
                 message: err.message || "Some error occurred while saving the image."
             });
         }
-        res.send({ path: imageUrl, id: data.id });
+        res.send({ path: relativePath, id: data.id }); // Enviar o caminho relativo na resposta
     });
 };
 
