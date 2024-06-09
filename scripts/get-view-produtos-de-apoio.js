@@ -1,6 +1,8 @@
 // Importar as funções de exclusão, edição e envio de notificações
 import { deleteProduct, confirmDelete } from './acoes/produto-eliminar.js';
 import { showEditModal } from './acoes/produtos-editar.js';
+import { createUploadModal, uploadImages } from './acoes/produto-adicionar-imagens.js';
+import { createEditImagesModal, deleteSelectedImages } from './acoes/produto-editar-imagens.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const urlParams = new URLSearchParams(window.location.search);
@@ -103,10 +105,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="panel-title">
               Galeria de produto : ${product.ID}
               <ul class="panel-tools">
-                  <li><a href="#">Editar Imagens</a></li>
+                <li><a href="#" id="addImagesButton">Adicionar Imagens</a></li> <!-- Botão para abrir o modal -->
+                <li><a href="#" id="editImagesButton">Editar Imagens</a></li> <!-- Botão para abrir o modal de edição -->
               </ul>
             </div>
-              <div class="panel-body">
+            <div class="panel-body">
               <div id="productCarousel" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
                   ${carouselIndicators}
@@ -130,8 +133,8 @@ document.addEventListener('DOMContentLoaded', async () => {
           <div class="panel-title">
             Dados do Produto : ${product.ID}
             <ul class="panel-tools">
-                <li><a style="border: 1px solid blue;" href="#" type="button" class="btn btn-square btn-light edit-product" data-product-id="${product.ID}" data-product-name="${product.Nome}">Editar</a></li>
-                <li><a style="border: 1px solid red;" href="#" type="button" class="btn btn-rounded btn-light delete-product" data-product-id="${product.ID}" data-product-name="${product.Nome}">Eliminar</a></li>
+                <li><a href="#" type="button" class="edit-product" data-product-id="${product.ID}" data-product-name="${product.Nome}">Editar</a></li>
+                <li><a href="#" type="button" class="delete-product" data-product-id="${product.ID}" data-product-name="${product.Nome}">Eliminar</a></li>
             </ul>
           </div>
           <div class="panel-body">
@@ -146,7 +149,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               </tr>
               <tr>
                 <th class="text-right">Descrição</th>
-                <td>${product.Descricao}</td>
+                <td>${product.Descricao.length > 15 ? product.Descricao.substring(0, 15) + '...' : product.Descricao}</td>
               </tr>
               <tr>
                 <th class="text-right">Categoria</th>
@@ -210,8 +213,29 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.location.href = 'produtos.html'; // Redirecionar após exclusão
       }
     });
+
+    // Adicionar evento de clique para o botão de adicionar imagens
+    const addImagesButton = document.getElementById('addImagesButton');
+    addImagesButton.addEventListener('click', function() {
+      if (!document.getElementById('uploadModal')) {
+        createUploadModal();
+        document.getElementById('uploadImages').addEventListener('click', uploadImages);
+      }
+      $('#uploadModal').modal('show');
+    });
+
+    // Adicionar evento de clique para o botão de editar imagens
+    const editImagesButton = document.getElementById('editImagesButton');
+    editImagesButton.addEventListener('click', function() {
+      if (!document.getElementById('editImagesModal')) {
+        createEditImagesModal(images, productId);
+      }
+      $('#editImagesModal').modal('show');
+    });
+
   } catch (error) {
     alert(`Erro: ${error.message}. Redirecionando de volta...`);
     window.location.href = 'produtos.html';
   }
 });
+

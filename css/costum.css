@@ -14,7 +14,7 @@
     background-color: #f0f0f0;
 }
 
-.image-container {
+.image-container{
     position: relative;
     display: inline-block;
     width: 100px; /* Largura fixa para os contêineres de imagem */
@@ -31,6 +31,13 @@
     border-radius: 10px; /* Mantém as bordas arredondadas para as imagens */
     object-fit: cover; /* Garante que a imagem cubra o contêiner sem esticar */
 }
+
+.selected-image {
+    background-color: #d3d3d3;
+    border: 2px solid #a9a9a9;
+    border-radius: 4px;
+  }
+  
 
 .delete-button {
     position: absolute;

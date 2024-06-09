@@ -1,3 +1,5 @@
+import { enviarNotificacao } from './enviar-notificacao.js'; // Importar a função de enviar notificação
+
 // Função para criar e injetar o HTML do modal de edição no DOM
 function createEditModal() {
     const modalHtml = `
@@ -117,6 +119,7 @@ function createEditModal() {
       if (!response.ok) throw new Error('Erro ao atualizar o produto');
   
       $('#editModal').modal('hide');
+      await enviarNotificacao('Editado', `Editou o Produto de Apoio com ID:(${updatedProduct.id})`);
       window.location.reload();
     } catch (error) {
       alert(`Erro: ${error.message}`);
