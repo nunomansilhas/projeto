@@ -10,6 +10,8 @@ module.exports = app => {
     router.get("/:id", movimentacoes.findOne);
 
     router.get("/produto/:id", movimentacoes.findOneByIdProduto);
+
+    router.get("/beneficiario/:id", movimentacoes.findOneByIdBeneficiario);
   
     router.put("/:id", movimentacoes.update);
 

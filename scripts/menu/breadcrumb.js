@@ -1,4 +1,3 @@
-// Configuration object for breadcrumb buttons specific to each page
 const breadcrumbButtonsConfig = {
   'index': [
     { href: 'index.html', iconClass: 'fa fa-light', name: 'Painel de Controlo' },
@@ -18,62 +17,62 @@ const breadcrumbButtonsConfig = {
   'produtos-visualizar': [
     { href: 'produtos.html', iconClass: 'fa fa-list', name: 'Listagem de Produtos' },
     { href: 'solicitacoes-adicionar.html', iconClass: 'fa fa-list', name: 'Nova Solicitação' }
+  ],
+  'beneficiarios': [
+    { href: 'beneficiarios-adicionar.html', iconClass: 'fa fa-list', name: 'Novo Beneficiário' }
   ]
   // Add other pages and their specific breadcrumb buttons here
 };
 
-// Function to generate the breadcrumb and update the page title based on the selected item in the sidebar
 function updateBreadcrumbAndTitle() {
-  const currentURL = window.location.href;
-  const urlParts = currentURL.split('/');
-  const currentPage = urlParts[urlParts.length - 1].split('.')[0]; // Get the current page without the extension
-  
-  // Default family name for "produtos" related pages
-  const familyName = currentPage.startsWith('produtos') ? 'Produtos' : '';
+  const currentPage = getCurrentPage();
+  let familyName = '';
 
-  // Update the breadcrumb based on the page hierarchy
+  if (currentPage.startsWith('produtos')) {
+    familyName = 'Produtos';
+  } else if (currentPage.startsWith('beneficiarios')) {
+    familyName = 'Beneficiários';
+  }
+
   const breadcrumbItems = generateBreadcrumbItems(currentPage, familyName);
   generateBreadcrumb(breadcrumbItems);
 
-  // Update the title of the page
-  if (familyName) {
-    document.querySelector('.title').innerText = familyName;
-  } else {
-    // Find the item in the sidebarItems that matches the current page URL
-    let selectedItemName = '';
-    sidebarItems.forEach(group => {
-      group.items.forEach(item => {
-        if (item.href === currentPage + '.html') {
-          selectedItemName = item.name;
-        }
-      });
-    });
-    document.querySelector('.title').innerText = selectedItemName || currentPage; // Default to page name if no sidebar item found
-  }
+  document.querySelector('.title').innerText = familyName || getSidebarItemName(currentPage);
 
-  // Generate breadcrumb buttons specific to the current page
   const breadcrumbButtons = breadcrumbButtonsConfig[currentPage] || [];
   generateBreadcrumbButtons(breadcrumbButtons);
 }
 
-// Function to generate breadcrumb items based on page hierarchy
+function getCurrentPage() {
+  const currentURL = window.location.href;
+  const urlParts = currentURL.split('/');
+  return urlParts[urlParts.length - 1].split('.')[0]; // Get the current page without the extension
+}
+
 function generateBreadcrumbItems(currentPage, familyName) {
   const items = [];
   if (currentPage.startsWith('produtos')) {
     items.push({ href: 'index.html', name: 'Painel de Controlo' });
-    items.push({ href: 'produtos.html', name: 'Produtos' });
     if (currentPage === 'produtos-adicionar') {
+      items.push({ href: 'produtos.html', name: 'Produtos' });
       items.push({ href: '#', name: 'Adicionar Produto', active: true });
     } else if (currentPage === 'produtos-editar') {
+      items.push({ href: 'produtos.html', name: 'Produtos' });
       items.push({ href: '#', name: 'Editar Produto', active: true });
     } else if (currentPage === 'produtos-visualizar') {
+      items.push({ href: 'produtos.html', name: 'Produtos' });
       items.push({ href: '#', name: 'Visualizar Produto', active: true });
     } else {
+      items.push({ href: 'produtos.html', name: 'Produtos' });
       items.push({ href: '#', name: 'Listagem de Produtos', active: true });
     }
   } else if (currentPage.startsWith('beneficiarios')) {
     items.push({ href: 'index.html', name: 'Painel de Controlo' });
     items.push({ href: 'beneficiarios.html', name: 'Listagem de Beneficiários', active: true });
+    if (currentPage === 'beneficiarios-visualizar') {
+      familyName = 'Beneficiários';
+      items.push({ href: 'beneficiarios-visualizar.html', name: 'Visualizar Beneficiários', active: true });
+    }
   } else if (currentPage.startsWith('solicitacoes')) {
     items.push({ href: 'index.html', name: 'Painel de Controlo' });
     items.push({ href: 'solicitacoes.html', name: 'Listagem de Solicitações', active: true });
@@ -81,7 +80,6 @@ function generateBreadcrumbItems(currentPage, familyName) {
   return items;
 }
 
-// Function to generate the breadcrumb
 function generateBreadcrumb(items) {
   const breadcrumb = document.getElementById('breadcrumb');
   breadcrumb.innerHTML = '';
@@ -98,7 +96,6 @@ function generateBreadcrumb(items) {
   });
 }
 
-// Function to generate the customizable buttons in the breadcrumb
 function generateBreadcrumbButtons(buttons) {
   const breadcrumbButtons = document.getElementById('breadcrumb-buttons');
   breadcrumbButtons.innerHTML = '';
@@ -121,7 +118,18 @@ function generateBreadcrumbButtons(buttons) {
   });
 }
 
-// Generate the breadcrumb and update the title when the page is loaded
+function getSidebarItemName(currentPage) {
+  let selectedItemName = '';
+  sidebarItems.forEach(group => {
+    group.items.forEach(item => {
+      if (item.href === currentPage + '.html') {
+        selectedItemName = item.name;
+      }
+    });
+  });
+  return selectedItemName || currentPage; // Default to page name if no sidebar item found
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   updateBreadcrumbAndTitle();
 });

@@ -36,9 +36,8 @@ async function populateDataTable() {
       <td>${produto.quantidade}</td>
       <td class="text-right"><span class="label label-default">${produto.donativo}</span></td>
       <td class="text-right">
-        <a style="border: 1px solid blue;" href="produtos-visualizar.html?id=${produto.ID}" type="button" class="btn btn-rounded btn-light btn-icon"><i class="fa fa-eye"></i></a>
-        <a style="border: 1px solid green;" href="#" type="button" class="btn btn-rounded btn-light btn-icon"><i class="fa fa-edit"></i></a>
-        <a style="border: 1px solid red;" href="#" type="button" class="btn btn-rounded btn-light btn-icon delete-product" data-product-id="${produto.ID}" data-product-name="${produto.Nome}"><i class="fa fa-trash"></i></a>
+        <a href="produtos-visualizar.html?id=${produto.ID}" type="button" class="btn btn-rounded btn-basic btn-icon"><i class="fa fa-eye"></i></a>
+        <a href="#" type="button" class="btn btn-rounded btn-basic btn-icon delete-product" data-product-id="${produto.ID}" data-product-name="${produto.Nome}"><i class="fa fa-trash"></i></a>
       </td>
     `;
     tableBody.appendChild(row);
