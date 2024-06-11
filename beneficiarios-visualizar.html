@@ -39,11 +39,16 @@
             <div class="row">
                 <div class="col-md-12 col-lg-12">
                     <div class="panel panel-default">
-                        <div class="panel-title">Dados do Beneficiário</div>
+                        <div class="panel-title">Dados do Beneficiário
+                            <ul class="panel-tools">
+                                <li><a href="#" type="button" class="edit-beneficiario" data-beneficiario-id="" data-beneficiario-name="">Editar</a></li>
+                                <li><a href="#" type="button" class="delete-beneficiario" data-beneficiario-id="" data-beneficiario-name="">Eliminar</a></li>
+                            </ul>
+                        </div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <img id="beneficiario-imagem" src="" alt="Imagem do Beneficiário" class="img-responsive">
+                                    <img id="beneficiario-imagem" src=" " alt="Imagem do Beneficiário" class="img-responsive">
                                 </div>
                                 <div class="col-md-9">
                                     <p><strong>ID:</strong> <span id="beneficiario-id"></span></p>
@@ -101,6 +106,6 @@
     <script src="js/sweet-alert/sweet-alert.min.js"></script>
     <script src="js/kode-alert/main.js"></script>
 
-    <script src="scripts/beneficiarios/get-view-beneficiarios.js"></script>
+    <script type="module" src="scripts/beneficiarios/get-view-beneficiarios.js"></script>
 </body>
 </html>

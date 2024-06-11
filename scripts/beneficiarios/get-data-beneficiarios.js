@@ -15,14 +15,14 @@ async function populateDataTable() {
   beneficiarios.forEach(beneficiario => {
     const row = document.createElement('tr');
     row.innerHTML = `
-      <td>${beneficiario.ID}</td>
-      <td>${beneficiario.Nome}</td>
-      <td>${beneficiario.Email}</td>
-      <td>${beneficiario.Telemovel}</td>
-      <td>${beneficiario.Morada}</td>
+      <td>${beneficiario.id}</td>
+      <td>${beneficiario.nome}</td>
+      <td>${beneficiario.email}</td>
+      <td>${beneficiario.telemovel}</td>
+      <td>${beneficiario.morada}</td>
       <td class="text-right">
-        <a href="beneficiarios-visualizar.html?id=${beneficiario.ID}" type="button" class="btn btn-rounded btn-basic btn-icon"><i class="fa fa-eye"></i></a>
-        <a href="#" type="button" class="btn btn-rounded btn-basic btn-icon delete-beneficiario" data-beneficiario-id="${beneficiario.ID}" data-beneficiario-name="${beneficiario.Nome}"><i class="fa fa-trash"></i></a>
+        <a href="beneficiarios-visualizar.html?id=${beneficiario.id}" type="button" class="btn btn-rounded btn-basic btn-icon"><i class="fa fa-eye"></i></a>
+        <a href="#" type="button" class="btn btn-rounded btn-basic btn-icon delete-beneficiario" data-beneficiario-id="${beneficiario.id}" data-beneficiario-name="${beneficiario.nome}"><i class="fa fa-trash"></i></a>
       </td>
     `;
     tableBody.appendChild(row);

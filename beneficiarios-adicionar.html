@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="descrição">
+  <meta name="keywords" content="palavras-chave" />
+  <title>APCVC - Gestão de Inventário</title>
+  <link href="css/root.css" rel="stylesheet">
+  <link href="css/costum.css" rel="stylesheet">
+</head>
+<body>
+  <div class="loading"><img src="img/loading.gif" alt="imagem de carregamento"></div>
+ 
+  <div id="top" class="clearfix">
+    <div class="applogo">
+      <a href="#" class="logo">APCVC</a>
+    </div>
+    <a href="#" class="sidebar-open-button"><i class="fa fa-bars"></i></a>
+    <a href="#" class="sidebar-open-button-mobile"><i class="fa fa-bars"></i></a>
+    <ul class="top-right">
+      <li class="dropdown link">
+        <a href="#" data-toggle="dropdown" class="dropdown-toggle hdbutton">Criar Novo <span class="caret"></span></a>
+        <ul class="dropdown-menu dropdown-menu-list" id="quick-menu"></ul>
+      </li>
+      <li class="dropdown link" id="profile-box"></li>
+    </ul>
+  </div>
+  <div class="sidebar sidebar-colorful clearfix" id="sidebar"></div>
+  <div class="content">
+    <div class="page-header">
+        <h1 class="title">Beneficiários</h1>
+        <ol class="breadcrumb" id="breadcrumb"></ol>
+        <div class="right">
+            <div class="btn-group" role="group" aria-label="..." id="breadcrumb-buttons">
+        </div>
+      </div>
+    </div>
+    <div class="container-default">
+        <div class="row">
+            <div class="col-md-12">
+              <div class="panel panel-default">
+                <div class="panel-title">Formulário para Adicionar Beneficiário</div>
+                <div class="panel-body">
+                    <form id="beneficiarioForm" enctype="multipart/form-data" method="post">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="nome" class="form-label">Nome do Beneficiário:</label>
+                                    <input type="text" class="form-control form-control-line" id="nome" name="nome" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="morada" class="form-label">Morada:</label>
+                                    <textarea class="form-control form-control-line" rows="5" id="morada" name="morada"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="email" class="form-label">Email:</label>
+                                    <input type="email" class="form-control form-control-line" id="email" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="telemovel" class="form-label">Telemóvel:</label>
+                                    <input type="text" class="form-control form-control-line" id="telemovel" name="telemovel">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                  <label class="form-label">Imagem de Perfil:</label>
+                                  <input type="file" id="fileInput" name="image_profile" class="form-control">
+                              </div>
+                            </div>                          
+                        </div>
+                        <button type="submit" class="btn btn-default">Adicionar</button>
+                    </form>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div id="alertContainer"></div>
+    <div class="row footer">
+      <div class="col-md-6 text-left">
+        Copyright © 2024 <a href="https://apcvc.pt/" target="_blank">APCVC</a> - Todos os direitos reservados.
+      </div>
+      <div class="col-md-6 text-right">
+        Design e Desenvolvimento por <a href="https://nunomansilhas.pt" target="_blank">Nuno Mansilhas</a>
+      </div>
+    </div>
+    
+  </div>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/plugins.js"></script>
+  <script src="js/bootstrap/bootstrap.min.js"></script>
+  <script src="scripts/menu/breadcrumb.js"></script>
+  <script src="scripts/menu/quickmenu.js"></script>
+  <script src="scripts/menu/sidebar.js"></script>
+  <script src="scripts/menu/profile.js"></script>
+
+  <script src="scripts/beneficiarios/beneficiarios-adicionar.js"></script>
+
+<script src="js/sweet-alert/sweet-alert.min.js"></script>
+
+<!-- ================================================
+Kode Alert
+================================================ -->
+<script src="js/kode-alert/main.js"></script>
+
+
+</body>
+</html>

@@ -5,6 +5,7 @@ const Cliente = function(cliente) {
   this.morada = cliente.morada;
   this.email = cliente.email;
   this.telemovel = cliente.telemovel;
+  this.image_profile = cliente.image_profile;
 };
 
 Cliente.create = (newCliente, result) => {
@@ -19,7 +20,6 @@ Cliente.create = (newCliente, result) => {
     result(null, { id: res.insertId, ...newCliente });
   });
 };
-
 Cliente.findById = (id, result) => {
   sql.query(`SELECT * FROM clientes WHERE id = ${id}`, (err, res) => {
     if (err) {
@@ -53,16 +53,17 @@ Cliente.getAll = result => {
 
 Cliente.updateById = (id, cliente, result) => {
   sql.query(
-    "UPDATE clientes SET nome = ?, morada = ?, email = ?, telemovel = ? WHERE id = ?",
-    [cliente.nome, cliente.morada, cliente.email, cliente.telemovel, id],
+    "UPDATE clientes SET nome = ?, morada = ?, email = ?, telemovel = ?, image_profile = ? WHERE id = ?",
+    [cliente.nome, cliente.morada, cliente.email, cliente.telemovel, cliente.image_profile, id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
-        result(null, err);
+        result(err, null);
         return;
       }
 
       if (res.affectedRows == 0) {
+        // not found Cliente with the id
         result({ kind: "not_found" }, null);
         return;
       }
@@ -72,6 +73,7 @@ Cliente.updateById = (id, cliente, result) => {
     }
   );
 };
+
 
 Cliente.remove = (id, result) => {
   sql.query("DELETE FROM clientes WHERE id = ?", id, (err, res) => {

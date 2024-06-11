@@ -68,10 +68,12 @@ function generateBreadcrumbItems(currentPage, familyName) {
     }
   } else if (currentPage.startsWith('beneficiarios')) {
     items.push({ href: 'index.html', name: 'Painel de Controlo' });
-    items.push({ href: 'beneficiarios.html', name: 'Listagem de Beneficiários', active: true });
+    items.push({ href: 'beneficiarios.html', name: 'Listagem de Beneficiários', active: true});
     if (currentPage === 'beneficiarios-visualizar') {
-      familyName = 'Beneficiários';
       items.push({ href: 'beneficiarios-visualizar.html', name: 'Visualizar Beneficiários', active: true });
+    }
+    if (currentPage === 'beneficiarios-adicionar') {
+      items.push({ href: 'beneficiarios-adicionar.html', name: 'Adicionar Beneficiários', active: true });
     }
   } else if (currentPage.startsWith('solicitacoes')) {
     items.push({ href: 'index.html', name: 'Painel de Controlo' });
