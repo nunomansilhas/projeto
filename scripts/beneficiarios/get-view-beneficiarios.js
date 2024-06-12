@@ -112,8 +112,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         await populateMovimentacoes(beneficiarioId);
         
         // Adicionar eventos de clique para editar e excluir
-        document.querySelector('.edit-beneficiario').addEventListener('click', () => {
-            showEditBeneficiarioModal({ id: beneficiarioId });
+        document.querySelector('.edit-beneficiario').addEventListener('click', async () => {
+            const beneficiario = await fetchBeneficiario(beneficiarioId);
+            showEditBeneficiarioModal(beneficiario);
         });
         document.querySelector('.delete-beneficiario').addEventListener('click', handleDelete);
     } else {

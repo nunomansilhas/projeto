@@ -11,7 +11,7 @@ function createEditBeneficiarioModal() {
                     <h4 class="modal-title" id="editBeneficiaryModalLabel">Editar Beneficiário</h4>
                 </div>
                 <div class="modal-body">
-                    <form id="editBeneficiaryForm" enctype="multipart/form-data">
+                    <form id="editBeneficiaryForm">
                         <div class="form-group">
                             <label for="edit-id">ID</label>
                             <input type="text" class="form-control" id="edit-id" name="id" readonly>
@@ -36,7 +36,6 @@ function createEditBeneficiarioModal() {
                             <label for="edit-imagem">Imagem de Perfil</label>
                             <input type="file" class="form-control" id="edit-imagem" name="image_profile" accept="image/*">
                         </div>
-                        <input type="hidden" id="existing-image-profile" name="existing_image_profile">
                         <button type="submit" class="btn btn-primary" id="saveBeneficiarioChanges">Salvar</button>
                     </form>
                 </div>
@@ -55,22 +54,26 @@ export function showEditBeneficiarioModal(beneficiario) {
         createEditBeneficiarioModal();
     }
 
+    const form = document.getElementById('editBeneficiaryForm');
+    form.reset();
+
     document.getElementById('edit-id').value = beneficiario.id || '';
     document.getElementById('edit-nome').value = beneficiario.nome || '';
     document.getElementById('edit-email').value = beneficiario.email || '';
     document.getElementById('edit-telefone').value = beneficiario.telemovel || '';
     document.getElementById('edit-endereco').value = beneficiario.morada || '';
-    document.getElementById('existing-image-profile').value = beneficiario.image_profile || ''; // Define o caminho da imagem existente
 
-    document.getElementById('editBeneficiaryForm').addEventListener('submit', saveBeneficiarioChanges);
+    form.removeEventListener('submit', saveBeneficiarioChanges);
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        await saveBeneficiarioChanges(beneficiario.image_profile);
+    });
 
     $('#editBeneficiaryModal').modal('show');
 }
 
 // Função para salvar as alterações do beneficiário
-async function saveBeneficiarioChanges(event) {
-    event.preventDefault();
-    
+async function saveBeneficiarioChanges(existingImage) {
     const updatedBeneficiario = {
         id: document.getElementById('edit-id').value,
         nome: document.getElementById('edit-nome').value,
@@ -84,12 +87,12 @@ async function saveBeneficiarioChanges(event) {
     formData.append('email', updatedBeneficiario.email);
     formData.append('telemovel', updatedBeneficiario.telemovel);
     formData.append('morada', updatedBeneficiario.morada);
-    formData.append('id', updatedBeneficiario.id);
-    formData.append('existing_image_profile', document.getElementById('existing-image-profile').value); // Adiciona o caminho da imagem existente
 
     const imageFile = document.getElementById('edit-imagem').files[0];
     if (imageFile) {
         formData.append('image_profile', imageFile);
+    } else {
+        formData.append('existing_image', existingImage); // Mantém a imagem existente se nenhuma nova imagem for fornecida
     }
 
     console.log('Updated Beneficiario:', updatedBeneficiario); // Log para verificar os dados
