@@ -40,6 +40,7 @@ require('./app/routes/tipo_produto.routes.js')(app, authMiddleware);
 require('./app/routes/movimentacao.routes.js')(app, authMiddleware);
 require('./app/routes/notificacao.routes.js')(app, authMiddleware);
 require('./app/routes/upload.routes.js')(app, authMiddleware);
+require("./app/routes/doacao.routes.js")(app, authMiddleware);
 
 // Ativação do servidor, onde serão recebidos os pedidos, na porta definida
 app.listen(PORT, () => {

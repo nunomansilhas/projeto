@@ -1,11 +1,13 @@
 const sql = require("./db.js");
 
+// constructor
 const Funcionario = function(funcionario) {
-  this.nome     = funcionario.nome;
+  this.nome = funcionario.nome;
   this.username = funcionario.username;
-  this.cargo    = funcionario.cargo;
-  this.email    = funcionario.email;
-  this.senha    = funcionario.senha;
+  this.cargo = funcionario.cargo;
+  this.email = funcionario.email;
+  this.senha = funcionario.senha;
+  this.profileImg = funcionario.profileImg;
 };
 
 Funcionario.create = (newFuncionario, result) => {
@@ -35,6 +37,7 @@ Funcionario.findById = (id, result) => {
       return;
     }
 
+    // not found Funcionario with the id
     result({ kind: "not_found" }, null);
   });
 };
@@ -43,7 +46,7 @@ Funcionario.getAll = result => {
   sql.query("SELECT * FROM funcionarios", (err, res) => {
     if (err) {
       console.log("error: ", err);
-      result(null, err);
+      result(err, null);
       return;
     }
 
@@ -54,16 +57,17 @@ Funcionario.getAll = result => {
 
 Funcionario.updateById = (id, funcionario, result) => {
   sql.query(
-    "UPDATE funcionarios SET nome = ?, cargo = ?, email = ?, senha = ? WHERE id = ?",
-    [funcionario.nome, funcionario.cargo, funcionario.email, funcionario.senha, id],
+    "UPDATE funcionarios SET nome = ?, username = ?, cargo = ?, email = ?, profileImg = ? WHERE id = ?",
+    [funcionario.nome, funcionario.username, funcionario.cargo, funcionario.email, funcionario.profileImg, id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
-        result(null, err);
+        result(err, null);
         return;
       }
 
       if (res.affectedRows == 0) {
+        // not found Funcionario with the id
         result({ kind: "not_found" }, null);
         return;
       }
@@ -78,11 +82,12 @@ Funcionario.remove = (id, result) => {
   sql.query("DELETE FROM funcionarios WHERE id = ?", id, (err, res) => {
     if (err) {
       console.log("error: ", err);
-      result(null, err);
+      result(err, null);
       return;
     }
 
     if (res.affectedRows == 0) {
+      // not found Funcionario with the id
       result({ kind: "not_found" }, null);
       return;
     }
@@ -96,30 +101,12 @@ Funcionario.removeAll = result => {
   sql.query("DELETE FROM funcionarios", (err, res) => {
     if (err) {
       console.log("error: ", err);
-      result(null, err);
+      result(err, null);
       return;
     }
 
     console.log(`deleted ${res.affectedRows} funcionarios`);
     result(null, res);
-  });
-};
-
-Funcionario.findByUsername = (username, result) => {
-  sql.query("SELECT * FROM funcionarios WHERE username = ?", [username], (err, res) => {
-      if (err) {
-          console.log("Erro: ", err);
-          result(err, null);
-          return;
-      }
-
-      if (res.length) {
-          console.log("Encontrado funcionário: ", res[0]);
-          result(null, res[0]);
-          return;
-      }
-
-      result({ kind: "not_found" }, null);
   });
 };
 

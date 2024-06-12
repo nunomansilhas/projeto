@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="descrição">
     <meta name="keywords" content="palavras-chave" />
-    <title>APCVC - Gestão de Inventário</title>
+    <title>APCVC - Gestão de Funcionários</title>
     <link href="css/root.css" rel="stylesheet">
 </head>
 <body>
@@ -28,7 +28,7 @@
     <div class="sidebar sidebar-colorful clearfix" id="sidebar"></div>
     <div class="content">
         <div class="page-header">
-            <h1 class="title">Visualizar Beneficiário</h1>
+            <h1 class="title">Visualizar Funcionário</h1>
             <ol class="breadcrumb" id="breadcrumb"></ol>
             <div class="right">
                 <div class="btn-group" role="group" aria-label="..." id="breadcrumb-buttons">
@@ -39,47 +39,34 @@
             <div class="row">
                 <div class="col-md-12 col-lg-12">
                     <div class="panel panel-default">
-                        <div class="panel-title">Dados do Beneficiário
+                        <div class="panel-title">Dados do Funcionário
                             <ul class="panel-tools">
-                                <li><a href="#" type="button" class="edit-beneficiario" data-beneficiario-id="" data-beneficiario-name="">Editar</a></li>
-                                <li><a href="#" type="button" class="delete-beneficiario" data-beneficiario-id="" data-beneficiario-name="">Eliminar</a></li>
+                                <li><a href="#" type="button" class="edit-funcionario" data-funcionario-id="" data-funcionario-name="">Editar</a></li>
+                                <li><a href="#" type="button" class="delete-funcionario" data-funcionario-id="" data-funcionario-name="">Eliminar</a></li>
                             </ul>
                         </div>
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-md-3">
-                                    <img id="beneficiario-imagem" src=" " alt="Imagem do Beneficiário" class="img-responsive">
+                                <div class="col-md-4">
+                                    <img id="funcionario-imagem" src=" " alt="Imagem do Funcionário" class="img-responsive">
                                 </div>
-                                <div class="col-md-9">
-                                    <p><strong>ID:</strong> <span id="beneficiario-id"></span></p>
-                                    <p><strong>Nome:</strong> <span id="beneficiario-nome"></span></p>
-                                    <p><strong>Email:</strong> <span id="beneficiario-email"></span></p>
-                                    <p><strong>Telefone:</strong> <span id="beneficiario-telefone"></span></p>
-                                    <p><strong>Endereço:</strong> <span id="beneficiario-endereco"></span></p>
+                                <div class="col-md-8">
+                                    <p><strong>ID:</strong> <span id="funcionario-id"></span></p>
+                                    <p><strong>Nome:</strong> <span id="funcionario-nome"></span></p>
+                                    <p><strong>Email:</strong> <span id="funcionario-email"></span></p>
+                                    <p><strong>Cargo:</strong> <span id="funcionario-cargo"></span></p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
+
                 <div class="col-md-12 col-lg-12">
                     <div class="panel panel-default">
-                        <div class="panel-title">Movimentações de Inventário</div>
-                        <div class="panel-body table-responsive">
-                            <table id="movimentacoesTable" class="table table-dic table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Produto</th>
-                                        <th>Funcionário</th>
-                                        <th>Data</th>
-                                        <th>Quantidade</th>
-                                        <th>Tipo</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+                        <div class="panel-title">Outras Informações
+                        </div>
+                        <div class="panel-body">
+                            <p>Aqui podem ser adicionadas mais informações relacionadas ao funcionário.</p>
                         </div>
                     </div>
                 </div>
@@ -97,15 +84,14 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/plugins.js"></script>
     <script src="js/bootstrap/bootstrap.min.js"></script>
+    <script src="js/sweet-alert/sweet-alert.min.js"></script>
+    <script src="js/kode-alert/main.js"></script>
 
     <script src="scripts/menu/breadcrumb.js"></script>
     <script src="scripts/menu/quickmenu.js"></script>
     <script src="scripts/menu/sidebar.js"></script>
     <script src="scripts/menu/profile.js"></script>
 
-    <script src="js/sweet-alert/sweet-alert.min.js"></script>
-    <script src="js/kode-alert/main.js"></script>
-
-    <script type="module" src="scripts/beneficiarios/get-view-beneficiarios.js"></script>
+    <script src="scripts/funcionarios/get-view-funcionarios.js"></script>
 </body>
 </html>

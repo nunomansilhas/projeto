@@ -1,20 +1,28 @@
 module.exports = app => {
-    const funcionarios = require("../controllers/funcionario.controller.js");
-  
-    var router = require("express").Router();
-  
-    router.post("/", funcionarios.create);
-  
-    router.get("/", funcionarios.findAll);
-  
-    router.get("/:id", funcionarios.findOne);
-  
-    router.put("/:id", funcionarios.update);
-  
-    router.delete("/:id", funcionarios.delete);
-  
-    router.delete("/", funcionarios.deleteAll);
-  
-    app.use('/api/funcionarios', router);
-  };
-  
+  const funcionarios = require("../controllers/funcionario.controller.js");
+
+  var router = require("express").Router();
+
+  // Upload de imagem de perfil
+  router.post("/upload", funcionarios.uploadImage);
+
+  // Create a new Funcionario
+  router.post("/", funcionarios.uploadImage, funcionarios.create);
+
+  // Retrieve all Funcionarios
+  router.get("/", funcionarios.findAll);
+
+  // Retrieve a single Funcionario with id
+  router.get("/:id", funcionarios.findOne);
+
+  // Update a Funcionario with id
+  router.put("/:id", funcionarios.uploadImage, funcionarios.update);
+
+  // Delete a Funcionario with id
+  router.delete("/:id", funcionarios.delete);
+
+  // Delete all Funcionarios
+  router.delete("/", funcionarios.deleteAll);
+
+  app.use('/api/funcionarios', router);
+};

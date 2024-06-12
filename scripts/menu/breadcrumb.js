@@ -20,6 +20,9 @@ const breadcrumbButtonsConfig = {
   ],
   'beneficiarios': [
     { href: 'beneficiarios-adicionar.html', iconClass: 'fa fa-list', name: 'Novo Beneficiário' }
+  ], 
+  'funcionarios': [
+    { href: 'funcionarios-adicionar.html', iconClass: 'fa fa-list', name: 'Novo Funcionário' }
   ]
   // Add other pages and their specific breadcrumb buttons here
 };
@@ -32,6 +35,8 @@ function updateBreadcrumbAndTitle() {
     familyName = 'Produtos';
   } else if (currentPage.startsWith('beneficiarios')) {
     familyName = 'Beneficiários';
+  } else if (currentPage.startsWith('funcionarios')) {
+    familyName = 'Funcionários';
   }
 
   const breadcrumbItems = generateBreadcrumbItems(currentPage, familyName);
@@ -53,31 +58,40 @@ function generateBreadcrumbItems(currentPage, familyName) {
   const items = [];
   if (currentPage.startsWith('produtos')) {
     items.push({ href: 'index.html', name: 'Painel de Controlo' });
-    if (currentPage === 'produtos-adicionar') {
-      items.push({ href: 'produtos.html', name: 'Produtos' });
-      items.push({ href: '#', name: 'Adicionar Produto', active: true });
-    } else if (currentPage === 'produtos-editar') {
-      items.push({ href: 'produtos.html', name: 'Produtos' });
-      items.push({ href: '#', name: 'Editar Produto', active: true });
-    } else if (currentPage === 'produtos-visualizar') {
-      items.push({ href: 'produtos.html', name: 'Produtos' });
-      items.push({ href: '#', name: 'Visualizar Produto', active: true });
-    } else {
-      items.push({ href: 'produtos.html', name: 'Produtos' });
-      items.push({ href: '#', name: 'Listagem de Produtos', active: true });
-    }
-  } else if (currentPage.startsWith('beneficiarios')) {
+          if (currentPage === 'produtos-adicionar') {
+            items.push({ href: 'produtos.html', name: 'Produtos' });
+            items.push({ href: '#', name: 'Adicionar Produto', active: true });
+          } else if (currentPage === 'produtos-editar') {
+            items.push({ href: 'produtos.html', name: 'Produtos' });
+            items.push({ href: '#', name: 'Editar Produto', active: true });
+          } else if (currentPage === 'produtos-visualizar') {
+            items.push({ href: 'produtos.html', name: 'Produtos' });
+            items.push({ href: '#', name: 'Visualizar Produto', active: true });
+          } else {
+            items.push({ href: 'produtos.html', name: 'Produtos' });
+            items.push({ href: '#', name: 'Listagem de Produtos', active: true });
+          }
+  } else  if (currentPage.startsWith('beneficiarios')) {
     items.push({ href: 'index.html', name: 'Painel de Controlo' });
     items.push({ href: 'beneficiarios.html', name: 'Listagem de Beneficiários', active: true});
-    if (currentPage === 'beneficiarios-visualizar') {
-      items.push({ href: 'beneficiarios-visualizar.html', name: 'Visualizar Beneficiários', active: true });
-    }
-    if (currentPage === 'beneficiarios-adicionar') {
-      items.push({ href: 'beneficiarios-adicionar.html', name: 'Adicionar Beneficiários', active: true });
-    }
-  } else if (currentPage.startsWith('solicitacoes')) {
+          if (currentPage === 'beneficiarios-visualizar') {
+            items.push({ href: 'beneficiarios-visualizar.html', name: 'Visualizar Beneficiários', active: true });
+          }
+          if (currentPage === 'beneficiarios-adicionar') {
+            items.push({ href: 'beneficiarios-adicionar.html', name: 'Adicionar Beneficiários', active: true });
+          }
+  } else  if (currentPage.startsWith('solicitacoes')) {
     items.push({ href: 'index.html', name: 'Painel de Controlo' });
     items.push({ href: 'solicitacoes.html', name: 'Listagem de Solicitações', active: true });
+  } else  if (currentPage.startsWith('funcionarios')) {
+  items.push({ href: 'index.html', name: 'Painel de Controlo' });
+  items.push({ href: 'funcionarios.html', name: 'Listagem de Funcionários', active: true });
+          if (currentPage === 'funcionarios-visualizar') {
+            items.push({ href: 'funcionarios-visualizar.html', name: 'Visualizar Funcionário', active: true });
+          }
+          if (currentPage === 'funcionarios-adicionar') {
+            items.push({ href: 'funcionarios-adicionar.html', name: 'Adicionar Funcionário', active: true });
+          }
   }
   return items;
 }

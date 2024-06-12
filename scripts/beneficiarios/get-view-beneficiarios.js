@@ -18,9 +18,23 @@ async function fetchMovimentacoes() {
     return response.json();
 }
 
+async function fetchDoacoes(id) {
+    const response = await fetch(`http://localhost:3000/api/doacoes/cliente/${id}`);
+    if (!response.ok) {
+        throw new Error('Erro ao buscar as doações');
+    }
+    return response.json();
+}
+
 async function fetchProdutoData(produtoId) {
     const response = await fetch(`http://localhost:3000/api/produtos/${produtoId}`);
     if (!response.ok) throw new Error('Erro ao buscar dados do produto');
+    return response.json();
+}
+
+async function fetchTiposProdutos() {
+    const response = await fetch(`http://localhost:3000/api/tiposprodutos`);
+    if (!response.ok) throw new Error('Erro ao buscar tipos de produtos');
     return response.json();
 }
 
@@ -33,7 +47,6 @@ async function fetchFuncionarioData(funcionarioId) {
 async function populateBeneficiarioData(id) {
     try {
         const beneficiario = await fetchBeneficiario(id);
-        document.getElementById('beneficiario-id').textContent = beneficiario.id;
         document.getElementById('beneficiario-nome').textContent = beneficiario.nome;
         document.getElementById('beneficiario-email').textContent = beneficiario.email;
         document.getElementById('beneficiario-telefone').textContent = beneficiario.telemovel;
@@ -86,6 +99,43 @@ async function populateMovimentacoes(id) {
     }
 }
 
+async function populateDoacoesTable(doacoes, tiposProdutos) {
+    try {
+        const tableBody = document.querySelector('#doacoesTableBody');
+        tableBody.innerHTML = ''; // Limpa as linhas existentes
+
+        for (const doacao of doacoes) {
+            const produtoData = await fetchProdutoData(doacao.ProdutoID);
+            const tipoProduto = tiposProdutos.find(tipo => tipo.ID === produtoData.TipoProdutoID);
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${produtoData.ID}</td>
+                <td>${produtoData.Nome || 'Produto Desconhecido'}</td>
+                <td>${tipoProduto ? tipoProduto.Nome : 'Categoria Desconhecida'}</td>
+                <td>${doacao.Quantidade}</td>
+                <td>${new Date(doacao.DataDoacao).toLocaleDateString()}</td>
+                <td><a href="#" type="button" class="btn btn-square">Ver Mais</a></td>
+            `;
+            tableBody.appendChild(row);
+        }
+    } catch (error) {
+        console.error('Erro ao popular a tabela de doações:', error);
+        swal("Erro", "Ocorreu um erro ao carregar as doações.", "error");
+    }
+}
+
+async function populateDoacoes(id) {
+    try {
+        const doacoes = await fetchDoacoes(id);
+        const tiposProdutos = await fetchTiposProdutos();
+        await populateDoacoesTable(doacoes, tiposProdutos);
+    } catch (error) {
+        console.error('Erro ao buscar as doações:', error);
+        swal("Erro", "Ocorreu um erro ao buscar as doações.", "error");
+    }
+}
+
 // Função para lidar com a exclusão
 async function handleDelete(event) {
     event.preventDefault();
@@ -110,6 +160,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (beneficiarioId) {
         await populateBeneficiarioData(beneficiarioId);
         await populateMovimentacoes(beneficiarioId);
+        await populateDoacoes(beneficiarioId);
         
         // Adicionar eventos de clique para editar e excluir
         document.querySelector('.edit-beneficiario').addEventListener('click', async () => {

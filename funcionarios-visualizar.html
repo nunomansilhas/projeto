@@ -6,9 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="descrição">
   <meta name="keywords" content="palavras-chave" />
-  <title>APCVC - Gestão de Beneficiários</title>
+  <title>APCVC - Gestão de Inventário</title>
   <link href="css/root.css" rel="stylesheet">
-  <link rel="stylesheet" href="//cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">  
 </head>
 <body>
   <div class="loading"><img src="img/loading.gif" alt="imagem de carregamento"></div>
@@ -29,7 +28,7 @@
   <div class="sidebar sidebar-colorful clearfix" id="sidebar"></div>
   <div class="content">
     <div class="page-header">
-      <h1 class="title">Beneficiários</h1>
+      <h1 class="title">Visualizar Funcionário</h1>
       <ol class="breadcrumb" id="breadcrumb"></ol>
       <div class="right">
         <div class="btn-group" role="group" aria-label="..." id="breadcrumb-buttons">
@@ -38,23 +37,26 @@
     </div>
     <div class="container-default">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 col-lg-12">
           <div class="panel panel-default">
-            <div class="panel-title">Listagem de Beneficiários</div>
-            <div class="panel-body table-responsive">
-              <table id="beneficiariosTable" class="table display dataTable no-footer">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Email</th>
-                    <th>Telefone</th>
-                    <th>Endereço</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
+            <div class="panel-title">Dados do Funcionário
+              <ul class="panel-tools">
+                <li><a href="#" type="button" class="edit-funcionario" data-funcionario-id="" data-funcionario-name="">Editar</a></li>
+                <li><a href="#" type="button" class="delete-funcionario" data-funcionario-id="" data-funcionario-name="">Eliminar</a></li>
+              </ul>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-2">
+                  <img id="funcionario-imagem" src=" " alt="Imagem do Funcionário" class="img-responsive">
+                </div>
+                <div class="col-md-10">
+                  <p><strong>Nome:</strong> <span id="funcionario-nome"></span></p>
+                  <p><strong>Username:</strong> <span id="funcionario-username"></span></p>
+                  <p><strong>Cargo:</strong> <span id="funcionario-cargo"></span></p>
+                  <p><strong>Email:</strong> <span id="funcionario-email"></span></p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -73,7 +75,7 @@
   <script src="js/plugins.js"></script>
   <script src="js/bootstrap/bootstrap.min.js"></script>
   <script src="js/datatables/dataTables.bootstrap5.min.js"></script>
-  <script src="js/datatables/datatables.min.js"></script>
+  <script src="js/datatables/datatables.min.js"></script> 
   <script src="js/sweet-alert/sweet-alert.min.js"></script>
   <script src="js/kode-alert/main.js"></script>
 
@@ -82,7 +84,6 @@
   <script src="scripts/menu/sidebar.js"></script>
   <script src="scripts/menu/profile.js"></script>
 
-  <script type="module" src="scripts/beneficiarios/get-data-beneficiarios.js"></script>
-
+  <script type="module" src="scripts/funcionarios/get-view-funcionarios.js"></script>
 </body>
 </html>
