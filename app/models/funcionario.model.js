@@ -110,4 +110,27 @@ Funcionario.removeAll = result => {
   });
 };
 
+Funcionario.updatePasswordById = (id, hashedPassword, result) => {
+  sql.query(
+      "UPDATE funcionarios SET senha = ? WHERE id = ?",
+      [hashedPassword, id],
+      (err, res) => {
+          if (err) {
+              console.log("error: ", err);
+              result(err, null);
+              return;
+          }
+
+          if (res.affectedRows == 0) {
+              // not found Funcionario with the id
+              result({ kind: "not_found" }, null);
+              return;
+          }
+
+          console.log("updated password for funcionario: ", { id: id });
+          result(null, { id: id });
+      }
+  );
+};
+
 module.exports = Funcionario;

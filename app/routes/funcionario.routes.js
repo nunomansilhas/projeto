@@ -18,6 +18,9 @@ module.exports = app => {
   // Update a Funcionario with id
   router.put("/:id", funcionarios.uploadImage, funcionarios.update);
 
+  // Update password of a Funcionario with id
+  router.put("/:id/password", funcionarios.updatePassword);
+
   // Delete a Funcionario with id
   router.delete("/:id", funcionarios.delete);
 

@@ -1,8 +1,8 @@
 
 const quickMenuItems = [
     { href: 'produtos-adicionar.html', iconClass: 'fa falist fa-archive', name: 'Produto de Apoio' },
-    { href: '#', iconClass: 'fa falist fa-cog', name: 'Categoria' },
-    { href: '#', iconClass: 'fa falist fa-users', name: 'Beneficiário' }
+    { href: 'categorias.html', iconClass: 'fa falist fa-cog', name: 'Categoria' },
+    { href: 'beneficiarios-adicionar.html', iconClass: 'fa falist fa-users', name: 'Beneficiário' }
   ];
   
 

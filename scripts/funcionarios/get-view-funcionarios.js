@@ -1,6 +1,7 @@
 import { enviarNotificacao } from '../acoes/enviar-notificacao.js'; // Importar a função de enviar notificação
 import { showEditFuncionarioModal } from './funcionarios-editar.js'; // Importar a função de edição
 import { confirmDelete, deleteFuncionario } from './funcionario-eliminar.js'; // Importar a função de exclusão
+import { showEditPasswordModal } from './funcionario-password.js'; 
 
 async function fetchFuncionario(id) {
     const response = await fetch(`http://localhost:3000/api/funcionarios/${id}`);
@@ -57,6 +58,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             const funcionario = await fetchFuncionario(funcionarioId);
             showEditFuncionarioModal(funcionario);
         });
+
+        document.querySelector('.edit-password').addEventListener('click', async () => {
+            const funcionario = await fetchFuncionario(funcionarioId);
+            showEditPasswordModal(funcionario);
+        });
+
         document.querySelector('.delete-funcionario').addEventListener('click', handleDelete);
     } else {
         swal("Erro", "ID do funcionário não encontrado na URL.", "error");

@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="descrição">
     <meta name="keywords" content="palavras-chave" />
-    <title>APCVC - Gestão de Funcionários</title>
+    <title>APCVC - Gestão de Inventário</title>
     <link href="css/root.css" rel="stylesheet">
+    <script src="node_modules/jspdf/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> <!-- Adicione esta linha -->
 </head>
 <body>
     <div class="loading"><img src="img/loading.gif" alt="imagem de carregamento"></div>
@@ -28,7 +30,7 @@
     <div class="sidebar sidebar-colorful clearfix" id="sidebar"></div>
     <div class="content">
         <div class="page-header">
-            <h1 class="title">Visualizar Funcionário</h1>
+            <h1 class="title">Visualizar Beneficiário</h1>
             <ol class="breadcrumb" id="breadcrumb"></ol>
             <div class="right">
                 <div class="btn-group" role="group" aria-label="..." id="breadcrumb-buttons">
@@ -37,36 +39,82 @@
         </div>
         <div class="container-default">
             <div class="row">
-                <div class="col-md-12 col-lg-12">
+                <div class="col-md-4 col-lg-4">
                     <div class="panel panel-default">
-                        <div class="panel-title">Dados do Funcionário
+                        <div class="panel-title">Dados do Beneficiário
                             <ul class="panel-tools">
-                                <li><a href="#" type="button" class="edit-funcionario" data-funcionario-id="" data-funcionario-name="">Editar</a></li>
-                                <li><a href="#" type="button" class="delete-funcionario" data-funcionario-id="" data-funcionario-name="">Eliminar</a></li>
+                                <li><a href="#" type="button" class="edit-beneficiario" data-beneficiario-id="" data-beneficiario-name="">Editar</a></li>
+                                <li><a href="#" type="button" class="delete-beneficiario" data-beneficiario-id="" data-beneficiario-name="">Eliminar</a></li>
                             </ul>
                         </div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <img id="funcionario-imagem" src=" " alt="Imagem do Funcionário" class="img-responsive">
+                                    <img id="beneficiario-imagem" src=" " alt="Imagem do Beneficiário" class="img-responsive">
                                 </div>
                                 <div class="col-md-8">
-                                    <p><strong>ID:</strong> <span id="funcionario-id"></span></p>
-                                    <p><strong>Nome:</strong> <span id="funcionario-nome"></span></p>
-                                    <p><strong>Email:</strong> <span id="funcionario-email"></span></p>
-                                    <p><strong>Cargo:</strong> <span id="funcionario-cargo"></span></p>
+                                    <p><strong>Nome:</strong> <span id="beneficiario-nome"></span></p>
+                                    <p><strong>Email:</strong> <span id="beneficiario-email"></span></p>
+                                    <p><strong>Telefone:</strong> <span id="beneficiario-telefone"></span></p>
+                                    <p><strong>Endereço:</strong> <span id="beneficiario-endereco"></span></p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="col-md-12 col-lg-12">
+            
+                <div class="col-md-8 col-lg-8">
                     <div class="panel panel-default">
-                        <div class="panel-title">Outras Informações
+                        <div class="panel-title">Doações do Beneficiário
+                            <ul class="panel-tools">
+                                <li><a href="#" type="button" class="add-doacao" data-beneficiario-id="" data-beneficiario-name="">Adicionar Doação</a></li>
+                            </ul>
                         </div>
                         <div class="panel-body">
-                            <p>Aqui podem ser adicionadas mais informações relacionadas ao funcionário.</p>
+                            <table class="table table-striped">
+                                <thead>
+                                  <tr>
+                                    <td>ID</td>
+                                    <td>Nome</td>
+                                    <td>Categoria</td>
+                                    <td>Quantidade</td>
+                                    <td>Data</td>
+                                    <td></td>
+                                  </tr>
+                                </thead>
+                                <tbody id="doacoesTableBody">
+                                    <tr><td colspan="6">Não existem doações para este beneficiário</td></tr>
+                                </tbody>
+                              </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-title">Movimentações de Inventário
+                            <ul class="panel-tools">
+                                <li><a href="#" type="button" class="add-requisicao" data-beneficiario-id="" data-beneficiario-name="">Nova Requisição</a></li>
+                            </ul>
+
+                        </div>
+                        <div class="panel-body table-responsive">
+                            <table id="movimentacoesTable" class="table table-dic table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Produto</th>
+                                        <th>Funcionário</th>
+                                        <th>Data</th>
+                                        <th>Quantidade</th>
+                                        <th>Tipo</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -82,16 +130,26 @@
         </div>
     </div>
     <script src="js/jquery.min.js"></script>
-    <script src="js/plugins.js"></script>
     <script src="js/bootstrap/bootstrap.min.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/bootstrap-select/bootstrap-select.js"></script>
+    <script src="js/bootstrap-toggle/bootstrap-toggle.min.js"></script>
+    <script src="js/bootstrap-wysihtml5/wysihtml5-0.3.0.min.js"></script>
+    <script src="js/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
     <script src="js/sweet-alert/sweet-alert.min.js"></script>
-    <script src="js/kode-alert/main.js"></script>
+    <script src="js/jquery-ui/jquery-ui.min.js"></script>
+    <script src="js/moment/moment.min.js"></script>
+    <script src="js/date-range-picker/daterangepicker.js"></script>
 
     <script src="scripts/menu/breadcrumb.js"></script>
     <script src="scripts/menu/quickmenu.js"></script>
     <script src="scripts/menu/sidebar.js"></script>
     <script src="scripts/menu/profile.js"></script>
 
-    <script src="scripts/funcionarios/get-view-funcionarios.js"></script>
+    <script src="js/sweet-alert/sweet-alert.min.js"></script>
+    <script src="js/kode-alert/main.js"></script>
+
+    <script type="module" src="scripts/beneficiarios/get-view-beneficiarios.js"></script>
+    
 </body>
 </html>

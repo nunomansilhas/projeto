@@ -1,6 +1,9 @@
 import { enviarNotificacao } from '../acoes/enviar-notificacao.js'; // Importar a função de enviar notificação
 import { showEditBeneficiarioModal } from './beneficiarios-editar.js'; // Importar a função de edição
 import { confirmDelete, deleteBeneficiary } from './beneficiario-eliminar.js'; // Importar a função de exclusão
+import { showAddDoacaoModal } from './doacao-adicionar.js'; // Importar a função de adicionar doação
+import { showAddRequisicaoModal } from './requisicao-adicionar.js'; // Importar a função de nova requisição
+import { showDoacaoDetalhesModal } from './doacao-detalhes.js';
 
 async function fetchBeneficiario(id) {
     const response = await fetch(`http://localhost:3000/api/clientes/${id}`);
@@ -21,7 +24,7 @@ async function fetchMovimentacoes() {
 async function fetchDoacoes(id) {
     const response = await fetch(`http://localhost:3000/api/doacoes/cliente/${id}`);
     if (!response.ok) {
-        throw new Error('Erro ao buscar as doações');
+        return [];
     }
     return response.json();
 }
@@ -51,7 +54,7 @@ async function populateBeneficiarioData(id) {
         document.getElementById('beneficiario-email').textContent = beneficiario.email;
         document.getElementById('beneficiario-telefone').textContent = beneficiario.telemovel;
         document.getElementById('beneficiario-endereco').textContent = beneficiario.morada;
-        document.getElementById('beneficiario-imagem').src = beneficiario.image_profile;
+        document.getElementById('beneficiario-imagem').src = beneficiario.image_profile || "img/perfil/default.png";
         document.querySelector('.edit-beneficiario').dataset.beneficiarioId = beneficiario.id;
         document.querySelector('.edit-beneficiario').dataset.beneficiarioName = beneficiario.nome;
         document.querySelector('.delete-beneficiario').dataset.beneficiarioId = beneficiario.id;
@@ -67,20 +70,26 @@ async function populateMovimentacoesTable(movimentacoes) {
         const tableBody = document.querySelector('#movimentacoesTable tbody');
         tableBody.innerHTML = ''; // Limpa as linhas existentes
 
-        for (const movimentacao of movimentacoes) {
-            const produtoData = await fetchProdutoData(movimentacao.ProdutoDeApoioID);
-            const funcionarioData = await fetchFuncionarioData(movimentacao.FuncionarioID);
-
+        if (movimentacoes.length === 0) {
             const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${movimentacao.ID}</td>
-                <td>(ID: ${produtoData.ID || 'ID Desconhecido'}) ${produtoData.Nome || 'Produto Desconhecido'}</td>
-                <td>${funcionarioData.Nome || 'Funcionario Desconhecido'}</td>
-                <td>${new Date(movimentacao.DataMovimentacao).toLocaleDateString()}</td>
-                <td>${movimentacao.Quantidade}</td>
-                <td>${movimentacao.TipoMovimentacao}</td>
-            `;
+            row.innerHTML = `<td colspan="6" class="text-center">Não existem movimentações para este beneficiário</td>`;
             tableBody.appendChild(row);
+        } else {
+            for (const movimentacao of movimentacoes) {
+                const produtoData = await fetchProdutoData(movimentacao.ProdutoDeApoioID);
+                const funcionarioData = await fetchFuncionarioData(movimentacao.FuncionarioID);
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${movimentacao.ID}</td>
+                    <td>(ID: ${produtoData.ID || 'ID Desconhecido'}) ${produtoData.Nome || 'Produto Desconhecido'}</td>
+                    <td>${funcionarioData.Nome || 'Funcionario Desconhecido'}</td>
+                    <td>${new Date(movimentacao.DataMovimentacao).toLocaleDateString()}</td>
+                    <td>${movimentacao.Quantidade}</td>
+                    <td>${movimentacao.TipoMovimentacao}</td>
+                `;
+                tableBody.appendChild(row);
+            }
         }
     } catch (error) {
         console.error('Erro ao popular a tabela de movimentações:', error);
@@ -104,20 +113,33 @@ async function populateDoacoesTable(doacoes, tiposProdutos) {
         const tableBody = document.querySelector('#doacoesTableBody');
         tableBody.innerHTML = ''; // Limpa as linhas existentes
 
-        for (const doacao of doacoes) {
-            const produtoData = await fetchProdutoData(doacao.ProdutoID);
-            const tipoProduto = tiposProdutos.find(tipo => tipo.ID === produtoData.TipoProdutoID);
-
+        if (doacoes.length === 0) {
             const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${produtoData.ID}</td>
-                <td>${produtoData.Nome || 'Produto Desconhecido'}</td>
-                <td>${tipoProduto ? tipoProduto.Nome : 'Categoria Desconhecida'}</td>
-                <td>${doacao.Quantidade}</td>
-                <td>${new Date(doacao.DataDoacao).toLocaleDateString()}</td>
-                <td><a href="#" type="button" class="btn btn-square">Ver Mais</a></td>
-            `;
+            row.innerHTML = `<td colspan="6" class="text-center">Não existem doações para este beneficiário</td>`;
             tableBody.appendChild(row);
+        } else {
+            for (const doacao of doacoes) {
+                const produtoData = await fetchProdutoData(doacao.ProdutoID);
+                const tipoProduto = tiposProdutos.find(tipo => tipo.ID === produtoData.TipoProdutoID);
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${produtoData.ID}</td>
+                    <td>${produtoData.Nome || 'Produto Desconhecido'}</td>
+                    <td>${tipoProduto ? tipoProduto.Nome : 'Categoria Desconhecida'}</td>
+                    <td>${doacao.Quantidade}</td>
+                    <td>${new Date(doacao.DataDoacao).toLocaleDateString()}</td>
+                    <td><button type="button" class="btn btn-square ver-mais" data-doacao-id="${doacao.ID}">Ver Mais</button></td>
+                `;
+                tableBody.appendChild(row);
+            }
+
+            document.querySelectorAll('.ver-mais').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const doacaoId = event.currentTarget.getAttribute('data-doacao-id');
+                    showDoacaoDetalhesModal(doacaoId);
+                });
+            });
         }
     } catch (error) {
         console.error('Erro ao popular a tabela de doações:', error);
@@ -136,7 +158,6 @@ async function populateDoacoes(id) {
     }
 }
 
-// Função para lidar com a exclusão
 async function handleDelete(event) {
     event.preventDefault();
     const beneficiarioId = event.currentTarget.dataset.beneficiarioId;
@@ -148,7 +169,6 @@ async function handleDelete(event) {
     }
 }
 
-// Get beneficiario ID from URL
 function getBeneficiarioIdFromUrl() {
     const params = new URLSearchParams(window.location.search);
     return params.get('id');
@@ -161,13 +181,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         await populateBeneficiarioData(beneficiarioId);
         await populateMovimentacoes(beneficiarioId);
         await populateDoacoes(beneficiarioId);
-        
+
         // Adicionar eventos de clique para editar e excluir
         document.querySelector('.edit-beneficiario').addEventListener('click', async () => {
             const beneficiario = await fetchBeneficiario(beneficiarioId);
             showEditBeneficiarioModal(beneficiario);
         });
         document.querySelector('.delete-beneficiario').addEventListener('click', handleDelete);
+        document.querySelector('.add-doacao').addEventListener('click', showAddDoacaoModal);
     } else {
         swal("Erro", "ID do beneficiário não encontrado na URL.", "error");
     }

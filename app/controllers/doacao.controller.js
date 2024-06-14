@@ -13,7 +13,8 @@ exports.create = (req, res) => {
     const doacao = new Doacao({
         ProdutoID: req.body.ProdutoID,
         ClienteID: req.body.ClienteID,
-        Quantidade: req.body.Quantidade
+        Quantidade: req.body.Quantidade,
+        DataDoacao: req.body.DataDoacao
     });
 
     // Save Doacao in the database

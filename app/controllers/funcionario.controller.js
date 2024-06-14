@@ -253,3 +253,34 @@ exports.deleteAll = (req, res) => {
     else res.send({ message: `All Funcionarios were deleted successfully!` });
   });
 };
+
+exports.updatePassword = async (req, res) => {
+  if (!req.body.senha) {
+      res.status(400).send({
+          message: "A nova senha não pode estar vazia!"
+      });
+      return;
+  }
+
+  try {
+      const hashedPassword = await bcrypt.hash(req.body.senha, 10);
+
+      Funcionario.updatePasswordById(req.params.id, hashedPassword, (err, data) => {
+          if (err) {
+              if (err.kind === "not_found") {
+                  res.status(404).send({
+                      message: `Not found Funcionario with id ${req.params.id}.`
+                  });
+              } else {
+                  res.status(500).send({
+                      message: `Error updating password for Funcionario with id ${req.params.id}`
+                  });
+              }
+          } else res.send(data);
+      });
+  } catch (error) {
+      res.status(500).send({
+          message: "Error encrypting the password."
+      });
+  }
+};

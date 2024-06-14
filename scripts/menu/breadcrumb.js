@@ -20,6 +20,9 @@ const breadcrumbButtonsConfig = {
   ],
   'beneficiarios': [
     { href: 'beneficiarios-adicionar.html', iconClass: 'fa fa-list', name: 'Novo Beneficiário' }
+  ],
+  'beneficiarios-visualizar': [
+    { href: 'beneficiarios-adicionar.html', iconClass: 'fa fa-list', name: 'Ficha de Cliente' }
   ], 
   'funcionarios': [
     { href: 'funcionarios-adicionar.html', iconClass: 'fa fa-list', name: 'Novo Funcionário' }
@@ -37,6 +40,8 @@ function updateBreadcrumbAndTitle() {
     familyName = 'Beneficiários';
   } else if (currentPage.startsWith('funcionarios')) {
     familyName = 'Funcionários';
+  } else if (currentPage.startsWith('categorias')) {
+    familyName = 'Categorias';
   }
 
   const breadcrumbItems = generateBreadcrumbItems(currentPage, familyName);
@@ -92,6 +97,9 @@ function generateBreadcrumbItems(currentPage, familyName) {
           if (currentPage === 'funcionarios-adicionar') {
             items.push({ href: 'funcionarios-adicionar.html', name: 'Adicionar Funcionário', active: true });
           }
+  } else  if (currentPage.startsWith('categorias')) {
+    items.push({ href: 'index.html', name: 'Painel de Controlo' });
+    items.push({ href: 'categorias.html', name: 'Listagem de Categorias', active: true });
   }
   return items;
 }

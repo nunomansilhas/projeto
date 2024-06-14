@@ -107,4 +107,27 @@ Produto.removeAll = result => {
   });
 };
 
+Produto.updateQuantidadeById = (id, quantidade, result) => {
+  sql.query(
+      "UPDATE produtosdeapoio SET quantidade = ? WHERE id = ?",
+      [quantidade, id],
+      (err, res) => {
+          if (err) {
+              console.log("error: ", err);
+              result(null, err);
+              return;
+          }
+
+          if (res.affectedRows == 0) {
+              result({ kind: "not_found" }, null);
+              return;
+          }
+
+          console.log("updated produto quantity: ", { id: id, quantidade: quantidade });
+          result(null, { id: id, quantidade: quantidade });
+      }
+  );
+};
+
+
 module.exports = Produto;

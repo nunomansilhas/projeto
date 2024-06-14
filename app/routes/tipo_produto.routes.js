@@ -1,20 +1,25 @@
 module.exports = app => {
-    const tiposProdutos = require("../controllers/tipo_produto.controller.js");
-  
-    var router = require("express").Router();
-  
-    router.post("/", tiposProdutos.create);
-  
-    router.get("/", tiposProdutos.findAll);
-  
-    router.get("/:id", tiposProdutos.findOne);
-  
-    router.put("/:id", tiposProdutos.update);
-  
-    router.delete("/:id", tiposProdutos.delete);
-  
-    router.delete("/", tiposProdutos.deleteAll);
-  
-    app.use('/api/tiposprodutos', router);
-  };
-  
+  const tiposprodutos = require("../controllers/tipo_produto.controller.js");
+
+  var router = require("express").Router();
+
+  // Create a new TipoProduto
+  router.post("/", tiposprodutos.create);
+
+  // Retrieve all TiposProdutos
+  router.get("/", tiposprodutos.findAll);
+
+  // Retrieve a single TipoProduto with id
+  router.get("/:id", tiposprodutos.findOne);
+
+  // Update a TipoProduto with id
+  router.put("/:id", tiposprodutos.update);
+
+  // Delete a TipoProduto with id
+  router.delete("/:id", tiposprodutos.delete);
+
+  // Delete all TiposProdutos
+  router.delete("/", tiposprodutos.deleteAll);
+
+  app.use('/api/tiposprodutos', router);
+};

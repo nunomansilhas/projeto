@@ -5,6 +5,7 @@ const Doacao = function(doacao) {
     this.ProdutoID = doacao.ProdutoID;
     this.ClienteID = doacao.ClienteID;
     this.Quantidade = doacao.Quantidade;
+    this.DataDoacao = doacao.DataDoacao;
 };
 
 Doacao.create = (newDoacao, result) => {
