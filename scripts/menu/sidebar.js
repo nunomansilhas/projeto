@@ -5,14 +5,16 @@ const sidebarItems = [
           { href: 'index.html', iconClass: 'fa fa-home', name: 'Painel de Controlo', colorClass: 'color1' },
           { href: 'produtos.html', iconClass: 'fa fa-archive', name: 'Produtos', colorClass: 'color2' },
           { href: 'solicitacoes.html', iconClass: 'fa fa-clipboard', name: 'Solicitações', colorClass: 'color3' },
-          { href: 'beneficiarios.html', iconClass: 'fa fa-users', name: 'Beneficiários', colorClass: 'color4' }
+          { href: 'doacoes.html', iconClass: 'fa fa-gift', name: 'Doações', colorClass: 'color4' },
+          { href: 'beneficiarios.html', iconClass: 'fa fa-users', name: 'Beneficiários', colorClass: 'color5' }
       ]
   },
   {
       title: 'ADMIN',
       items: [
-          { href: 'funcionarios.html', iconClass: 'fa fa-male', name: 'Funcionários', colorClass: 'color5' },
-          { href: 'categorias.html', iconClass: 'fa fa-cog', name: 'Categorias', colorClass: 'color6' }
+            { href: 'funcionarios.html', iconClass: 'fa fa-male', name: 'Funcionários', colorClass: 'color6' },
+            { href: 'categorias.html', iconClass: 'fa fa-cog', name: 'Categorias', colorClass: 'color7' },
+            { href: 'notificacoes.html', iconClass: 'fa fa-bell-o', name: 'Notificações', colorClass: 'color9' }
       ]
   }
 ];
