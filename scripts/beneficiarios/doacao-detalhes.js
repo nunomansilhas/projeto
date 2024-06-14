@@ -1,3 +1,5 @@
+import { enviarNotificacao } from '../acoes/enviar-notificacao.js';
+
 export function showDoacaoDetalhesModal(doacaoId) {
     if (!document.getElementById('doacaoDetalhesModal')) {
         createDoacaoDetalhesModal();
@@ -5,6 +7,8 @@ export function showDoacaoDetalhesModal(doacaoId) {
 
     fetchDoacaoDetalhes(doacaoId);
     $('#doacaoDetalhesModal').modal('show');
+
+    document.getElementById('deleteDoacaoBtn').addEventListener('click', () => deleteDoacao(doacaoId));
 }
 
 function createDoacaoDetalhesModal() {
@@ -21,7 +25,7 @@ function createDoacaoDetalhesModal() {
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                        <button class="btn btn-danger"><i class="fa fa-trash-o"></i> Eliminar Doação</button>
+                        <button id="deleteDoacaoBtn" class="btn btn-danger"><i class="fa fa-trash-o"></i> Eliminar Doação</button>
                         <button id="printDeclBtn" class="btn btn-default"><i class="fa fa-file-o"></i> Gerar Declaração</button>
                     </div>
                 </div>
@@ -150,3 +154,23 @@ function printDeclaracao() {
     doc.save(`Declaracao_Donativo_${nomeficheiro}.pdf`);
 }
 
+async function deleteDoacao(doacaoId) {
+    try {
+        const response = await fetch(`http://localhost:3000/api/doacoes/${doacaoId}`, {
+            method: 'DELETE'
+        });
+        
+        if (!response.ok) throw new Error('Erro ao deletar doação');
+        
+        await enviarNotificacao('Eliminado', `Eliminou a doação com ID: ${doacaoId}`);
+        
+        swal("Sucesso", "Doação deletada com sucesso!", "success");
+        $('#doacaoDetalhesModal').modal('hide');
+        
+        // Atualize a lista de doações ou redirecione conforme necessário
+        window.location.reload();
+    } catch (error) {
+        console.error('Erro ao deletar doação:', error);
+        swal("Erro", "Ocorreu um erro ao deletar a doação.", "error");
+    }
+}

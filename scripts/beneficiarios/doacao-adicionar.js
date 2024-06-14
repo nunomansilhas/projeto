@@ -147,9 +147,14 @@ async function handleDoacaoSubmit(event) {
                 body: JSON.stringify({ idProduto: novoProdutoID, nome: novoProdutoNome, tipoProdutoId: novoProdutoTipo, quantidade: 0 })
             });
 
+            
             if (!response.ok) throw new Error('Erro ao adicionar novo produto');
             const novoProduto = await response.json();
-            await adicionarDoacao(novoProduto.ID, quantidade, dataDoacao);
+            console.log(novoProdutoID);
+            console.log(quantidade);
+            console.log(dataDoacao);
+            await enviarNotificacao('Adicionado', `Funcionario Nuno Mansilhas Adicionou um novo Produto de Apoio (${novoProduto.nome})`);
+            await adicionarDoacao(novoProdutoID, quantidade, dataDoacao);
         } catch (error) {
             console.error('Erro ao adicionar novo produto:', error);
             swal("Erro", "Ocorreu um erro ao adicionar o novo produto.", "error");
@@ -167,7 +172,6 @@ async function handleDoacaoSubmit(event) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ quantidade: novaQuantidade })
             });
-
             await adicionarDoacao(produtoId, quantidade, dataDoacao);
         } catch (error) {
             console.error('Erro ao atualizar quantidade do produto existente:', error);
