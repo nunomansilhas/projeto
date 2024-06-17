@@ -189,6 +189,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
         document.querySelector('.delete-beneficiario').addEventListener('click', handleDelete);
         document.querySelector('.add-doacao').addEventListener('click', showAddDoacaoModal);
+        document.querySelector('.add-requisicao').addEventListener('click', showAddRequisicaoModal);
     } else {
         swal("Erro", "ID do beneficiário não encontrado na URL.", "error");
     }
