@@ -1,3 +1,5 @@
+import { enviarNotificacao } from '../acoes/enviar-notificacao.js';
+
 export function showAddRequisicaoModal() {
     if (!document.getElementById('addRequisicaoModal')) {
         createAddRequisicaoModal();
@@ -25,7 +27,6 @@ function createAddRequisicaoModal() {
                             <div class="form-group">
                                 <label for="quantidadeInput">Quantidade</label>
                                 <input type="number" class="form-control" id="quantidadeInput" name="quantidade" min="1">
-                                <span id="quantidadeDisponivel" class="help-block">Disponível: 0</span>
                             </div>
                             <div class="form-group">
                                 <label for="dataRangePicker">Período da Requisição</label>
@@ -54,8 +55,6 @@ function createAddRequisicaoModal() {
 
     $('#dataRangePicker').val(`${startDate.format('MM/DD/YYYY')} - ${endDate.format('MM/DD/YYYY')}`);
 
-    document.getElementById('produtoSelect').addEventListener('change', handleProdutoChange);
-    document.getElementById('quantidadeInput').addEventListener('input', handleQuantidadeInput);
     document.getElementById('submitRequisicaoBtn').addEventListener('click', submitRequisicao);
 
     populateProdutoSelect();
@@ -69,9 +68,10 @@ async function populateProdutoSelect() {
     const produtos = await response.json();
 
     produtos.forEach(produto => {
+        console.log("Produto:", produto); // Log para depuração
         const option = document.createElement('option');
         option.value = produto.ID;
-        option.textContent = `${produto.Nome}`;
+        option.textContent = `${produto.Nome} - Disponível: ${produto.quantidade}`; // Mostrar quantidade no select
         option.dataset.quantidade = produto.quantidade; // Adiciona a quantidade como um data attribute
         produtoSelect.appendChild(option);
     });
@@ -79,42 +79,29 @@ async function populateProdutoSelect() {
     $('.selectpicker').selectpicker('refresh');
 }
 
-async function handleProdutoChange(event) {
-    const produtoId = event.target.value;
-    const selectedOption = event.target.options[event.target.selectedIndex];
-    const quantidadeDisponivel = selectedOption.dataset.quantidade; // Obtém a quantidade disponível do data attribute
-    document.getElementById('quantidadeDisponivel').textContent = `Disponível: ${quantidadeDisponivel}`;
-}
-
-function handleQuantidadeInput(event) {
-    const quantidadeInput = event.target;
-    const quantidadeDisponivel = parseInt(document.getElementById('quantidadeDisponivel').textContent.split(': ')[1]);
-
-    if (quantidadeInput.value > quantidadeDisponivel) {
-        quantidadeInput.classList.add('is-invalid');
-    } else {
-        quantidadeInput.classList.remove('is-invalid');
-    }
-}
-
 async function submitRequisicao() {
     const produtoId = document.getElementById('produtoSelect').value;
-    const quantidade = document.getElementById('quantidadeInput').value;
+    const quantidade = parseInt(document.getElementById('quantidadeInput').value);
     const dataRange = document.getElementById('dataRangePicker').value;
+    const selectedOption = document.querySelector(`#produtoSelect option[value="${produtoId}"]`);
+    const quantidadeDisponivel = parseInt(selectedOption.dataset.quantidade);
 
-    if (quantidade <= 0) {
-        swal("Erro", "Quantidade deve ser maior que zero.", "error");
+    if (quantidade <= 0 || quantidade > quantidadeDisponivel) {
+        swal("Erro", "Quantidade deve ser maior que zero e não pode exceder a quantidade disponível.", "error");
         return;
     }
 
+    const funcionarioId = await getFuncionarioIdFromSession();
+    const clienteId = getClienteIdFromUrl();
+
     const requisicao = {
         ProdutoDeApoioID: produtoId,
-        TipoMovimentacao: "requisicao",
+        TipoMovimentacao: "Saída",
         Quantidade: quantidade,
         DataMovimentacao: new Date().toISOString().split('T')[0], // Data atual no formato YYYY-MM-DD
         DataEntrega: dataRange.split(' - ')[1], // Data final do range de datas
-        FuncionarioID: getFuncionarioIdFromSession(), // Função para obter o ID do funcionário da sessão
-        ClienteID: getClienteIdFromUrl() // Função para obter o ID do cliente da URL
+        FuncionarioID: funcionarioId,
+        ClienteID: clienteId
     };
 
     try {
@@ -128,7 +115,12 @@ async function submitRequisicao() {
 
         if (!response.ok) throw new Error('Erro ao adicionar requisição');
 
+        await atualizarQuantidadeProduto(produtoId, quantidade);
+
+        await enviarNotificacao('Requisição Efetuada', `Funcionário - ID: ${funcionarioId} efetuou a requisição do PA - ID: ${produtoId} para o Beneficiário - ID: ${clienteId}`);
+
         swal("Sucesso", "Requisição adicionada com sucesso!", "success");
+
         $('#addRequisicaoModal').modal('hide');
         window.location.reload();
     } catch (error) {
@@ -150,11 +142,11 @@ async function getFuncionarioIdFromSession() {
         const data = await response.json();
         if (data.user) {
             return data.user.id;
-        };
-    }catch (error) {
+        }
+    } catch (error) {
         console.error('Error:', error);
     }
-    
+    return null;
 }
 
 function getClienteIdFromUrl() {
@@ -162,6 +154,32 @@ function getClienteIdFromUrl() {
     return params.get('id');
 }
 
+async function atualizarQuantidadeProduto(produtoId, quantidade) {
+    try {
+        const produtoResponse = await fetch(`http://localhost:3000/api/produtos/${produtoId}`);
+        if (!produtoResponse.ok) throw new Error('Erro ao buscar produto existente');
+        const produtoExistente = await produtoResponse.json();
+        const novaQuantidade = produtoExistente.quantidade - quantidade;
+
+        if (novaQuantidade < 0) {
+            throw new Error('A quantidade não pode ser inferior a zero.');
+        }
+
+        const response = await fetch(`http://localhost:3000/api/produtos/quantidade/${produtoId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ quantidade: novaQuantidade })
+        });
+
+        if (!response.ok) throw new Error('Erro ao atualizar quantidade do produto');
+    } catch (error) {
+        console.error('Erro ao atualizar quantidade do produto:', error);
+        throw error; // Propaga o erro para o chamador
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    showAddRequisicaoModal();
+    document.querySelector('.add-requisicao').addEventListener('click', showAddRequisicaoModal);
 });

@@ -193,7 +193,7 @@ async function adicionarDoacao(produtoId, quantidade, dataDoacao) {
         await enviarNotificacao('Adicionado', `Adicionou uma doação com o produto ID: ${produtoId}`);
         swal("Sucesso", "Doação adicionada com sucesso!", "success");
         $('#addDoacaoModal').modal('hide');
-        //window.location.reload();
+        window.location.reload();
     } catch (error) {
         console.error('Erro ao adicionar doação:', error);
         swal("Erro", "Ocorreu um erro ao adicionar a doação.", "error");
