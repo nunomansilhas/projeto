@@ -91,7 +91,8 @@ async function populateMovimentacoesTable(movimentacoes) {
                     <td>${movimentacao.Quantidade}</td>
                     <td><span class="${tipoMovimentacaoClass}">${movimentacao.TipoMovimentacao}</span></td>
                     <td>
-                        <button type="button" class="btn btn-square ver-mais-requisicao" data-requisicao-id="${movimentacao.ID}">Ver Mais</button>
+                        <button type="button" class="btn btn-square ver-mais-requisicao" data-requisicao-id="${movimentacao.ID}">Ver Mais</button></td>
+                    <td>
                         ${movimentacao.TipoMovimentacao === 'Saída' ? `<button type="button" class="btn btn-square devolver-artigo" data-requisicao-id="${movimentacao.ID}">Devolver Artigo</button>` : ''}
                     </td>
                 `;
