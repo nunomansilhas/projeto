@@ -75,6 +75,13 @@ function generateProfileMenu(items) {
           });
         });
       }
+
+      if (item.name === 'Definições') {
+        link.addEventListener('click', function(event) {
+          event.preventDefault();
+          window.location.href = './profile.html'; // Redirect to edit profile page
+        });
+      }
     }
   });
 }
@@ -115,6 +122,4 @@ const profileMenuItems = [
 ];
 
 // Buscar os dados do usuário e atualizar o perfil no carregamento da página
-document.addEventListener('DOMContentLoaded', () => {
-  fetchUserData();
-});
+document.addEventListener('DOMContentLoaded', fetchUserData);

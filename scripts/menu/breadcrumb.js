@@ -45,6 +45,8 @@ function updateBreadcrumbAndTitle() {
     familyName = 'Notificações';
   } else if (currentPage.startsWith('doacoes')) {
     familyName = 'Doações';
+  } else if (currentPage.startsWith('profile')) {
+    familyName = 'Profile';
   }
 
   const breadcrumbItems = generateBreadcrumbItems(currentPage, familyName);
@@ -109,6 +111,9 @@ function generateBreadcrumbItems(currentPage, familyName) {
   }  else  if (currentPage.startsWith('notificacoes')) {
     items.push({ href: 'index.html', name: 'Painel de Controlo' });
     items.push({ href: 'notificacoes.html', name: 'Listagem de Notificações', active: true });
+  } else  if (currentPage.startsWith('profile')) {
+    items.push({ href: 'index.html', name: 'Painel de Controlo' });
+    items.push({ href: 'profile.html', name: 'Dados do Funcionário', active: true });
   }
   return items;
 }
