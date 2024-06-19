@@ -1,28 +1,27 @@
 module.exports = app => {
-    const movimentacoes = require("../controllers/movimentacao.controller.js");
-  
-    var router = require("express").Router();
-  
-    router.post("/", movimentacoes.create);
-  
-    router.get("/", movimentacoes.findAll);
-  
-    router.get("/:id", movimentacoes.findOne);
+  const movimentacoes = require("../controllers/movimentacao.controller.js");
 
-    router.get("/produto/:id", movimentacoes.findOneByIdProduto);
+  var router = require("express").Router();
 
-    router.get("/beneficiario/:id", movimentacoes.findOneByIdBeneficiario);
-  
-    router.put("/:id", movimentacoes.update);
+  router.post("/", movimentacoes.create);
 
-    router.put("/produto/:id", movimentacoes.updateByIdProduto);
-  
-    router.delete("/:id", movimentacoes.delete);
+  router.get("/", movimentacoes.findAll);
 
-    router.delete("/produto/:id", movimentacoes.deleteByIdProduto);
-  
-    router.delete("/", movimentacoes.deleteAll);
-  
-    app.use('/api/movimentacoes', router);
-  };
-  
+  router.get("/:id", movimentacoes.findOne);
+
+  router.get("/produto/:id", movimentacoes.findOneByIdProduto);
+
+  router.get("/beneficiario/:id", movimentacoes.findOneByIdBeneficiario);
+
+  router.put("/:id", movimentacoes.update);
+
+  router.put("/produto/:id", movimentacoes.updateByIdProduto);
+
+  router.delete("/:id", movimentacoes.delete);
+
+  router.delete("/produto/:id", movimentacoes.deleteByIdProduto);
+
+  router.delete("/", movimentacoes.deleteAll);
+
+  app.use('/api/movimentacoes', router);
+};

@@ -83,6 +83,8 @@ async function submitRequisicao() {
     const produtoId = document.getElementById('produtoSelect').value;
     const quantidade = parseInt(document.getElementById('quantidadeInput').value);
     const dataRange = document.getElementById('dataRangePicker').value;
+
+    // Get the selected option and its data attribute for quantidadeDisponivel
     const selectedOption = document.querySelector(`#produtoSelect option[value="${produtoId}"]`);
     const quantidadeDisponivel = parseInt(selectedOption.dataset.quantidade);
 
@@ -94,12 +96,16 @@ async function submitRequisicao() {
     const funcionarioId = await getFuncionarioIdFromSession();
     const clienteId = getClienteIdFromUrl();
 
+    // Parse the dates
+    const [startDate, endDate] = dataRange.split(' - ');
+    const formattedEndDate = moment(endDate, 'MM/DD/YYYY').format('YYYY-MM-DD');
+
     const requisicao = {
-        ProdutoDeApoioID: produtoId,
+        produtoDeApoioID: produtoId,
         TipoMovimentacao: "Saída",
         Quantidade: quantidade,
         DataMovimentacao: new Date().toISOString().split('T')[0], // Data atual no formato YYYY-MM-DD
-        DataEntrega: dataRange.split(' - ')[1], // Data final do range de datas
+        DataEntrega: formattedEndDate, // Data final do range de datas
         FuncionarioID: funcionarioId,
         ClienteID: clienteId
     };
@@ -128,6 +134,7 @@ async function submitRequisicao() {
         swal("Erro", "Ocorreu um erro ao adicionar a requisição.", "error");
     }
 }
+
 
 async function getFuncionarioIdFromSession() {
     try {

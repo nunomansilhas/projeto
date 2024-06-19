@@ -4,6 +4,7 @@ import { confirmDelete, deleteBeneficiary } from './beneficiario-eliminar.js'; /
 import { showAddDoacaoModal } from './doacao-adicionar.js'; // Importar a função de adicionar doação
 import { showAddRequisicaoModal } from './requisicao-adicionar.js'; // Importar a função de nova requisição
 import { showDoacaoDetalhesModal } from './doacao-detalhes.js';
+import { showRequisicaoDetalhesModal } from './requisicao-detalhes.js';
 
 async function fetchBeneficiario(id) {
     const response = await fetch(`http://localhost:3000/api/clientes/${id}`);
@@ -72,12 +73,14 @@ async function populateMovimentacoesTable(movimentacoes) {
 
         if (movimentacoes.length === 0) {
             const row = document.createElement('tr');
-            row.innerHTML = `<td colspan="6" class="text-center">Não existem movimentações para este beneficiário</td>`;
+            row.innerHTML = `<td colspan="7" class="text-center">Não existem movimentações para este beneficiário</td>`;
             tableBody.appendChild(row);
         } else {
             for (const movimentacao of movimentacoes) {
                 const produtoData = await fetchProdutoData(movimentacao.ProdutoDeApoioID);
                 const funcionarioData = await fetchFuncionarioData(movimentacao.FuncionarioID);
+
+                const tipoMovimentacaoClass = movimentacao.TipoMovimentacao === 'Entrada' ? 'label label-success' : 'label label-primary';
 
                 const row = document.createElement('tr');
                 row.innerHTML = `
@@ -86,16 +89,55 @@ async function populateMovimentacoesTable(movimentacoes) {
                     <td>${funcionarioData.Nome || 'Funcionario Desconhecido'}</td>
                     <td>${new Date(movimentacao.DataMovimentacao).toLocaleDateString()}</td>
                     <td>${movimentacao.Quantidade}</td>
-                    <td>${movimentacao.TipoMovimentacao}</td>
+                    <td><span class="${tipoMovimentacaoClass}">${movimentacao.TipoMovimentacao}</span></td>
+                    <td>
+                        <button type="button" class="btn btn-square ver-mais-requisicao" data-requisicao-id="${movimentacao.ID}">Ver Mais</button>
+                        ${movimentacao.TipoMovimentacao === 'Saída' ? `<button type="button" class="btn btn-square devolver-artigo" data-requisicao-id="${movimentacao.ID}">Devolver Artigo</button>` : ''}
+                    </td>
                 `;
                 tableBody.appendChild(row);
             }
+
+            document.querySelectorAll('.ver-mais-requisicao').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const requisicaoId = event.currentTarget.getAttribute('data-requisicao-id');
+                    showRequisicaoDetalhesModal(requisicaoId);
+                });
+            });
+
+            document.querySelectorAll('.devolver-artigo').forEach(button => {
+                button.addEventListener('click', async (event) => {
+                    const requisicaoId = event.currentTarget.getAttribute('data-requisicao-id');
+                    await devolverArtigo(requisicaoId);
+                });
+            });
         }
     } catch (error) {
         console.error('Erro ao popular a tabela de movimentações:', error);
         swal("Erro", "Ocorreu um erro ao carregar as movimentações de inventário.", "error");
     }
 }
+
+async function devolverArtigo(requisicaoId) {
+    try {
+        const response = await fetch(`http://localhost:3000/api/movimentacoes/${requisicaoId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ TipoMovimentacao: 'Entrada' })
+        });
+
+        if (!response.ok) throw new Error('Erro ao devolver o artigo');
+
+        swal("Sucesso", "Artigo devolvido com sucesso!", "success");
+        window.location.reload();
+    } catch (error) {
+        console.error('Erro ao devolver o artigo:', error);
+        swal("Erro", "Ocorreu um erro ao devolver o artigo.", "error");
+    }
+}
+
 
 async function populateMovimentacoes(id) {
     try {
@@ -129,12 +171,12 @@ async function populateDoacoesTable(doacoes, tiposProdutos) {
                     <td>${tipoProduto ? tipoProduto.Nome : 'Categoria Desconhecida'}</td>
                     <td>${doacao.Quantidade}</td>
                     <td>${new Date(doacao.DataDoacao).toLocaleDateString()}</td>
-                    <td><button type="button" class="btn btn-square ver-mais" data-doacao-id="${doacao.ID}">Ver Mais</button></td>
+                    <td><button type="button" class="btn btn-square ver-mais-doacao" data-doacao-id="${doacao.ID}">Ver Mais</button></td>
                 `;
                 tableBody.appendChild(row);
             }
 
-            document.querySelectorAll('.ver-mais').forEach(button => {
+            document.querySelectorAll('.ver-mais-doacao').forEach(button => {
                 button.addEventListener('click', (event) => {
                     const doacaoId = event.currentTarget.getAttribute('data-doacao-id');
                     showDoacaoDetalhesModal(doacaoId);
@@ -190,6 +232,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.querySelector('.delete-beneficiario').addEventListener('click', handleDelete);
         document.querySelector('.add-doacao').addEventListener('click', showAddDoacaoModal);
         document.querySelector('.add-requisicao').addEventListener('click', showAddRequisicaoModal);
+        
     } else {
         swal("Erro", "ID do beneficiário não encontrado na URL.", "error");
     }

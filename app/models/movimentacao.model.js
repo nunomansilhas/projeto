@@ -1,12 +1,13 @@
 const sql = require("./db.js");
 
 const Movimentacao = function(movimentacao) {
-  this.produtoDeApoioId = movimentacao.produtoDeApoioId;
-  this.tipoMovimentacao = movimentacao.tipoMovimentacao;
-  this.quantidade = movimentacao.quantidade;
-  this.dataMovimentacao = movimentacao.dataMovimentacao;
-  this.funcionarioId = movimentacao.funcionarioId;
-  this.clienteId = movimentacao.clienteId;
+  this.produtoDeApoioId = movimentacao.ProdutoDeApoioID;
+  this.tipoMovimentacao = movimentacao.TipoMovimentacao;
+  this.quantidade = movimentacao.Quantidade;
+  this.dataMovimentacao = movimentacao.DataMovimentacao;
+  this.dataEntrega = movimentacao.DataEntrega;
+  this.funcionarioId = movimentacao.FuncionarioID;
+  this.clienteId = movimentacao.ClienteID;
 };
 
 Movimentacao.create = (newMovimentacao, result) => {
@@ -91,33 +92,53 @@ Movimentacao.getAll = result => {
 };
 
 Movimentacao.updateById = (id, movimentacao, result) => {
-  sql.query(
-    "UPDATE movimentacoesinventario SET produtoDeApoioId = ?, tipoMovimentacao = ?, quantidade = ?, dataMovimentacao = ?, funcionarioId = ?, clienteId = ? WHERE id = ?",
-    [
-      movimentacao.produtoDeApoioId,
-      movimentacao.tipoMovimentacao,
-      movimentacao.quantidade,
-      movimentacao.dataMovimentacao,
-      movimentacao.funcionarioId,
-      movimentacao.clienteId,
-      id
-    ],
-    (err, res) => {
+  Movimentacao.findById(id, (err, res) => {
       if (err) {
-        console.log("error: ", err);
-        result(null, err);
-        return;
+          result(err, null);
+          return;
       }
 
-      if (res.affectedRows == 0) {
-        result({ kind: "not_found" }, null);
-        return;
-      }
+      const existingMovimentacao = res;
 
-      console.log("updated movimentacao: ", { id: id, ...movimentacao });
-      result(null, { id: id, ...movimentacao });
-    }
-  );
+      const updatedMovimentacao = {
+          produtoDeApoioId: movimentacao.produtoDeApoioId || existingMovimentacao.ProdutoDeApoioID,
+          tipoMovimentacao: movimentacao.tipoMovimentacao || existingMovimentacao.TipoMovimentacao,
+          quantidade: movimentacao.quantidade || existingMovimentacao.Quantidade,
+          dataMovimentacao: movimentacao.dataMovimentacao || existingMovimentacao.DataMovimentacao,
+          dataEntrega: movimentacao.dataEntrega || existingMovimentacao.DataEntrega,
+          funcionarioId: movimentacao.funcionarioId || existingMovimentacao.FuncionarioID,
+          clienteId: movimentacao.clienteId || existingMovimentacao.ClienteID,
+      };
+
+      sql.query(
+          "UPDATE movimentacoesinventario SET ProdutoDeApoioID = ?, TipoMovimentacao = ?, Quantidade = ?, DataMovimentacao = ?, DataEntrega = ?, FuncionarioID = ?, ClienteID = ? WHERE ID = ?",
+          [
+              updatedMovimentacao.produtoDeApoioId,
+              updatedMovimentacao.tipoMovimentacao,
+              updatedMovimentacao.quantidade,
+              updatedMovimentacao.dataMovimentacao,
+              updatedMovimentacao.dataEntrega,
+              updatedMovimentacao.funcionarioId,
+              updatedMovimentacao.clienteId,
+              id
+          ],
+          (err, res) => {
+              if (err) {
+                  console.log("error: ", err);
+                  result(null, err);
+                  return;
+              }
+
+              if (res.affectedRows == 0) {
+                  result({ kind: "not_found" }, null);
+                  return;
+              }
+
+              console.log("updated movimentacao: ", { id: id, ...updatedMovimentacao });
+              result(null, { id: id, ...updatedMovimentacao });
+          }
+      );
+  });
 };
 
 Movimentacao.updateByIdProduto = (id, movimentacao, result) => {

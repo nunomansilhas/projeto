@@ -1,33 +1,35 @@
 const Movimentacao = require("../models/movimentacao.model.js");
 
+// Create and Save a new Movimentacao
 exports.create = (req, res) => {
+  // Validate request
   if (!req.body) {
-    res.status(400).send({
-      message: "Content can not be empty!"
-    });
-    return;
-  }
-
-  const movimentacao = new Movimentacao({
-    produtoDeApoioId: req.body.ProdutoDeApoioID,
-    tipoMovimentacao: req.body.TipoMovimentacao,
-    quantidade: req.body.Quantidade,
-    dataMovimentacao: req.body.DataMovimentacao,
-    funcionarioId: req.body.FuncionarioID,
-    clienteId: req.body.ClienteID
-  });
-
-  Movimentacao.create(movimentacao, (err, data) => {
-    if (err) {
-      res.status(500).send({
-        message: err.message || "Some error occurred while creating the Movimentacao."
+      res.status(400).send({
+          message: "Content can not be empty!"
       });
       return;
-    }
-    res.send(data);
+  }
+
+  // Create a Movimentacao
+  const movimentacao = new Movimentacao({
+      ProdutoDeApoioID: req.body.produtoDeApoioID,
+      TipoMovimentacao: req.body.TipoMovimentacao,
+      Quantidade: req.body.Quantidade,
+      DataMovimentacao: req.body.DataMovimentacao,
+      DataEntrega: req.body.DataEntrega,
+      FuncionarioID: req.body.FuncionarioID,
+      ClienteID: req.body.ClienteID
+  });
+
+  // Save Movimentacao in the database
+  Movimentacao.create(movimentacao, (err, data) => {
+      if (err)
+          res.status(500).send({
+              message: err.message || "Some error occurred while creating the Movimentacao."
+          });
+      else res.send(data);
   });
 };
-
 
 exports.findAll = (req, res) => {
   Movimentacao.getAll((err, data) => {
@@ -97,30 +99,32 @@ exports.findOneByIdBeneficiario = (req, res) => {
 
 exports.update = (req, res) => {
   if (!req.body) {
-    res.status(400).send({
-      message: "Content can not be empty!"
-    });
-    return;
+      res.status(400).send({
+          message: "Content can not be empty!"
+      });
+      return;
   }
 
+  const movimentacao = new Movimentacao(req.body);
+
   Movimentacao.updateById(
-    req.params.id,
-    new Movimentacao(req.body),
-    (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Not found Movimentacao with id ${req.params.id}.`
-          });
-        } else {
-          res.status(500).send({
-            message: "Error updating Movimentacao with id " + req.params.id
-          });
-        }
-        return;
+      req.params.id,
+      movimentacao,
+      (err, data) => {
+          if (err) {
+              if (err.kind === "not_found") {
+                  res.status(404).send({
+                      message: `Not found Movimentacao with id ${req.params.id}.`
+                  });
+              } else {
+                  res.status(500).send({
+                      message: "Error updating Movimentacao with id " + req.params.id
+                  });
+              }
+              return;
+          }
+          res.send(data);
       }
-      res.send(data);
-    }
   );
 };
 
