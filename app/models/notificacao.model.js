@@ -25,7 +25,7 @@ Notificacao.create = (newNotificacao, result) => {
 
 // Método para buscar todas as notificações
 Notificacao.getAll = result => {
-  sql.query("SELECT * FROM notificacoes ORDER BY data_acao DESC LIMIT 10", (err, res) => {
+  sql.query("SELECT * FROM notificacoes ORDER BY data_acao DESC LIMIT 150", (err, res) => {
     if (err) {
       console.log("Erro: ", err);
       result(null, err);

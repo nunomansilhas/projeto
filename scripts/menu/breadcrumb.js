@@ -20,9 +20,6 @@ const breadcrumbButtonsConfig = {
   ],
   'beneficiarios': [
     { href: 'beneficiarios-adicionar.html', iconClass: 'fa fa-list', name: 'Novo Beneficiário' }
-  ],
-  'beneficiarios-visualizar': [
-    { href: 'beneficiarios-adicionar.html', iconClass: 'fa fa-list', name: 'Ficha de Cliente' }
   ], 
   'funcionarios': [
     { href: 'funcionarios-adicionar.html', iconClass: 'fa fa-list', name: 'Novo Funcionário' }
@@ -42,6 +39,12 @@ function updateBreadcrumbAndTitle() {
     familyName = 'Funcionários';
   } else if (currentPage.startsWith('categorias')) {
     familyName = 'Categorias';
+  } else if (currentPage.startsWith('solicitacoes')) {
+    familyName = 'Solicitações';
+  } else if (currentPage.startsWith('notificacoes')) {
+    familyName = 'Notificações';
+  } else if (currentPage.startsWith('doacoes')) {
+    familyName = 'Doações';
   }
 
   const breadcrumbItems = generateBreadcrumbItems(currentPage, familyName);
@@ -100,6 +103,12 @@ function generateBreadcrumbItems(currentPage, familyName) {
   } else  if (currentPage.startsWith('categorias')) {
     items.push({ href: 'index.html', name: 'Painel de Controlo' });
     items.push({ href: 'categorias.html', name: 'Listagem de Categorias', active: true });
+  }  else  if (currentPage.startsWith('doacoes')) {
+    items.push({ href: 'index.html', name: 'Painel de Controlo' });
+    items.push({ href: 'doacoes.html', name: 'Listagem de Doações', active: true });
+  }  else  if (currentPage.startsWith('notificacoes')) {
+    items.push({ href: 'index.html', name: 'Painel de Controlo' });
+    items.push({ href: 'notificacoes.html', name: 'Listagem de Notificações', active: true });
   }
   return items;
 }

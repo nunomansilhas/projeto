@@ -48,6 +48,14 @@ async function fetchFuncionarioData(funcionarioId) {
     return response.json();
 }
 
+async function fetchMovimentacao(requisicaoId) {
+    const response = await fetch(`http://localhost:3000/api/movimentacoes/${requisicaoId}`);
+    if (!response.ok) {
+        throw new Error('Erro ao buscar os dados da movimentação');
+    }
+    return response.json();
+}
+
 async function populateBeneficiarioData(id) {
     try {
         const beneficiario = await fetchBeneficiario(id);
@@ -109,7 +117,7 @@ async function populateMovimentacoesTable(movimentacoes) {
             document.querySelectorAll('.devolver-artigo').forEach(button => {
                 button.addEventListener('click', async (event) => {
                     const requisicaoId = event.currentTarget.getAttribute('data-requisicao-id');
-                    await devolverArtigo(requisicaoId);
+                    await confirmarDevolucaoArtigo(requisicaoId);
                 });
             });
         }
@@ -119,17 +127,55 @@ async function populateMovimentacoesTable(movimentacoes) {
     }
 }
 
-async function devolverArtigo(requisicaoId) {
+async function confirmarDevolucaoArtigo(requisicaoId) {
+    try {
+        const movimentacao = await fetchMovimentacao(requisicaoId);
+        const dataAtual = movimentacao.DataEntrega ? new Date(movimentacao.DataEntrega).toISOString().split('T')[0] : '';
+
+        const { value: formValues } = await Swal.fire({
+            title: 'Confirmar Devolução',
+            html:
+                '<p>Tem certeza de que deseja devolver o artigo?</p>' +
+                `<label for="dataDevolucao">Data de Devolução:</label>` +
+                `<input type="date" id="dataDevolucao" class="swal2-input" value="${dataAtual}">`,
+            focusConfirm: false,
+            showCancelButton: true,
+            preConfirm: () => {
+                const dataDevolucao = document.getElementById('dataDevolucao').value;
+                if (!dataDevolucao) {
+                    Swal.showValidationMessage('Por favor, insira uma data de devolução válida.');
+                    return false;
+                }
+                return dataDevolucao;
+            }
+        });
+
+        if (formValues) {
+            const dataFormatada = new Date(formValues).toISOString().split('T')[0]; // Formatar a data corretamente
+            await devolverArtigo(requisicaoId, dataFormatada);
+        }
+    } catch (error) {
+        console.error('Erro ao confirmar a devolução do artigo:', error);
+        swal("Erro", "Ocorreu um erro ao confirmar a devolução do artigo.", "error");
+    }
+}
+
+async function devolverArtigo(requisicaoId, novaDataDevolucao) {
     try {
         const response = await fetch(`http://localhost:3000/api/movimentacoes/${requisicaoId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ TipoMovimentacao: 'Entrada' })
+            body: JSON.stringify({
+                TipoMovimentacao: 'Entrada',
+                DataEntrega: novaDataDevolucao || new Date().toISOString().split('T')[0]
+            })
         });
 
         if (!response.ok) throw new Error('Erro ao devolver o artigo');
+
+        await enviarNotificacao('Artigo Devolvido', `O artigo com ID: ${requisicaoId} foi devolvido com sucesso.`);
 
         swal("Sucesso", "Artigo devolvido com sucesso!", "success");
         window.location.reload();
@@ -139,7 +185,7 @@ async function devolverArtigo(requisicaoId) {
     }
 }
 
-
+// Função para popular as movimentações do beneficiário
 async function populateMovimentacoes(id) {
     try {
         const movimentacoes = await fetchMovimentacoes();
@@ -151,6 +197,7 @@ async function populateMovimentacoes(id) {
     }
 }
 
+// Função para popular a tabela de doações
 async function populateDoacoesTable(doacoes, tiposProdutos) {
     try {
         const tableBody = document.querySelector('#doacoesTableBody');
@@ -190,6 +237,7 @@ async function populateDoacoesTable(doacoes, tiposProdutos) {
     }
 }
 
+// Função para popular as doações do beneficiário
 async function populateDoacoes(id) {
     try {
         const doacoes = await fetchDoacoes(id);
@@ -201,6 +249,7 @@ async function populateDoacoes(id) {
     }
 }
 
+// Função para deletar beneficiário
 async function handleDelete(event) {
     event.preventDefault();
     const beneficiarioId = event.currentTarget.dataset.beneficiarioId;
@@ -212,6 +261,7 @@ async function handleDelete(event) {
     }
 }
 
+// Função para obter o ID do beneficiário a partir da URL
 function getBeneficiarioIdFromUrl() {
     const params = new URLSearchParams(window.location.search);
     return params.get('id');
