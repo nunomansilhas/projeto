@@ -19,6 +19,7 @@ SET time_zone = "+00:00";
 
 --
 -- Banco de dados: `db_projeto`
+-- Teste to GIT
 --
 
 -- --------------------------------------------------------
