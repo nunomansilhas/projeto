@@ -86,11 +86,20 @@ async function populateDoacaoDetalhes(doacao) {
     contentDiv.dataset.nomeficheiro = doacao.ID + beneficiario.id + produto.ID;
 }
 
-function printDeclaracao() {
+async function fetchDadosEmpresa() {
+    try {
+        const response = await fetch('http://localhost:3000/api/dadosEmpresa');
+        const dados = await response.json();
+        return dados;
+    } catch (error) {
+        console.error('Erro ao buscar dados da empresa:', error);
+    }
+}
+
+async function printDeclaracao() {
     const { jsPDF } = window.jspdf;
-
     const doc = new jsPDF();
-
+    const dadosEmpresa = await fetchDadosEmpresa();
     // Carregar a imagem do logotipo
     const imgData = 'img/logo.jpg'; // Caminho para a imagem do logotipo
 
@@ -148,8 +157,8 @@ function printDeclaracao() {
 
     doc.setFontSize(7);
     doc.setFont('helvetica', 'bold');
-    doc.text('Contribuinte N. 516 121 332 | Rua 25 de Abril, nº. 9 |  4925-010 Santa Marta de Portuzelo | VIANA DO CASTELO', 105, 280, { align: 'center' });
-    doc.text('Telefone: 258 839 050 | E-mail: geral@apcvc.pt', 105, 285, { align: 'center' });
+    doc.text(`Contribuinte: ${dadosEmpresa.contribuinte} | ${dadosEmpresa.endereco} | ${dadosEmpresa.cidade}  `, 105, 280, { align: 'center' });
+    doc.text(`${dadosEmpresa.telefone} | E-mail: ${dadosEmpresa.email}`, 105, 285, { align: 'center' });
 
     doc.save(`Declaracao_Donativo_${nomeficheiro}.pdf`);
 }
