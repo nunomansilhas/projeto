@@ -1,10 +1,5 @@
 const breadcrumbButtonsConfig = {
-  'index': [
-    { href: 'index.html', iconClass: 'fa fa-light', name: 'Painel de Controlo' },
-    { href: '#', iconClass: 'fa fa-refresh' },
-    { href: '#', iconClass: 'fa fa-search' },
-    { href: '#', iconClass: 'fa fa-line-chart', id: 'topstats' }
-  ],
+  
   'produtos': [
     { href: 'produtos-adicionar.html', iconClass: 'fa fa-plus', name: 'Adicionar Produto' }
   ],

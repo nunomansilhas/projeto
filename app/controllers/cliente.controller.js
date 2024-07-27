@@ -3,6 +3,18 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
+// Função para tentar deletar a imagem, mas falhas não impedem a exclusão do cliente
+function tryDeleteImageFile(imagePath) {
+  return new Promise(resolve => {
+    fs.unlink(imagePath, (err) => {
+      if (err) {
+        console.log(`Failed to delete image file: ${err.message}`);
+      }
+      resolve(); // Sempre resolve, mesmo que haja erro
+    });
+  });
+}
+
 // Configuração para upload de imagem
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -166,46 +178,39 @@ exports.update = (req, res) => {
   }
 };
 
-// Função para excluir um cliente e sua imagem
 exports.delete = (req, res) => {
   Cliente.findById(req.params.id, (err, cliente) => {
     if (err) {
-      if (err.kind === "not_found") {
-        return res.status(404).send({
-          message: `Not found Cliente with id ${req.params.id}.`
-        });
-      } else {
-        return res.status(500).send({
-          message: "Error retrieving Cliente with id " + req.params.id
-        });
-      }
-    }
+      return res.status(500).send({
+        message: "Error retrieving Cliente with id " + req.params.id
+      });
+    } else if (!cliente) {
+      return res.status(404).send({
+        message: `Cliente not found with id ${req.params.id}.`
+      });
+    } else {
+      const imagePath = path.resolve(cliente.image_profile);
 
-    const imagePath = path.resolve(cliente.image_profile);
-
-    // Primeiro, excluímos o arquivo de imagem
-    deleteImageFile(imagePath)
-      .then(() => {
-        // Após a exclusão da imagem, excluímos o cliente do banco de dados
-        Cliente.remove(req.params.id, (err, data) => {
-          if (err) {
-            if (err.kind === "not_found") {
-              res.status(404).send({
-                message: `Not found Cliente with id ${req.params.id}.`
-              });
-            } else {
-              res.status(500).send({
+      // Tentar deletar a imagem, independentemente do resultado, deleta o cliente
+      tryDeleteImageFile(imagePath)
+        .then(() => {
+          Cliente.remove(req.params.id, (err) => {
+            if (err) {
+              return res.status(500).send({
                 message: "Could not delete Cliente with id " + req.params.id
               });
+            } else {
+              res.send({ message: `Cliente was deleted successfully!` });
             }
-          } else res.send({ message: `Cliente was deleted successfully!` });
+          });
+        })
+        .catch(() => {
+          // Essa captura é apenas precaução, já que o 'tryDeleteImageFile' resolve sempre
+          res.status(500).send({
+            message: `Error occurred during the file deletion for Cliente with id ${req.params.id}`
+          });
         });
-      })
-      .catch((err) => {
-        res.status(500).send({
-          message: `Could not delete image file for Cliente with id ${req.params.id}`
-        });
-      });
+    }
   });
 };
 

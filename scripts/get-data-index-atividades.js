@@ -26,10 +26,13 @@ async function generateInventorySummary() {
   const summaryList = document.getElementById('inventory-summary');
   const movimentacoes = await fetchMovimentacoes();
 
-  // Sort movimentacoes by DataMovimentacao in ascending order
-  movimentacoes.sort((a, b) => new Date(a.DataMovimentacao) - new Date(b.DataMovimentacao));
+  // Filter only 'Saída' type and sort by DataMovimentacao in ascending order
+  const filteredMovimentacoes = movimentacoes
+    .filter(mov => mov.TipoMovimentacao === 'Saída')
+    .sort((a, b) => new Date(a.DataMovimentacao) - new Date(b.DataMovimentacao))
+    .slice(0, 10);  // Limit to the first 10 items
 
-  for (const movimentacao of movimentacoes) {
+  for (const movimentacao of filteredMovimentacoes) {
     const listItem = document.createElement('tr');
 
     // Fetch related data
@@ -39,11 +42,11 @@ async function generateInventorySummary() {
 
     // Create table cells
     const produtoCell = document.createElement('td');
-    produtoCell.textContent = produtoData.Nome || 'Produto Desconhecido';
+    produtoCell.textContent = '( '+ produtoData.ID +' ) '+ produtoData.Nome || 'Produto Desconhecido';
     listItem.appendChild(produtoCell);
 
     const clienteCell = document.createElement('td');
-    clienteCell.textContent = clienteData.Nome || 'Cliente Desconhecido';
+    clienteCell.textContent = clienteData.nome || 'Cliente Desconhecido';
     listItem.appendChild(clienteCell);
 
     const funcionarioCell = document.createElement('td');
@@ -57,7 +60,7 @@ async function generateInventorySummary() {
     devolucaoCell.classList.add('text-r');
     const devolucaoLabel = document.createElement('span');
     devolucaoLabel.classList.add('label', diffDias < 0 ? 'label-danger' : 'label-success');
-    devolucaoLabel.textContent = `${diffDias < 0 ? '-' : '+'}${Math.abs(diffDias)} days`;
+    devolucaoLabel.textContent = `${diffDias < 0 ? '-' : '+'}${Math.abs(diffDias)} dias`;
     devolucaoCell.appendChild(devolucaoLabel);
     listItem.appendChild(devolucaoCell);
 
@@ -77,4 +80,4 @@ async function generateInventorySummary() {
 }
 
 // Generate inventory summary items when the page loads
-generateInventorySummary();
+document.addEventListener('DOMContentLoaded', generateInventorySummary);

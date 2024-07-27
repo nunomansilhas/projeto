@@ -37,33 +37,34 @@ function timeSince(date) {
 }
 
 async function generateNotificationItems() {
-  const notificationList = document.getElementById('notification-list');
-  const notifications = await fetchNotifications();
-
-  // Limit the number of notifications to 7
-  const limitedNotifications = notifications.slice(0, 7);
-
-  limitedNotifications.forEach(async notification => {
-      const listItem = document.createElement('li');
-      listItem.classList.add('clearfix');
-
-      // Fetch funcionario data
-      const funcionarioData = await fetchFuncionarioData(notification.id_utilizador);
-
-      // Create the notification item based on the provided design
-      const statusClass = getStatusClass(notification.status);
-
-      listItem.innerHTML = `
-          <span class="right">${timeSince(notification.data_acao)}</span>
-          <img src="${funcionarioData.profileImg || 'img/profileimg.png'}" alt="img" class="img">
-          <b>${funcionarioData.Nome || 'Unknown'}</b>
-          <span class="desc"><a class="label ${statusClass}">${notification.status}</a> ${notification.descricao_acao}</span>
-      `;
-
-      // Append the generated item to the list
-      notificationList.appendChild(listItem);
-  });
-}
+    const notificationList = document.getElementById('notification-list');
+    const notifications = await fetchNotifications();
+  
+    // Limit the number of notifications to 7
+    const limitedNotifications = notifications.slice(0, 7);
+  
+    limitedNotifications.forEach(async notification => {
+        const listItem = document.createElement('li');
+        listItem.classList.add('clearfix');
+  
+        // Fetch funcionario data
+        const funcionarioData = await fetchFuncionarioData(notification.id_utilizador);
+  
+        // Create the notification item based on the provided design
+        const statusClass = getStatusClass(notification.status);
+  
+        listItem.innerHTML = `
+            <span class="right">${timeSince(notification.data_acao)}</span>
+            <img src="${funcionarioData.profileImg || 'img/profileimg.png'}" alt="img" class="img" onerror="this.onerror=null; this.src='img/default-avatar.png';">
+            <b>${funcionarioData.Nome || 'Desconhecido'}</b>
+            <span class="desc"><a class="label ${statusClass}">${notification.status}</a> ${notification.descricao_acao}</span>
+        `;
+  
+        // Append the generated item to the list
+        notificationList.appendChild(listItem);
+    });
+  }
+  
 
 function getStatusClass(status) {
   switch (status) {

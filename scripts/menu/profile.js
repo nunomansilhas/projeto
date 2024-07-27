@@ -4,7 +4,7 @@ function updateProfileName(profileName, profileImage) {
   if (profileBox) {
     profileBox.innerHTML = `
       <a href="#" data-toggle="dropdown" class="dropdown-toggle profilebox">
-        <img src="${profileImage}" alt="img">
+        <img src="${profileImage}" alt="img" onerror="this.onerror=null; this.src='img/default-avatar.png';">
         <b id="profile-name">${profileName}</b>
         <span class="caret"></span>
       </a>

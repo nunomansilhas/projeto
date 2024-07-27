@@ -29,7 +29,22 @@ async function populateFuncionariosTable() {
         });
 
         // Initialize DataTable
-        $('#funcionariosTable').DataTable();
+        $('#funcionariosTable').DataTable({
+            language: {
+                info: "Mostrar página _PAGE_ de _PAGES_",
+                infoEmpty: "Nenhuma entrada disponível",
+                infoFiltered: "(filtrado de _MAX_ entradas totais)",
+                lengthMenu: "Mostrar _MENU_ entradas por página",
+                zeroRecords: "Não foi encontrado nenhum Funcionário",
+                search: "Procurar:",
+                paginate: {
+                    first: "Primeiro",
+                    last: "Último",
+                    next: "Próximo",
+                    previous: "Anterior"
+                }
+            }
+        });
     } catch (error) {
         console.error('Erro ao popular a tabela de funcionários:', error);
         swal("Erro", "Ocorreu um erro ao carregar os funcionários.", "error");

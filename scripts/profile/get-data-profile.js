@@ -15,7 +15,14 @@ async function fetchProfileData() {
       document.getElementById('funcionario-username').textContent = data.user.username;
       document.getElementById('funcionario-cargo').textContent = data.user.cargo;
       document.getElementById('funcionario-email').textContent = data.user.email;
-      document.getElementById('funcionario-imagem').src = data.user.profileImg || 'img/profileimg.png';
+      
+      // Atualiza a imagem de perfil com fallback
+      let imgElement = document.getElementById('funcionario-imagem');
+      imgElement.src = data.user.profileImg || 'img/default-avatar.png';
+      imgElement.onerror = function() {
+        this.onerror = null; // previne looping caso a imagem de fallback também falhe
+        this.src = 'img/default-avatar.png';
+      };
 
       // Adiciona os IDs necessários para edição
       document.getElementById('edit-password-btn').dataset.funcionarioId = data.user.id;

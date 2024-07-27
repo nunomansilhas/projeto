@@ -34,7 +34,22 @@ async function populateDataTable() {
   }
 
   // Initialize DataTable
-  $('#doacoesTable').DataTable();
+  $('#doacoesTable').DataTable({
+    language: {
+        info: "Mostrar página _PAGE_ de _PAGES_",
+        infoEmpty: "Nenhuma entrada disponível",
+        infoFiltered: "(filtrado de _MAX_ entradas totais)",
+        lengthMenu: "Mostrar _MENU_ entradas por página",
+        zeroRecords: "Não foi encontrada nenhuma Doação",
+        search: "Procurar:",
+        paginate: {
+            first: "Primeiro",
+            last: "Último",
+            next: "Próximo",
+            previous: "Anterior"
+        }
+    }
+});
 
   // Add event listeners for "Ver Mais" buttons
   document.querySelectorAll('.ver-mais-doacao').forEach(button => {

@@ -12,62 +12,64 @@ async function fetchFuncionarioData(funcionarioId) {
 }
 
 async function fetchClienteData(clienteId) {
-  const response = await fetch(`http://localhost:3000/api/clientes/${clienteId}`);
-  if (!response.ok) throw new Error('Erro ao buscar dados do cliente');
-  return response.json();
+  try {
+    const response = await fetch(`http://localhost:3000/api/clientes/${clienteId}`);
+    if (!response.ok) throw new Error('Cliente não encontrado');
+    return await response.json();
+  } catch (error) {
+    console.error('Erro ao buscar dados do cliente:', error);
+    // Retorna um objeto padrão quando o cliente não é encontrado
+    return { nome: 'Cliente desconhecido' }; 
+  }
 }
 
 async function populateDataTable() {
   const solicitacoes = await fetchSolicitacoes();
 
-  // Populate DataTable
   const tableBody = document.querySelector('#solicitacoesTable tbody');
-  tableBody.innerHTML = ''; // Clear existing rows
+  tableBody.innerHTML = ''; // Limpa as linhas existentes
 
   for (const solicitacao of solicitacoes) {
-    try {
-      const funcionarioData = await fetchFuncionarioData(solicitacao.FuncionarioID);
-      const clienteData = await fetchClienteData(solicitacao.ClienteID);
-      const tipoMovimentacaoClass = solicitacao.TipoMovimentacao === 'Entrada' ? 'label label-success' : 'label label-info';
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${solicitacao.ID}</td>
-        <td>${solicitacao.ProdutoDeApoioID}</td>
-        <td><span class="${tipoMovimentacaoClass}">${solicitacao.TipoMovimentacao}</span></td>
-        <td>${solicitacao.Quantidade}</td>
-        <td>${new Date(solicitacao.DataMovimentacao).toLocaleDateString()}</td>
-        <td>${new Date(solicitacao.DataEntrega).toLocaleDateString()}</td>
-        <td>${funcionarioData.Nome}</td>
-        <td>${clienteData.nome}</td>
-        <td>
-            <button type="button" class="btn btn-square ver-mais-solicitacao" data-solicitacao-id="${solicitacao.ID}">Ver Mais</button>
-        </td>
-      `;
-      tableBody.appendChild(row);
-    } catch (error) {
-      console.error('Erro ao buscar dados do funcionário ou cliente:', error);
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${solicitacao.ID}</td>
-        <td>${solicitacao.ProdutoDeApoioID}</td>
-        <td>${solicitacao.TipoMovimentacao}</td>
-        <td>${solicitacao.Quantidade}</td>
-        <td>${new Date(solicitacao.DataMovimentacao).toLocaleDateString()}</td>
-        <td>${new Date(solicitacao.DataEntrega).toLocaleDateString()}</td>
-        <td>${funcionarioData ? funcionarioData.Nome : 'Erro ao buscar funcionário'}</td>
-        <td>${clienteData ? clienteData.nome : 'Erro ao buscar cliente'}</td>
-        <td>
-            <button type="button" class="btn btn-square ver-mais-solicitacao" data-solicitacao-id="${solicitacao.ID}">Ver Mais</button>
-        </td>
-      `;
-      tableBody.appendChild(row);
-    }
+    const funcionarioData = await fetchFuncionarioData(solicitacao.FuncionarioID);
+    const clienteData = await fetchClienteData(solicitacao.ClienteID);
+    const tipoMovimentacaoClass = solicitacao.TipoMovimentacao === 'Entrada' ? 'label label-success' : 'label label-info';
+    
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${solicitacao.ID}</td>
+      <td>${solicitacao.ProdutoDeApoioID}</td>
+      <td><span class="${tipoMovimentacaoClass}">${solicitacao.TipoMovimentacao}</span></td>
+      <td>${solicitacao.Quantidade}</td>
+      <td>${new Date(solicitacao.DataMovimentacao).toLocaleDateString()}</td>
+      <td>${new Date(solicitacao.DataEntrega).toLocaleDateString()}</td>
+      <td>${funcionarioData.Nome}</td>
+      <td>${clienteData.nome}</td>
+      <td>
+          <button type="button" class="btn btn-square ver-mais-solicitacao" data-solicitacao-id="${solicitacao.ID}">Ver Mais</button>
+      </td>
+    `;
+    tableBody.appendChild(row);
   }
 
-  // Initialize DataTable
-  $('#solicitacoesTable').DataTable();
+  // Inicialização do DataTable
+  $('#solicitacoesTable').DataTable({
+    language: {
+        info: "Mostrar página _PAGE_ de _PAGES_",
+        infoEmpty: "Nenhuma entrada disponível",
+        infoFiltered: "(filtrado de _MAX_ entradas totais)",
+        lengthMenu: "Mostrar _MENU_ entradas por página",
+        zeroRecords: "Não foi encontrada nenhuma Solicitação",
+        search: "Procurar:",
+        paginate: {
+            first: "Primeiro",
+            last: "Último",
+            next: "Próximo",
+            previous: "Anterior"
+        }
+    }
+  });
 
-  // Add event listeners to "Ver Mais" buttons
+  // Adiciona listeners para os botões "Ver Mais"
   document.querySelectorAll('.ver-mais-solicitacao').forEach(button => {
     button.addEventListener('click', (event) => {
       const solicitacaoId = event.currentTarget.getAttribute('data-solicitacao-id');
@@ -76,5 +78,5 @@ async function populateDataTable() {
   });
 }
 
-// Populate the DataTable when the document is ready
+// Popula a DataTable quando o documento estiver pronto
 document.addEventListener('DOMContentLoaded', populateDataTable);
