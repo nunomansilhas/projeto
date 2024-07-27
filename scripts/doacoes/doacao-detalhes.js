@@ -64,17 +64,6 @@ async function fetchProdutoData(produtoId) {
     return response.json();
 }
 
-// Função para buscar os dados da empresa
-async function fetchDadosEmpresa() {
-    try {
-        const response = await fetch('http://localhost:3000/api/dadosEmpresa');
-        const dados = await response.json();
-        return dados;
-    } catch (error) {
-        console.error('Erro ao buscar dados da empresa:', error);
-    }
-}
-
 async function populateDoacaoDetalhes(doacao) {
     const contentDiv = document.getElementById('doacaoDetalhesContent');
     const beneficiario = await fetchBeneficiario(doacao.ClienteID);

@@ -63,7 +63,15 @@ async function populateBeneficiarioData(id) {
         document.getElementById('beneficiario-email').textContent = beneficiario.email;
         document.getElementById('beneficiario-telefone').textContent = beneficiario.telemovel;
         document.getElementById('beneficiario-endereco').textContent = beneficiario.morada;
-        document.getElementById('beneficiario-imagem').src = beneficiario.image_profile || "img/perfil/default.png";
+
+        const imagemPerfil = document.getElementById('beneficiario-imagem');
+        imagemPerfil.src = beneficiario.image_profile;
+        
+        // Adiciona evento de erro para exibir a imagem padrão caso ocorra um erro ao carregar a imagem
+        imagemPerfil.onerror = () => {
+            imagemPerfil.src = "img/default-avatar.png";
+        };
+
         document.querySelector('.edit-beneficiario').dataset.beneficiarioId = beneficiario.id;
         document.querySelector('.edit-beneficiario').dataset.beneficiarioName = beneficiario.nome;
         document.querySelector('.delete-beneficiario').dataset.beneficiarioId = beneficiario.id;
@@ -73,6 +81,7 @@ async function populateBeneficiarioData(id) {
         swal("Erro", "Ocorreu um erro ao carregar os dados do beneficiário.", "error");
     }
 }
+
 
 async function populateMovimentacoesTable(movimentacoes) {
     try {

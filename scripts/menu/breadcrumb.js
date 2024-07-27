@@ -42,6 +42,8 @@ function updateBreadcrumbAndTitle() {
     familyName = 'Doações';
   } else if (currentPage.startsWith('profile')) {
     familyName = 'Profile';
+  } else if (currentPage.startsWith('empressa')) {
+    familyName = 'Dados de Empressa';
   }
 
   const breadcrumbItems = generateBreadcrumbItems(currentPage, familyName);
@@ -109,6 +111,9 @@ function generateBreadcrumbItems(currentPage, familyName) {
   } else  if (currentPage.startsWith('profile')) {
     items.push({ href: 'index.html', name: 'Painel de Controlo' });
     items.push({ href: 'profile.html', name: 'Dados do Funcionário', active: true });
+  } else  if (currentPage.startsWith('empressa')) {
+    items.push({ href: 'index.html', name: 'Painel de Controlo' });
+    items.push({ href: 'empressa.html', name: 'Dados da Empressa', active: true });
   }
   return items;
 }

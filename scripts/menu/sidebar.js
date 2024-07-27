@@ -14,7 +14,8 @@ const sidebarItems = [
       items: [
             { href: 'funcionarios.html', iconClass: 'fa fa-male', name: 'Funcionários', colorClass: 'color6' },
             { href: 'categorias.html', iconClass: 'fa fa-cog', name: 'Categorias', colorClass: 'color7' },
-            { href: 'notificacoes.html', iconClass: 'fa fa-bell-o', name: 'Notificações', colorClass: 'color9' }
+            { href: 'notificacoes.html', iconClass: 'fa fa-bell-o', name: 'Notificações', colorClass: 'color9' },
+            { href: 'empressa.html', iconClass: 'fa fa-briefcase', name: 'Dados de Empressa', colorClass: 'color10' }
       ]
   }
 ];

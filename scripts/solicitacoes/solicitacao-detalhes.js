@@ -75,16 +75,6 @@ async function fetchFuncionarioData(funcionarioId) {
     return response.json();
 }
 
-async function fetchDadosEmpresa() {
-    try {
-        const response = await fetch('http://localhost:3000/api/dadosEmpresa');
-        const dados = await response.json();
-        return dados;
-    } catch (error) {
-        console.error('Erro ao buscar dados da empresa:', error);
-    }
-}
-
 async function populateSolicitacaoDetalhes(solicitacao) {
     const contentDiv = document.getElementById('solicitacaoDetalhesContent');
     const beneficiario = await fetchBeneficiario(solicitacao.ClienteID);
