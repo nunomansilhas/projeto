@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="descrição">
+  <meta name="keywords" content="palavras-chave" />
+  <title>APCVC - Nova Solicitação</title>
+  <link href="css/root.css" rel="stylesheet">
+  <link rel="stylesheet" href="//cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.14/css/bootstrap-select.min.css">
+  <script src="node_modules/jspdf/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <div class="loading"><img src="img/loading.gif" alt="imagem de carregamento"></div>
+  <div id="top" class="clearfix">
+    <div class="applogo">
+      <a href="#" class="logo">APCVC</a>
+    </div>
+    <a href="#" class="sidebar-open-button"><i class="fa fa-bars"></i></a>
+    <a href="#" class="sidebar-open-button-mobile"><i class="fa fa-bars"></i></a>
+    <ul class="top-right">
+      <li class="dropdown link">
+        <a href="#" data-toggle="dropdown" class="dropdown-toggle hdbutton">Criar Novo <span class="caret"></span></a>
+        <ul class="dropdown-menu dropdown-menu-list" id="quick-menu"></ul>
+      </li>
+      <li class="dropdown link" id="profile-box"></li>
+    </ul>
+  </div>
+  <div class="sidebar sidebar-colorful clearfix" id="sidebar"></div>
+  <div class="content">
+    <div class="page-header">
+      <h1 class="title">Nova Solicitação</h1>
+      <ol class="breadcrumb" id="breadcrumb"></ol>
+      <div class="right">
+        <div class="btn-group" role="group" aria-label="..." id="breadcrumb-buttons">
+        </div>
+      </div>
+    </div>
+    <div class="container-default">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            <div class="panel-title">Adicionar Nova Solicitação</div>
+            <div class="panel-body">
+              <form id="addSolicitacaoForm" class="form-horizontal">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label form-label" for="produtoSolicitacao">Produto</label>
+                  <div class="col-sm-10">
+                    <select class="selectpicker" id="produtoSolicitacao" name="produto" data-live-search="true" required></select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label form-label" for="clienteSolicitacao">Cliente</label>
+                  <div class="col-sm-10">
+                    <select class="selectpicker" id="clienteSolicitacao" name="cliente" data-live-search="true" required></select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label form-label" for="quantidadeSolicitacao">Quantidade</label>
+                  <div class="col-sm-10">
+                    <input type="number" class="form-control" id="quantidadeSolicitacao" name="quantidade" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label form-label" for="dataSolicitacao">Data da Solicitação</label>
+                  <div class="col-sm-10">
+                    <input type="date" class="form-control" id="dataSolicitacao" name="dataSolicitacao" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label form-label" for="dataEntrega">Data de Entrega</label>
+                  <div class="col-sm-10">
+                    <input type="date" class="form-control" id="dataEntrega" name="dataEntrega" required>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Adicionar Solicitação</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row footer">
+      <div class="col-md-6 text-left">
+        Copyright © 2024 <a href="https://apcvc.pt/" target="_blank">APCVC</a> - Todos os direitos reservados.
+      </div>
+      <div class="col-md-6 text-right">
+        Design e Desenvolvimento por <a href="https://nunomansilhas.pt" target="_blank">Nuno Mansilhas</a>
+      </div>
+    </div>
+  </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap/bootstrap.min.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/bootstrap-select/bootstrap-select.js"></script>
+    <script src="js/bootstrap-toggle/bootstrap-toggle.min.js"></script>
+    <script src="js/bootstrap-wysihtml5/wysihtml5-0.3.0.min.js"></script>
+    <script src="js/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
+    <script src="js/sweet-alert/sweet-alert.min.js"></script>
+    <script src="js/jquery-ui/jquery-ui.min.js"></script>
+    <script src="js/moment/moment.min.js"></script>
+    <script src="js/date-range-picker/daterangepicker.js"></script>
+
+  <script src="scripts/menu/breadcrumb.js"></script>
+  <script src="scripts/menu/quickmenu.js"></script>
+  <script src="scripts/menu/sidebar.js"></script>
+  <script src="scripts/menu/profile.js"></script>
+
+  <script src="js/sweet-alert/sweet-alert.min.js"></script>
+    <script src="js/kode-alert/main.js"></script>
+    
+  <script type="module" src="scripts/solicitacoes/solicitacao-adicionar.js"></script>
+</body>
+</html>

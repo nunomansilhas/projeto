@@ -1,3 +1,30 @@
+async function fetchSessionUser() {
+    try {
+      const response = await fetch('http://localhost:3000/api/login', {
+        credentials: 'include' // Necessário para enviar cookies de sessão
+      });
+  
+      if (!response.ok) {
+        throw new Error('Not authenticated');
+      }
+  
+      const data = await response.json();
+      return data.user;
+    } catch (error) {
+      console.error('Erro:', error);
+      // Redirecionar para a página de login se não estiver autenticado
+      window.location.href = './login.html';
+    }
+  }
+  
+  // Gera a sidebar ao carregar a página
+  document.addEventListener('DOMContentLoaded', async () => {
+    const sessionUser = await fetchSessionUser();
+    if (sessionUser) {
+      generateSidebar(sidebarItems, sessionUser);
+    }
+  });
+
 const sidebarItems = [
   {
       title: 'PRINCIPAL',
@@ -20,20 +47,24 @@ const sidebarItems = [
   }
 ];
 
-function generateSidebar(items) {
-  const sidebar = document.querySelector('.sidebar');
-  let sidebarHTML = '';
-
-  items.forEach(group => {
+function generateSidebar(items, user) {
+    const sidebar = document.querySelector('.sidebar');
+    let sidebarHTML = '';
+  
+    items.forEach(group => {
+      if (group.title === 'ADMIN' && user.cargo !== 'Administrador') {
+        return; 
+      }
+  
       sidebarHTML += `<ul class="sidebar-panel nav"><li class="sidetitle">${group.title}</li>`;
       group.items.forEach(item => {
-          sidebarHTML += `<li><a href="${item.href}"><span class="icon ${item.colorClass}"><i class="${item.iconClass}"></i></span>${item.name}</a></li>`;
+        sidebarHTML += `<li><a href="${item.href}"><span class="icon ${item.colorClass}"><i class="${item.iconClass}"></i></span>${item.name}</a></li>`;
       });
       sidebarHTML += '</ul>';
-  });
-
-  sidebar.innerHTML = sidebarHTML;
-}
+    });
+  
+    sidebar.innerHTML = sidebarHTML;
+  }
 
 // Gera a sidebar ao carregar a página
-document.addEventListener('DOMContentLoaded', () => generateSidebar(sidebarItems));
+//document.addEventListener('DOMContentLoaded', () => generateSidebar(sidebarItems));

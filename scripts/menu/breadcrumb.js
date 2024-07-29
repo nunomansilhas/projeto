@@ -18,6 +18,9 @@ const breadcrumbButtonsConfig = {
   ], 
   'funcionarios': [
     { href: 'funcionarios-adicionar.html', iconClass: 'fa fa-list', name: 'Novo Funcionário' }
+  ], 
+  'solicitacoes': [
+    { href: 'solicitacoes-adicionar.html', iconClass: 'fa fa-list', name: 'Nova Solicitação' }
   ]
   // Add other pages and their specific breadcrumb buttons here
 };
