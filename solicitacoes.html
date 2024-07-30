@@ -73,7 +73,28 @@
         Design e Desenvolvimento por <a href="https://nunomansilhas.pt" target="_blank">Nuno Mansilhas</a>
       </div>
     </div>
-  </div><script src="js/jquery.min.js"></script>
+  </div>
+  <!-- Modal for solicitacao details -->
+  <div class="modal fade" id="solicitacaoDetalhesModal" tabindex="-1" role="dialog" aria-labelledby="solicitacaoDetalhesModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="solicitacaoDetalhesModalLabel">Detalhes da Solicitação</h4>
+        </div>
+        <div class="modal-body">
+          <div id="solicitacaoDetalhesContent"></div>
+        </div>
+        <div class="modal-footer">
+          <button id="deleteSolicitacaoBtn" class="btn btn-danger"><i class="fa fa-trash-o"></i> Eliminar </button>
+          <button id="prolongarDataBtn" class="btn btn-warning" style="display: none;"><i class="fa fa-calendar-plus-o"></i> Prolongar Data</button>
+          <button id="printDeclSolicitacaoBtn" class="btn btn-default"><i class="fa fa-file-o"></i> Gerar Declaração</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/jquery.min.js"></script>
   <script src="js/bootstrap/bootstrap.min.js"></script>
   <script src="js/plugins.js"></script>
   <script src="js/bootstrap-select/bootstrap-select.js"></script>
@@ -98,6 +119,16 @@
  
 
   <script type="module" src="scripts/solicitacoes/get-data-solicitacoes.js"></script>
+  <script type="module">
+    import { showSolicitacaoDetalhesModal } from './scripts/solicitacoes/solicitacao-detalhes.js';
 
+    document.addEventListener('DOMContentLoaded', function() {
+      const params = new URLSearchParams(window.location.search);
+      const movimentacaoID = params.get('movimentacaoID');
+      if (movimentacaoID) {
+        showSolicitacaoDetalhesModal(movimentacaoID);
+      }
+    });
+  </script>
 </body>
 </html>

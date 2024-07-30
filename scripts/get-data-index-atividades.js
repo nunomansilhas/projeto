@@ -68,7 +68,7 @@ async function generateInventorySummary() {
     const actionsCell = document.createElement('td');
     actionsCell.classList.add('text-r');
     const viewButton = document.createElement('a');
-    viewButton.href = '#'; // Replace with the appropriate URL if needed
+    viewButton.href = `solicitacoes.html?movimentacaoID=${movimentacao.ID}`; // Adjusted URL
     viewButton.classList.add('btn', 'btn-light', 'btn-icon');
     viewButton.innerHTML = '<i class="fa fa-eye"></i>';
     actionsCell.appendChild(viewButton);
