@@ -97,11 +97,11 @@ async function fetchDadosEmpresa() {
     }
 }
 
- function  printDeclaracao() {
+async function  printDeclaracao() {
     const { jsPDF } = window.jspdf;
     
     const doc = new jsPDF();
-    const dadosEmpresa =  fetchDadosEmpresa();
+    const dadosEmpresa = await fetchDadosEmpresa();
     // Carregar a imagem do logotipo
     const imgData = 'img/logo.jpg'; // Caminho para a imagem do logotipo
 

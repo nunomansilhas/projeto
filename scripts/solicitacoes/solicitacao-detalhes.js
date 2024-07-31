@@ -28,7 +28,6 @@ function createSolicitacaoDetalhesModal() {
                     </div>
                     <div class="modal-footer">
                         <button id="deleteSolicitacaoBtn" class="btn btn-danger"><i class="fa fa-trash-o"></i> Eliminar </button>
-                        <button id="prolongarDataBtn" class="btn btn-warning" style="display: none;"><i class="fa fa-calendar-plus-o"></i> Prolongar Data</button>
                         <button id="printDeclSolicitacaoBtn" class="btn btn-default"><i class="fa fa-file-o"></i> Gerar Declaração</button>
                     </div>
                 </div>
@@ -40,7 +39,6 @@ function createSolicitacaoDetalhesModal() {
 
     document.getElementById('printDeclSolicitacaoBtn').addEventListener('click', printDeclaracaoSolicitacao);
     document.getElementById('deleteSolicitacaoBtn').addEventListener('click', deleteSolicitacao);
-    document.getElementById('prolongarDataBtn').addEventListener('click', prolongarDataDevolucao);
 }
 
 async function fetchSolicitacaoDetalhes(solicitacaoId) {
@@ -99,13 +97,6 @@ async function populateSolicitacaoDetalhes(solicitacao) {
     contentDiv.dataset.TipoMovimentacao = solicitacao.TipoMovimentacao;
 
     contentDiv.dataset.nomeficheiro = solicitacao.ID + beneficiario.id + produto.ID;
-
-    // Mostrar o botão "Prolongar Data" apenas se o tipo de movimentação for "Saída"
-    if (solicitacao.TipoMovimentacao === 'Saída') {
-        document.getElementById('prolongarDataBtn').style.display = 'inline-block';
-    } else {
-        document.getElementById('prolongarDataBtn').style.display = 'none';
-    }
 }
 
 async function fetchDadosEmpresa() {
@@ -118,26 +109,19 @@ async function fetchDadosEmpresa() {
     }
 }
 
-function printDeclaracaoSolicitacao() {
+async function printDeclaracaoSolicitacao() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    const dadosEmpresa = fetchDadosEmpresa();
-    // Carregar a imagem do logotipo
+    const dadosEmpresa = await fetchDadosEmpresa();
     const imgData = 'img/logo.jpg'; // Caminho para a imagem do logotipo
 
-    // Adicionar o logotipo ao PDF
     doc.addImage(imgData, 'JPEG', 20, 15, 55, 20);
-
-    // Adicionar título ao lado do logotipo
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
     doc.text('DECLARAÇÃO DE EMPRÉSTIMO DE MATERIAL', 85, 37);
-
-    // Adicionar a linha horizontal abaixo do logotipo e título
     doc.setLineWidth(0.3);
     doc.line(20, 40, 190, 40);
 
-    // Coletar dados do modal
     const solicitacaoDetalhes = document.getElementById('solicitacaoDetalhesContent');
     const produto = solicitacaoDetalhes.querySelector('p:nth-child(2)').textContent.split(': ')[1];
     const cliente = solicitacaoDetalhes.dataset.beneficiarioNome;
@@ -149,21 +133,16 @@ function printDeclaracaoSolicitacao() {
     const dataEntrega = solicitacaoDetalhes.querySelector('p:nth-child(6)').textContent.split(': ')[1];
     const nomeficheiro = solicitacaoDetalhes.dataset.nomeficheiro;
 
-    // Adicionar conteúdo ao PDF com quebra de linha para textos longos
     doc.setFontSize(12);
     doc.setFont('helvetica', 'normal');
     doc.text(`${funcionario}, responsável do cliente ${cliente}; declaro que levo a título de empréstimo o seguinte material pertencente à Associação de Paralisia Cerebral de Viana do Castelo:`, 35, 65, { maxWidth: 150, lineHeightFactor: 1.6 });
-
     doc.text(`ID: ${produtoId}`, 35, 88);
     doc.text(`Produto: ${produto}`, 35, 95);
     doc.text(`Quantidade: ${quantidade}`, 35, 102);
-
     doc.text('Comprometo-me a mantê-lo devidamente cuidado e devolvê-lo logo que deixe de necessitá-lo.', 35, 115, { maxWidth: 150, lineHeightFactor: 1.6 });
-
     doc.text(`DATA DE EMPRÉSTIMO: ${dataSolicitacao}`, 35, 145);
     doc.text(`O/A declarante: _______________________________________________`, 35, 155);
 
-    // Adicionar a data de devolução conforme o tipo de movimentação
     if (TipoMovimentacao === 'Entrada') {
         doc.text(`DATA DE DEVOLUÇÃO: ${dataEntrega}`, 35, 170);
     } else {
@@ -171,15 +150,10 @@ function printDeclaracaoSolicitacao() {
     }
 
     doc.text('O/A declarante: _______________________________________________', 35, 180);
-
-    // Adicionar a linha horizontal acima do rodape
     doc.setLineWidth(0.3);
     doc.line(35, 270, 175, 270);
-
-    // Adicionar conteúdo ao rodapé
     doc.setFontSize(8);
     doc.text('Mod.PAF.06/0', 35, 275);
-
     doc.setFontSize(7);
     doc.setFont('helvetica', 'bold');
     doc.text(`Contribuinte: ${dadosEmpresa.contribuinte} | ${dadosEmpresa.endereco} | ${dadosEmpresa.cidade}  `, 105, 280, { align: 'center' });
@@ -188,27 +162,21 @@ function printDeclaracaoSolicitacao() {
     doc.save(`Declaracao_Solicitacao_${nomeficheiro}.pdf`);
 }
 
-
 async function deleteSolicitacao(solicitacaoId) {
     try {
-        // Primeiro, buscar a solicitação para obter os detalhes necessários
         const solicitacaoResponse = await fetch(`http://localhost:3000/api/movimentacoes/${solicitacaoId}`);
         if (!solicitacaoResponse.ok) throw new Error('Erro ao buscar detalhes da solicitação');
         const solicitacao = await solicitacaoResponse.json();
 
-        // Recuperar a quantidade e o ID do produto
         const produtoId = solicitacao.ProdutoDeApoioID;
         const quantidadeSolicitada = solicitacao.Quantidade;
 
-        // Buscar o produto para obter a quantidade atual
         const produtoResponse = await fetch(`http://localhost:3000/api/produtos/${produtoId}`);
         if (!produtoResponse.ok) throw new Error('Erro ao buscar detalhes do produto');
         const produto = await produtoResponse.json();
         
-        // Calcular a nova quantidade
         const novaQuantidade = produto.quantidade + quantidadeSolicitada;
 
-        // Atualizar a quantidade do produto
         const updateResponse = await fetch(`http://localhost:3000/api/produtos/quantidade/${produtoId}`, {
             method: 'PUT',
             headers: {
@@ -218,7 +186,6 @@ async function deleteSolicitacao(solicitacaoId) {
         });
         if (!updateResponse.ok) throw new Error('Erro ao atualizar quantidade do produto');
 
-        // Depois de atualizar a quantidade do produto, deletar a solicitação
         const deleteResponse = await fetch(`http://localhost:3000/api/movimentacoes/${solicitacaoId}`, {
             method: 'DELETE'
         });
@@ -229,7 +196,6 @@ async function deleteSolicitacao(solicitacaoId) {
         swal("Sucesso", "Solicitação deletada com sucesso!", "success");
         $('#solicitacaoDetalhesModal').modal('hide');
 
-        // Atualize a lista de solicitações ou redirecione conforme necessário
         window.location.reload();
     } catch (error) {
         console.error('Erro ao deletar solicitação:', error);
@@ -237,46 +203,7 @@ async function deleteSolicitacao(solicitacaoId) {
     }
 }
 
-async function prolongarDataDevolucao() {
-    const novaData = prompt("Por favor, insira a nova data de devolução (formato: YYYY-MM-DD):");
-
-    if (!novaData) {
-        return; // Se o usuário cancelar o prompt
-    }
-
-    const dataValida = moment(novaData, "YYYY-MM-DD", true).isValid();
-
-    if (!dataValida) {
-        swal("Erro", "Data inválida. Por favor, insira uma data válida no formato YYYY-MM-DD.", "error");
-        return;
-    }
-
-    const solicitacaoId = document.getElementById('solicitacaoDetalhesModal').dataset.solicitacaoId;
-
-    try {
-        const response = await fetch(`http://localhost:3000/api/movimentacoes/${solicitacaoId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ DataEntrega: novaData })
-        });
-
-        if (!response.ok) throw new Error('Erro ao atualizar data de devolução');
-
-        swal("Sucesso", "Data de devolução atualizada com sucesso!", "success");
-        await enviarNotificacao('Editado', `A data de devolução da solicitação ID: ${solicitacaoId} foi atualizada para ${novaData}`);
-        $('#solicitacaoDetalhesModal').modal('hide');
-        // Atualize a visualização para refletir a nova data de devolução
-        document.getElementById('dataDevolucao').textContent = `Data de Devolução: ${moment(novaData).format('YYYY-MM-DD')}`;
-    } catch (error) {
-        console.error('Erro ao atualizar data de devolução:', error);
-        swal("Erro", "Ocorreu um erro ao atualizar a data de devolução.", "error");
-    }
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('printDeclSolicitacaoBtn').addEventListener('click', printDeclaracaoSolicitacao);
     document.getElementById('deleteSolicitacaoBtn').addEventListener('click', deleteSolicitacao);
-    document.getElementById('prolongarDataBtn').addEventListener('click', prolongarDataDevolucao);
 });

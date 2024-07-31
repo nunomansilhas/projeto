@@ -20,7 +20,7 @@ function createEditFuncionarioModal() {
                 <input type="text" class="form-control" id="edit-nome" name="nome" required>
               </div>
               <div class="form-group">
-                <label for="edit-username">Nome de Usuário</label>
+                <label for="edit-username">Nome de Utilizador</label>
                 <input type="text" class="form-control" id="edit-username" name="username" required>
               </div>
               <div class="form-group">

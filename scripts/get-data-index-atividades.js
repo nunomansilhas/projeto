@@ -42,15 +42,27 @@ async function generateInventorySummary() {
 
     // Create table cells
     const produtoCell = document.createElement('td');
-    produtoCell.textContent = '( '+ produtoData.ID +' ) '+ produtoData.Nome || 'Produto Desconhecido';
+    const produtoLink = document.createElement('a');
+    produtoLink.href = `produtos-visualizar.html?id=${produtoData.ID}`;
+    produtoLink.textContent = `( ${produtoData.ID} ) ${produtoData.Nome || 'Produto Desconhecido'}`;
+    produtoLink.classList.add('table-link');
+    produtoCell.appendChild(produtoLink);
     listItem.appendChild(produtoCell);
 
     const clienteCell = document.createElement('td');
-    clienteCell.textContent = clienteData.nome || 'Cliente Desconhecido';
+    const clienteLink = document.createElement('a');
+    clienteLink.href = `beneficiarios-visualizar.html?id=${clienteData.id}`;
+    clienteLink.textContent = clienteData.nome || 'Cliente Desconhecido';
+    clienteLink.classList.add('table-link');
+    clienteCell.appendChild(clienteLink);
     listItem.appendChild(clienteCell);
 
     const funcionarioCell = document.createElement('td');
-    funcionarioCell.textContent = funcionarioData.Nome || 'Funcionário Desconhecido';
+    const funcionarioLink = document.createElement('a');
+    funcionarioLink.href = `funcionarios-visualizar.html?id=${funcionarioData.ID}`;
+    funcionarioLink.textContent = funcionarioData.Nome || 'Funcionário Desconhecido';
+    funcionarioLink.classList.add('table-link');
+    funcionarioCell.appendChild(funcionarioLink);
     listItem.appendChild(funcionarioCell);
 
     const dataDevolucao = new Date(movimentacao.DataMovimentacao);
@@ -64,18 +76,27 @@ async function generateInventorySummary() {
     devolucaoCell.appendChild(devolucaoLabel);
     listItem.appendChild(devolucaoCell);
 
-    // Add View More button
+    // Add new "Ver Mais" button
     const actionsCell = document.createElement('td');
     actionsCell.classList.add('text-r');
     const viewButton = document.createElement('a');
     viewButton.href = `solicitacoes.html?movimentacaoID=${movimentacao.ID}`; // Adjusted URL
-    viewButton.classList.add('btn', 'btn-light', 'btn-icon');
-    viewButton.innerHTML = '<i class="fa fa-eye"></i>';
+    viewButton.classList.add('btn', 'btn-square', 'btn-view');
+    viewButton.textContent = 'Ver Mais';
     actionsCell.appendChild(viewButton);
     listItem.appendChild(actionsCell);
 
     // Append the generated item to the list
     summaryList.appendChild(listItem);
+  }
+
+  // Check if more than 7 items and adjust height if needed
+  if (summaryList.children.length > 7) {
+    document.querySelector('.panel-body.table-responsive').style.maxHeight = '500px';
+    document.querySelector('.panel-body.table-responsive').style.overflowY = 'auto';
+  } else {
+    document.querySelector('.panel-body.table-responsive').style.maxHeight = 'none';
+    document.querySelector('.panel-body.table-responsive').style.overflowY = 'visible';
   }
 }
 

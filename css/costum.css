@@ -1,65 +1,8 @@
-.drop-area {
-    border: 2px dashed #cccccc;
-    padding: 10px;
-    height: 250px;
-    overflow-y: auto;
-    text-align: center; /* Centraliza o texto */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 10px; /* Espaço inferior entre a drop area e a pré-visualização */
-}
-
-.highlight {
-    background-color: #f0f0f0;
-}
-
-.image-container{
-    position: relative;
-    display: inline-block;
-    width: 100px; /* Largura fixa para os contêineres de imagem */
-    height: 100px; /* Altura fixa para os contêineres de imagem */
-    margin-right: 10px;
-    margin-bottom: 10px; /* Espaço inferior entre as imagens */
-    border-radius: 10px; /* Bordas arredondadas */
-    overflow: hidden; /* Esconde o overflow para garantir que as imagens caibam dentro dos contêineres */
-}
-
-.image-container img {
-    width: 100%; /* Faz com que as imagens preencham seus contêineres */
-    height: auto;
-    border-radius: 10px; /* Mantém as bordas arredondadas para as imagens */
-    object-fit: cover; /* Garante que a imagem cubra o contêiner sem esticar */
-}
-
-.selected-image {
-    background-color: #d3d3d3;
-    border: 2px solid #a9a9a9;
-    border-radius: 4px;
+a.table-link {
+    color: inherit; /* Use a cor do texto do pai */
+    text-decoration: none; /* Remove a sublinhado */
   }
   
-
-.delete-button {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-color: red;
-    color: white;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    text-align: center;
-    cursor: pointer;
-}
-
-
-.kode-alert {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: 15px;
-    background-color: #5cb85c;
-    color: white;
-    border-radius: 5px;
-    display: none;
-}
+  a.table-link:hover {
+    text-decoration: underline; /* Adiciona sublinhado no hover, se desejar */
+  }

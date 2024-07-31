@@ -19,7 +19,6 @@ async function fetchClienteData(clienteId) {
     return await response.json();
   } catch (error) {
     console.error('Erro ao buscar dados do cliente:', error);
-    // Retorna um objeto padrão quando o cliente não é encontrado
     return { nome: 'Cliente desconhecido' }; 
   }
 }
@@ -34,7 +33,7 @@ async function populateDataTable() {
   const solicitacoes = await fetchSolicitacoes();
 
   const tableBody = document.querySelector('#solicitacoesTable tbody');
-  tableBody.innerHTML = ''; // Limpa as linhas existentes
+  tableBody.innerHTML = ''; 
 
   for (const solicitacao of solicitacoes) {
     const funcionarioData = await fetchFuncionarioData(solicitacao.FuncionarioID);
@@ -52,14 +51,18 @@ async function populateDataTable() {
       <td>${funcionarioData.Nome}</td>
       <td>${clienteData.nome}</td>
       <td>
-          <button type="button" class="btn btn-square ver-mais-solicitacao" data-solicitacao-id="${solicitacao.ID}">Ver Mais</button>
-          ${solicitacao.TipoMovimentacao === 'Saída' ? `<button type="button" class="btn btn-square devolver-artigo" data-solicitacao-id="${solicitacao.ID}">Devolver Artigo</button>` : ''}
+        <button type="button" class="btn btn-square ver-mais-solicitacao" data-solicitacao-id="${solicitacao.ID}">Ver Mais</button>
+      </td>
+      <td>
+        ${solicitacao.TipoMovimentacao === 'Saída' ? `<button type="button" class="btn btn-square devolver-artigo" data-solicitacao-id="${solicitacao.ID}">Devolver Artigo</button>` : ''}
+      </td>
+      <td>
+        ${solicitacao.TipoMovimentacao === 'Saída' ? `<button type="button" class="btn btn-square prolongar-data" data-solicitacao-id="${solicitacao.ID}">Prolongar Data</button>` : ''}
       </td>
     `;
     tableBody.appendChild(row);
   }
 
-  // Inicialização do DataTable
   const table = $('#solicitacoesTable').DataTable({
     language: {
         info: "Mostrar página _PAGE_ de _PAGES_",
@@ -76,7 +79,6 @@ async function populateDataTable() {
         }
     },
     drawCallback: function() {
-      // Adiciona listeners para os botões "Ver Mais"
       document.querySelectorAll('.ver-mais-solicitacao').forEach(button => {
         button.addEventListener('click', (event) => {
           const solicitacaoId = event.currentTarget.getAttribute('data-solicitacao-id');
@@ -84,18 +86,23 @@ async function populateDataTable() {
         });
       });
 
-      // Adiciona listeners para os botões "Devolver Artigo"
       document.querySelectorAll('.devolver-artigo').forEach(button => {
         button.addEventListener('click', async (event) => {
           const solicitacaoId = event.currentTarget.getAttribute('data-solicitacao-id');
           await confirmarDevolucaoArtigo(solicitacaoId);
         });
       });
+
+      document.querySelectorAll('.prolongar-data').forEach(button => {
+        button.addEventListener('click', async (event) => {
+          const solicitacaoId = event.currentTarget.getAttribute('data-solicitacao-id');
+          await prolongarDataDevolucao(solicitacaoId);
+        });
+      });
     }
   });
 }
 
-// Popula a DataTable quando o documento estiver pronto
 document.addEventListener('DOMContentLoaded', populateDataTable);
 
 async function confirmarDevolucaoArtigo(solicitacaoId) {
@@ -117,7 +124,6 @@ async function confirmarDevolucaoArtigo(solicitacaoId) {
           Swal.showValidationMessage('Por favor, insira uma data de devolução válida.');
           return false;
         }
-        // Verificar se a data de devolução não é anterior à data de requerimento
         if (new Date(dataDevolucao) < new Date(solicitacao.DataMovimentacao)) {
           Swal.showValidationMessage('A data de devolução não pode ser anterior à data de requerimento.');
           return false;
@@ -127,12 +133,12 @@ async function confirmarDevolucaoArtigo(solicitacaoId) {
     });
 
     if (formValues) {
-      const dataFormatada = new Date(formValues).toISOString().split('T')[0]; // Formatar a data corretamente
+      const dataFormatada = new Date(formValues).toISOString().split('T')[0];
       await devolverArtigo(solicitacaoId, dataFormatada);
     }
   } catch (error) {
     console.error('Erro ao confirmar a devolução do artigo:', error);
-    swal("Erro", "Ocorreu um erro ao confirmar a devolução do artigo.", "error");
+    Swal.fire("Erro", "Ocorreu um erro ao confirmar a devolução do artigo.", "error");
   }
 }
 
@@ -153,11 +159,11 @@ async function devolverArtigo(solicitacaoId, novaDataDevolucao) {
 
     await enviarNotificacao('Artigo Devolvido', `O artigo com ID: ${solicitacaoId} foi devolvido com sucesso.`);
 
-    swal("Sucesso", "Artigo devolvido com sucesso!", "success");
+    Swal.fire("Sucesso", "Artigo devolvido com sucesso!", "success");
     window.location.reload();
   } catch (error) {
     console.error('Erro ao devolver o artigo:', error);
-    swal("Erro", "Ocorreu um erro ao devolver o artigo.", "error");
+    Swal.fire("Erro", "Ocorreu um erro ao devolver o artigo.", "error");
   }
 }
 
@@ -165,4 +171,61 @@ async function fetchSolicitacao(solicitacaoId) {
   const response = await fetch(`http://localhost:3000/api/movimentacoes/${solicitacaoId}`);
   if (!response.ok) throw new Error('Erro ao buscar dados da solicitação');
   return response.json();
+}
+
+async function prolongarDataDevolucao(solicitacaoId) {
+  try {
+    const solicitacao = await fetchSolicitacao(solicitacaoId);
+    const dataAtual = solicitacao.DataEntrega ? new Date(solicitacao.DataEntrega).toISOString().split('T')[0] : '';
+
+    const { value: formValues } = await Swal.fire({
+      title: 'Prolongar Data de Devolução',
+      html:
+        '<p>Por favor, insira a nova data de devolução:</p>' +
+        `<input type="date" id="dataDevolucao" class="swal2-input" value="${dataAtual}">`,
+      focusConfirm: false,
+      showCancelButton: true,
+      preConfirm: () => {
+        const novaData = document.getElementById('dataDevolucao').value;
+        if (!novaData) {
+          Swal.showValidationMessage('Por favor, insira uma data de devolução válida.');
+          return false;
+        }
+        if (new Date(novaData) < new Date(solicitacao.DataMovimentacao)) {
+          Swal.showValidationMessage('A data de devolução não pode ser anterior à data de requerimento.');
+          return false;
+        }
+        return novaData;
+      }
+    });
+
+    if (formValues) {
+      const dataFormatada = new Date(formValues).toISOString().split('T')[0];
+      await atualizarDataDevolucao(solicitacaoId, dataFormatada);
+    }
+  } catch (error) {
+    console.error('Erro ao prolongar a data de devolução:', error);
+    Swal.fire("Erro", "Ocorreu um erro ao prolongar a data de devolução.", "error");
+  }
+}
+
+async function atualizarDataDevolucao(solicitacaoId, novaDataDevolucao) {
+  try {
+    const response = await fetch(`http://localhost:3000/api/movimentacoes/${solicitacaoId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ DataEntrega: novaDataDevolucao })
+    });
+
+    if (!response.ok) throw new Error('Erro ao atualizar data de devolução');
+
+    await enviarNotificacao('Editado', `A data de devolução da solicitação ID: ${solicitacaoId} foi atualizada para ${novaDataDevolucao}`);
+    Swal.fire("Sucesso", "Data de devolução atualizada com sucesso!", "success");
+    window.location.reload();
+  } catch (error) {
+    console.error('Erro ao atualizar data de devolução:', error);
+    Swal.fire("Erro", "Ocorreu um erro ao atualizar a data de devolução.", "error");
+  }
 }

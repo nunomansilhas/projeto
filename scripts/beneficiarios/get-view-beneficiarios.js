@@ -1,8 +1,8 @@
-import { enviarNotificacao } from '../acoes/enviar-notificacao.js'; // Importar a função de enviar notificação
-import { showEditBeneficiarioModal } from './beneficiarios-editar.js'; // Importar a função de edição
-import { confirmDelete, deleteBeneficiary } from './beneficiario-eliminar.js'; // Importar a função de exclusão
-import { showAddDoacaoModal } from './doacao-adicionar.js'; // Importar a função de adicionar doação
-import { showAddRequisicaoModal } from './requisicao-adicionar.js'; // Importar a função de nova requisição
+import { enviarNotificacao } from '../acoes/enviar-notificacao.js'; 
+import { showEditBeneficiarioModal } from './beneficiarios-editar.js'; 
+import { confirmDelete, deleteBeneficiary } from './beneficiario-eliminar.js'; 
+import { showAddDoacaoModal } from './doacao-adicionar.js'; 
+import { showAddRequisicaoModal } from './requisicao-adicionar.js'; 
 import { showDoacaoDetalhesModal } from './doacao-detalhes.js';
 import { showRequisicaoDetalhesModal } from './requisicao-detalhes.js';
 
@@ -67,7 +67,6 @@ async function populateBeneficiarioData(id) {
         const imagemPerfil = document.getElementById('beneficiario-imagem');
         imagemPerfil.src = beneficiario.image_profile;
         
-        // Adiciona evento de erro para exibir a imagem padrão caso ocorra um erro ao carregar a imagem
         imagemPerfil.onerror = () => {
             imagemPerfil.src = "img/default-avatar.png";
         };
@@ -78,19 +77,18 @@ async function populateBeneficiarioData(id) {
         document.querySelector('.delete-beneficiario').dataset.beneficiarioName = beneficiario.nome;
     } catch (error) {
         console.error('Erro ao popular os dados do beneficiário:', error);
-        swal("Erro", "Ocorreu um erro ao carregar os dados do beneficiário.", "error");
+        Swal.fire("Erro", "Ocorreu um erro ao carregar os dados do beneficiário.", "error");
     }
 }
-
 
 async function populateMovimentacoesTable(movimentacoes) {
     try {
         const tableBody = document.querySelector('#movimentacoesTable tbody');
-        tableBody.innerHTML = ''; // Limpa as linhas existentes
+        tableBody.innerHTML = ''; 
 
         if (movimentacoes.length === 0) {
             const row = document.createElement('tr');
-            row.innerHTML = `<td colspan="7" class="text-center">Não existem movimentações para este beneficiário</td>`;
+            row.innerHTML = `<td colspan="9" class="text-center">Não existem movimentações para este beneficiário</td>`;
             tableBody.appendChild(row);
         } else {
             for (const movimentacao of movimentacoes) {
@@ -112,6 +110,9 @@ async function populateMovimentacoesTable(movimentacoes) {
                     <td>
                         ${movimentacao.TipoMovimentacao === 'Saída' ? `<button type="button" class="btn btn-square devolver-artigo" data-requisicao-id="${movimentacao.ID}">Devolver Artigo</button>` : ''}
                     </td>
+                    <td>
+                        ${movimentacao.TipoMovimentacao === 'Saída' ? `<button type="button" class="btn btn-square prolongar-data" data-requisicao-id="${movimentacao.ID}">Prolongar Data</button>` : ''}
+                    </td>
                 `;
                 tableBody.appendChild(row);
             }
@@ -129,10 +130,17 @@ async function populateMovimentacoesTable(movimentacoes) {
                     await confirmarDevolucaoArtigo(requisicaoId);
                 });
             });
+
+            document.querySelectorAll('.prolongar-data').forEach(button => {
+                button.addEventListener('click', async (event) => {
+                    const requisicaoId = event.currentTarget.getAttribute('data-requisicao-id');
+                    await prolongarDataDevolucao(requisicaoId);
+                });
+            });
         }
     } catch (error) {
         console.error('Erro ao popular a tabela de movimentações:', error);
-        swal("Erro", "Ocorreu um erro ao carregar as movimentações de inventário.", "error");
+        Swal.fire("Erro", "Ocorreu um erro ao carregar as movimentações de inventário.", "error");
     }
 }
 
@@ -155,17 +163,27 @@ async function confirmarDevolucaoArtigo(requisicaoId) {
                     Swal.showValidationMessage('Por favor, insira uma data de devolução válida.');
                     return false;
                 }
+                if (new Date(dataDevolucao) < new Date(movimentacao.DataMovimentacao)) {
+                    Swal.showValidationMessage('A data de devolução não pode ser anterior à data de requerimento.');
+                    return false;
+                }
                 return dataDevolucao;
+            },
+            didOpen: () => {
+                const dataInput = document.getElementById('dataDevolucao');
+                dataInput.addEventListener('input', () => {
+                    Swal.resetValidationMessage();
+                });
             }
         });
 
         if (formValues) {
-            const dataFormatada = new Date(formValues).toISOString().split('T')[0]; // Formatar a data corretamente
+            const dataFormatada = new Date(formValues).toISOString().split('T')[0]; 
             await devolverArtigo(requisicaoId, dataFormatada);
         }
     } catch (error) {
         console.error('Erro ao confirmar a devolução do artigo:', error);
-        swal("Erro", "Ocorreu um erro ao confirmar a devolução do artigo.", "error");
+        Swal.fire("Erro", "Ocorreu um erro ao confirmar a devolução do artigo.", "error");
     }
 }
 
@@ -186,31 +204,96 @@ async function devolverArtigo(requisicaoId, novaDataDevolucao) {
 
         await enviarNotificacao('Artigo Devolvido', `O artigo com ID: ${requisicaoId} foi devolvido com sucesso.`);
 
-        swal("Sucesso", "Artigo devolvido com sucesso!", "success");
+        Swal.fire("Sucesso", "Artigo devolvido com sucesso!", "success");
         window.location.reload();
     } catch (error) {
         console.error('Erro ao devolver o artigo:', error);
-        swal("Erro", "Ocorreu um erro ao devolver o artigo.", "error");
+        Swal.fire("Erro", "Ocorreu um erro ao devolver o artigo.", "error");
     }
 }
 
-// Função para popular as movimentações do beneficiário
+async function prolongarDataDevolucao(requisicaoId) {
+    try {
+        const movimentacao = await fetchMovimentacao(requisicaoId);
+        const dataAtual = movimentacao.DataEntrega ? new Date(movimentacao.DataEntrega).toISOString().split('T')[0] : '';
+
+        const { value: formValues } = await Swal.fire({
+            title: 'Prolongar Data de Devolução',
+            html:
+                '<p>Por favor, insira a nova data de devolução:</p>' +
+                `<input type="date" id="dataDevolucao" class="swal2-input" value="${dataAtual}">`,
+            focusConfirm: false,
+            showCancelButton: true,
+            preConfirm: () => {
+                const novaData = document.getElementById('dataDevolucao').value;
+                if (!novaData) {
+                    Swal.showValidationMessage('Por favor, insira uma data de devolução válida.');
+                    return false;
+                }
+                if (new Date(novaData) < new Date(movimentacao.DataMovimentacao)) {
+                    Swal.showValidationMessage('A data de devolução não pode ser anterior à data de requerimento.');
+                    return false;
+                }
+                return novaData;
+            },
+            didOpen: () => {
+                const dataInput = document.getElementById('dataDevolucao');
+                dataInput.addEventListener('input', () => {
+                    Swal.resetValidationMessage();
+                });
+            }
+        });
+
+        if (formValues) {
+            const dataFormatada = new Date(formValues).toISOString().split('T')[0]; 
+            await atualizarDataDevolucao(requisicaoId, dataFormatada);
+        }
+    } catch (error) {
+        console.error('Erro ao prolongar a data de devolução:', error);
+        Swal.fire("Erro", "Ocorreu um erro ao prolongar a data de devolução.", "error");
+    }
+}
+
+async function atualizarDataDevolucao(requisicaoId, novaDataDevolucao) {
+    try {
+        const response = await fetch(`http://localhost:3000/api/movimentacoes/${requisicaoId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ DataEntrega: novaDataDevolucao })
+        });
+
+        if (!response.ok) throw new Error('Erro ao atualizar data de devolução');
+
+        Swal.fire("Sucesso", "Data de devolução atualizada com sucesso!", "success");
+        await enviarNotificacao('Editado', `A data de devolução da requisição ID: ${requisicaoId} foi atualizada para ${novaDataDevolucao}`);
+        $('#requisicaoDetalhesModal').modal('hide');
+        const dataDevolucaoElement = document.getElementById('dataDevolucao');
+        if (dataDevolucaoElement) {
+            dataDevolucaoElement.textContent = `Data de Devolução: ${moment(novaDataDevolucao).format('YYYY-MM-DD')}`;
+        }
+    } catch (error) {
+        console.error('Erro ao atualizar data de devolução:', error);
+        Swal.fire("Erro", "Ocorreu um erro ao atualizar a data de devolução.", "error");
+    }
+}
+
 async function populateMovimentacoes(id) {
     try {
         const movimentacoes = await fetchMovimentacoes();
-        const beneficiarioMovimentacoes = movimentacoes.filter(mov => mov.ClienteID == id); // Filtrar pelas movimentações do beneficiário
+        const beneficiarioMovimentacoes = movimentacoes.filter(mov => mov.ClienteID == id); 
         await populateMovimentacoesTable(beneficiarioMovimentacoes);
     } catch (error) {
         console.error('Erro ao buscar as movimentações de inventário:', error);
-        swal("Erro", "Ocorreu um erro ao buscar as movimentações de inventário.", "error");
+        Swal.fire("Erro", "Ocorreu um erro ao buscar as movimentações de inventário.", "error");
     }
 }
 
-// Função para popular a tabela de doações
 async function populateDoacoesTable(doacoes, tiposProdutos) {
     try {
         const tableBody = document.querySelector('#doacoesTableBody');
-        tableBody.innerHTML = ''; // Limpa as linhas existentes
+        tableBody.innerHTML = ''; 
 
         if (doacoes.length === 0) {
             const row = document.createElement('tr');
@@ -225,9 +308,7 @@ async function populateDoacoesTable(doacoes, tiposProdutos) {
                 row.innerHTML = `
                     <td>${produtoData.ID}</td>
                     <td>${produtoData.Nome || 'Produto Desconhecido'}</td>
-                    <td>${tipoProduto ? tipoProduto.Nome : 'Categoria Desconhecida'}</td>
                     <td>${doacao.Quantidade}</td>
-                    <td>${new Date(doacao.DataDoacao).toLocaleDateString()}</td>
                     <td><button type="button" class="btn btn-square ver-mais-doacao" data-doacao-id="${doacao.ID}">Ver Mais</button></td>
                 `;
                 tableBody.appendChild(row);
@@ -242,11 +323,10 @@ async function populateDoacoesTable(doacoes, tiposProdutos) {
         }
     } catch (error) {
         console.error('Erro ao popular a tabela de doações:', error);
-        swal("Erro", "Ocorreu um erro ao carregar as doações.", "error");
+        Swal.fire("Erro", "Ocorreu um erro ao carregar as doações.", "error");
     }
 }
 
-// Função para popular as doações do beneficiário
 async function populateDoacoes(id) {
     try {
         const doacoes = await fetchDoacoes(id);
@@ -254,11 +334,10 @@ async function populateDoacoes(id) {
         await populateDoacoesTable(doacoes, tiposProdutos);
     } catch (error) {
         console.error('Erro ao buscar as doações:', error);
-        swal("Erro", "Ocorreu um erro ao buscar as doações.", "error");
+        Swal.fire("Erro", "Ocorreu um erro ao buscar as doações.", "error");
     }
 }
 
-// Função para deletar beneficiário
 async function handleDelete(event) {
     event.preventDefault();
     const beneficiarioId = event.currentTarget.dataset.beneficiarioId;
@@ -270,13 +349,11 @@ async function handleDelete(event) {
     }
 }
 
-// Função para obter o ID do beneficiário a partir da URL
 function getBeneficiarioIdFromUrl() {
     const params = new URLSearchParams(window.location.search);
     return params.get('id');
 }
 
-// Populate data when the document is ready
 document.addEventListener('DOMContentLoaded', async () => {
     const beneficiarioId = getBeneficiarioIdFromUrl();
     if (beneficiarioId) {
@@ -284,7 +361,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         await populateMovimentacoes(beneficiarioId);
         await populateDoacoes(beneficiarioId);
 
-        // Adicionar eventos de clique para editar e excluir
         document.querySelector('.edit-beneficiario').addEventListener('click', async () => {
             const beneficiario = await fetchBeneficiario(beneficiarioId);
             showEditBeneficiarioModal(beneficiario);
@@ -294,6 +370,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.querySelector('.add-requisicao').addEventListener('click', showAddRequisicaoModal);
         
     } else {
-        swal("Erro", "ID do beneficiário não encontrado na URL.", "error");
+        Swal.fire("Erro", "ID do beneficiário não encontrado na URL.", "error");
     }
 });

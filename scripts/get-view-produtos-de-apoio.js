@@ -47,12 +47,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       </div>
     `).join('');
 
-    async function fetchProdutoData(produtoId) {
-      const response = await fetch(`http://localhost:3000/api/produtos/${produtoId}`);
-      if (!response.ok) throw new Error('Erro ao buscar dados do produto');
-      return response.json();
-    }
-
     async function fetchFuncionarioData(funcionarioId) {
       const response = await fetch(`http://localhost:3000/api/funcionarios/${funcionarioId}`);
       if (!response.ok) throw new Error('Erro ao buscar dados do funcionário');
@@ -66,17 +60,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     const movimentacoesTableRows = await Promise.all(productMovimentacoes.map(async (movimentacao) => {
-      const produtoData = await fetchProdutoData(movimentacao.ProdutoDeApoioID);
       const funcionarioData = await fetchFuncionarioData(movimentacao.FuncionarioID);
       const clienteData = await fetchClienteData(movimentacao.ClienteID);
 
       return `
         <tr>
           <td>${movimentacao.ID}</td>
-          <td>${clienteData.Nome || 'Cliente Desconhecido'}</td>
-          <td>${funcionarioData.Nome || 'Funcionário Desconhecido'}</td>
+          <td><a href="beneficiarios-visualizar.html?id=${clienteData.id}" class="table-link">${clienteData.nome || 'Cliente Desconhecido'}</a></td>
+          <td><a href="funcionarios-visualizar.html?id=${funcionarioData.ID}" class="table-link">${funcionarioData.Nome || 'Funcionário Desconhecido'}</a></td>
           <td>${new Date(movimentacao.DataMovimentacao).toLocaleDateString()}</td>
-          <td><a href="#" type="button" class="btn btn-square btn-light btn-icon"><i class="fa fa-eye"></i></a></td>
+          <td><a href="solicitacoes.html?movimentacaoID=${movimentacao.ID}" class="btn btn-square btn-view">Ver Mais</a></td>
         </tr>
       `;
     }));
@@ -149,7 +142,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               </tr>
               <tr>
                 <th class="text-right">Descrição</th>
-                <td>${product.Descricao.length > 15 ? product.Descricao.substring(0, 15) + '...' : product.Descricao}</td>
+                <td>${product.Descricao}</td>
               </tr>
               <tr>
                 <th class="text-right">Categoria</th>
@@ -182,9 +175,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div class="panel panel-default">
           <div class="panel-title">
             Movimentações do Produto : ${product.ID}
-            <ul class="panel-tools">
-                <li><a href="#">Ver Mais</a></li>
-            </ul>
           </div>
           <div class="panel-body">
             ${movimentacoesTable}
@@ -238,4 +228,3 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.location.href = 'produtos.html';
   }
 });
-
