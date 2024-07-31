@@ -3,6 +3,7 @@ const session = require('express-session');
 const cors = require('cors');
 const path = require('path');
 const authMiddleware = require('./app/middleware/auth');
+const forgotPasswordRoute = require('./app/middleware/forgot-password.js');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -21,6 +22,8 @@ app.use(session({
 }));
 
 app.use(express.json());
+
+app.use('/api', forgotPasswordRoute);
 
 app.use(express.urlencoded({ extended: true }));
 

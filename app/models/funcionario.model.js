@@ -133,4 +133,25 @@ Funcionario.updatePasswordById = (id, hashedPassword, result) => {
   );
 };
 
+// Adicione esta função ao seu modelo Funcionario
+Funcionario.findOneByEmail = (email, result) => {
+  sql.query("SELECT * FROM funcionarios WHERE email = ?", [email], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length) {
+      console.log("found funcionario: ", res[0]);
+      result(null, res[0]);
+      return;
+    }
+
+    // not found Funcionario with the email
+    result({ kind: "not_found" }, null);
+  });
+};
+
+
 module.exports = Funcionario;
