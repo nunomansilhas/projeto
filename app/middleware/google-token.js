@@ -3,8 +3,8 @@ const fs = require('fs');
 const readline = require('readline');
 
 // Carregar as credenciais do cliente OAuth2
-const CLIENT_ID = '1005093202140-37s2on2er1g3d37d4htffelkfhg4e5jn.apps.googleusercontent.com';
-const CLIENT_SECRET = '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';
+const CLIENT_ID = ' ';
+const CLIENT_SECRET = ' ';
 const REDIRECT_URI = 'http://localhost';
 
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
