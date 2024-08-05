@@ -1,0 +1,225 @@
+# Query: http://localhost:3000/api/
+
+128 results - 47 files
+
+lockscreen.html:
+  36:     fetch('https://abelha.mansilhas.pt/login', {
+  64:       fetch('https://abelha.mansilhas.pt/login', {
+
+scripts\add-produto.js:
+  25:             const response = await fetch('https://abelha.mansilhas.pt/login', {
+  42:                 const response_not = await fetch('https://abelha.mansilhas.pt/notificacoes', {
+  64:         const response = await fetch('https://abelha.mansilhas.pt/produtos', {
+  92:             const response = await fetch('https://abelha.mansilhas.pt/upload', {
+
+scripts\get-categorias.js:
+  4:     fetch('https://abelha.mansilhas.pt/tiposprodutos')
+
+scripts\get-data-index-atividades.js:
+   2:   const response = await fetch('https://abelha.mansilhas.pt/movimentacoes');
+   8:   const response = await fetch(`https://abelha.mansilhas.pt/funcionarios/${id}`);
+  14:   const response = await fetch(`https://abelha.mansilhas.pt/clientes/${id}`);
+  20:   const response = await fetch(`https://abelha.mansilhas.pt/produtos/${id}`);
+
+scripts\get-data-index-notifications.js:
+  2:   const response = await fetch(`https://abelha.mansilhas.pt/funcionarios/${id}`);
+  8:   const response = await fetch('https://abelha.mansilhas.pt/notificacoes');
+
+scripts\get-data-produtos-de-apoio.js:
+  4:   const response = await fetch('https://abelha.mansilhas.pt/tiposprodutos');
+  9:   const response = await fetch('https://abelha.mansilhas.pt/produtos');
+
+scripts\get-view-produtos-de-apoio.js:
+  17:     const productResponse = await fetch(`https://abelha.mansilhas.pt/produtos/${productId}`);
+  21:     const tiposProdutosResponse = await fetch('https://abelha.mansilhas.pt/tiposprodutos');
+  30:     const imagesResponse = await fetch(`https://abelha.mansilhas.pt/upload/${productId}`);
+  34:     const movimentacoesResponse = await fetch(`https://abelha.mansilhas.pt/movimentacoes`);
+  51:       const response = await fetch(`https://abelha.mansilhas.pt/funcionarios/${funcionarioId}`);
+  57:       const response = await fetch(`https://abelha.mansilhas.pt/clientes/${clienteId}`);
+
+scripts\login.js:
+   7:   fetch('https://abelha.mansilhas.pt/login', {
+  35:       fetch('https://abelha.mansilhas.pt/notificacoes', {
+
+scripts\recuperar.js:
+  7:         const response = await fetch('https://abelha.mansilhas.pt/forgot-password', {
+
+scripts\session-verify.js:
+  1: fetch('https://abelha.mansilhas.pt/login', {
+
+scripts\acoes\enviar-notificacao.js:
+   4:       const response = await fetch('https://abelha.mansilhas.pt/login', {
+  21:         const responseNotificacao = await fetch('https://abelha.mansilhas.pt/notificacoes', {
+
+scripts\acoes\produto-adicionar-imagens.js:
+  55:     const response = await fetch('https://abelha.mansilhas.pt/upload', {
+
+scripts\acoes\produto-editar-imagens.js:
+  79:     const response = await fetch(`https://abelha.mansilhas.pt/upload/${imageId}`, {
+
+scripts\acoes\produto-eliminar.js:
+  26:     const response = await fetch(`https://abelha.mansilhas.pt/produtos/${productId}`, {
+  34:     const movimentacaoResponse = await fetch(`https://abelha.mansilhas.pt/movimentacoes/produto/${productId}`, {
+  44:     const imagesResponse = await fetch(`https://abelha.mansilhas.pt/upload/${productId}`);
+  52:       const imageResponse = await fetch(`https://abelha.mansilhas.pt/upload/${image.id}`, {
+
+scripts\acoes\produtos-editar.js:
+  111:       const response = await fetch(`https://abelha.mansilhas.pt/produtos/${updatedProduct.id}`, {
+
+scripts\beneficiarios\beneficiario-eliminar.js:
+  25:     const response = await fetch(`https://abelha.mansilhas.pt/clientes/${beneficiarioId}`, {
+
+scripts\beneficiarios\beneficiarios-adicionar.js:
+  25:             const response = await fetch('https://abelha.mansilhas.pt/login', {
+  42:                 const response_not = await fetch('https://abelha.mansilhas.pt/notificacoes', {
+  64:         const response = await fetch('https://abelha.mansilhas.pt/clientes', {
+
+scripts\beneficiarios\beneficiarios-editar.js:
+  101:         const response = await fetch(`https://abelha.mansilhas.pt/clientes/${updatedBeneficiario.id}`, {
+
+scripts\beneficiarios\doacao-adicionar.js:
+   87:         const produtosResponse = await fetch('https://abelha.mansilhas.pt/produtos');
+   92:         const tiposProdutosResponse = await fetch('https://abelha.mansilhas.pt/tiposprodutos');
+  144:             const response = await fetch('https://abelha.mansilhas.pt/produtos', {
+  165:             const produtoResponse = await fetch(`https://abelha.mansilhas.pt/produtos/${produtoId}`);
+  170:             await fetch(`https://abelha.mansilhas.pt/produtos/quantidade/${produtoId}`, {
+  186:         const response = await fetch('https://abelha.mansilhas.pt/doacoes', {
+
+scripts\beneficiarios\doacao-detalhes.js:
+   43:         const response = await fetch(`https://abelha.mansilhas.pt/doacoes/${doacaoId}`);
+   54:     const response = await fetch(`https://abelha.mansilhas.pt/clientes/${id}`);
+   62:     const response = await fetch(`https://abelha.mansilhas.pt/produtos/${produtoId}`);
+   91:         const response = await fetch('https://abelha.mansilhas.pt/dadosEmpresa');
+  168:         const response = await fetch(`https://abelha.mansilhas.pt/doacoes/${doacaoId}`, {
+
+scripts\beneficiarios\get-data-beneficiarios.js:
+  4:   const response = await fetch('https://abelha.mansilhas.pt/clientes');
+
+scripts\beneficiarios\get-view-beneficiarios.js:
+   10:     const response = await fetch(`https://abelha.mansilhas.pt/clientes/${id}`);
+   18:     const response = await fetch(`https://abelha.mansilhas.pt/movimentacoes`);
+   26:     const response = await fetch(`https://abelha.mansilhas.pt/doacoes/cliente/${id}`);
+   34:     const response = await fetch(`https://abelha.mansilhas.pt/produtos/${produtoId}`);
+   40:     const response = await fetch(`https://abelha.mansilhas.pt/tiposprodutos`);
+   46:     const response = await fetch(`https://abelha.mansilhas.pt/funcionarios/${funcionarioId}`);
+   52:     const response = await fetch(`https://abelha.mansilhas.pt/movimentacoes/${requisicaoId}`);
+  192:         const response = await fetch(`https://abelha.mansilhas.pt/movimentacoes/${requisicaoId}`, {
+  259:         const response = await fetch(`https://abelha.mansilhas.pt/movimentacoes/${requisicaoId}`, {
+
+scripts\beneficiarios\requisicao-adicionar.js:
+   67:     const response = await fetch('https://abelha.mansilhas.pt/produtos');
+  114:         const response = await fetch('https://abelha.mansilhas.pt/movimentacoes', {
+  141:         const response = await fetch('https://abelha.mansilhas.pt/login', {
+  166:         const produtoResponse = await fetch(`https://abelha.mansilhas.pt/produtos/${produtoId}`);
+  175:         const response = await fetch(`https://abelha.mansilhas.pt/produtos/quantidade/${produtoId}`, {
+
+scripts\beneficiarios\requisicao-detalhes.js:
+   46:         const response = await fetch(`https://abelha.mansilhas.pt/movimentacoes/${requisicaoId}`);
+   57:     const response = await fetch(`https://abelha.mansilhas.pt/clientes/${id}`);
+   65:     const response = await fetch(`https://abelha.mansilhas.pt/produtos/${produtoId}`);
+   71:     const response = await fetch(`https://abelha.mansilhas.pt/funcionarios/${funcionarioId}`);
+   78:         const response = await fetch('https://abelha.mansilhas.pt/dadosEmpresa');
+  166:         const requisicaoResponse = await fetch(`https://abelha.mansilhas.pt/movimentacoes/${requisicaoId}`);
+  173:         const produtoResponse = await fetch(`https://abelha.mansilhas.pt/produtos/${produtoId}`);
+  179:         const updateResponse = await fetch(`https://abelha.mansilhas.pt/produtos/quantidade/${produtoId}`, {
+  188:         const deleteResponse = await fetch(`https://abelha.mansilhas.pt/movimentacoes/${requisicaoId}`, {
+  222:         const response = await fetch(`https://abelha.mansilhas.pt/movimentacoes/${requisicaoId}`, {
+
+scripts\categorias\categoria-adicionar.js:
+  43:             const response = await fetch('https://abelha.mansilhas.pt/tiposprodutos', {
+
+scripts\categorias\categorias-actions.js:
+  35:         const response = await fetch(`https://abelha.mansilhas.pt/tiposprodutos/${categoriaId}`);
+  53:             const response = await fetch(`https://abelha.mansilhas.pt/tiposprodutos/${categoriaId}`, {
+  81:             const response = await fetch(`https://abelha.mansilhas.pt/tiposprodutos/${categoriaId}`, {
+
+scripts\categorias\get-data-categorias.js:
+   4:     const response = await fetch('https://abelha.mansilhas.pt/tiposprodutos');
+  12:     const response = await fetch('https://abelha.mansilhas.pt/produtos');
+
+scripts\doacoes\doacao-detalhes.js:
+   43:         const response = await fetch(`https://abelha.mansilhas.pt/doacoes/${doacaoId}`);
+   54:     const response = await fetch(`https://abelha.mansilhas.pt/clientes/${id}`);
+   62:     const response = await fetch(`https://abelha.mansilhas.pt/produtos/${produtoId}`);
+   92:         const response = await fetch('https://abelha.mansilhas.pt/dadosEmpresa');
+  170:         const response = await fetch(`https://abelha.mansilhas.pt/doacoes/${doacaoId}`, {
+
+scripts\doacoes\get-data-doacoes.js:
+  4:   const response = await fetch('https://abelha.mansilhas.pt/doacoes');
+  9:   const response = await fetch(`https://abelha.mansilhas.pt/clientes/${clienteId}`);
+
+scripts\empressa\empressa-editar.js:
+  79:     const response = await fetch(`https://abelha.mansilhas.pt/dadosEmpresa`, {
+
+scripts\empressa\get-data-empressa.js:
+  4:       const response = await fetch('https://abelha.mansilhas.pt/dadosEmpresa');
+
+scripts\funcionarios\funcionario-adicionar.js:
+  12:             const response = await fetch('https://abelha.mansilhas.pt/funcionarios', {
+
+scripts\funcionarios\funcionario-eliminar.js:
+  25:     const response = await fetch(`https://abelha.mansilhas.pt/funcionarios/${funcionarioId}`, {
+
+scripts\funcionarios\funcionario-password.js:
+  43:             const response = await fetch(`https://abelha.mansilhas.pt/funcionarios/${funcionario.ID}/password`, {
+
+scripts\funcionarios\funcionarios-editar.js:
+  105:         const response = await fetch(`https://abelha.mansilhas.pt/funcionarios/${updatedFuncionario.id}`, {
+
+scripts\funcionarios\get-data-funcionarios.js:
+  3:     const response = await fetch('https://abelha.mansilhas.pt/funcionarios');
+
+scripts\funcionarios\get-view-funcionarios.js:
+  7:     const response = await fetch(`https://abelha.mansilhas.pt/funcionarios/${id}`);
+
+scripts\menu\profile.js:
+  42:           fetch('https://abelha.mansilhas.pt/login/logout', {
+  62:           fetch('https://abelha.mansilhas.pt/login/lock', {
+  91:   fetch('https://abelha.mansilhas.pt/login', {
+
+scripts\menu\quickmenu.js:
+  25:     const response = await fetch('https://abelha.mansilhas.pt/login', {
+
+scripts\menu\sidebar.js:
+  3:       const response = await fetch('https://abelha.mansilhas.pt/login', {
+
+scripts\notificacoes\get-data-notificacoes.js:
+  2:   const response = await fetch('https://abelha.mansilhas.pt/notificacoes');
+  7:   const response = await fetch(`https://abelha.mansilhas.pt/funcionarios/${funcionarioId}`);
+
+scripts\profile\get-data-profile.js:
+  4:     const response = await fetch('https://abelha.mansilhas.pt/login', {
+
+scripts\profile\profile-editar.js:
+  106:     const response = await fetch(`https://abelha.mansilhas.pt/funcionarios/${updatedFuncionario.id}`, {
+  127:     const response = await fetch('https://abelha.mansilhas.pt/login/update-session', {
+
+scripts\profile\profile-password.js:
+  40:       const response = await fetch(`https://abelha.mansilhas.pt/funcionarios/${funcionario.id}/password`, {
+
+scripts\solicitacoes\get-data-solicitacoes.js:
+    5:   const response = await fetch('https://abelha.mansilhas.pt/movimentacoes');
+   10:   const response = await fetch(`https://abelha.mansilhas.pt/funcionarios/${funcionarioId}`);
+   17:     const response = await fetch(`https://abelha.mansilhas.pt/clientes/${clienteId}`);
+   27:   const response = await fetch(`https://abelha.mansilhas.pt/produtos/${produtoId}`);
+  147:     const response = await fetch(`https://abelha.mansilhas.pt/movimentacoes/${solicitacaoId}`, {
+  171:   const response = await fetch(`https://abelha.mansilhas.pt/movimentacoes/${solicitacaoId}`);
+  214:     const response = await fetch(`https://abelha.mansilhas.pt/movimentacoes/${solicitacaoId}`, {
+
+scripts\solicitacoes\solicitacao-adicionar.js:
+   11:         const produtosResponse = await fetch('https://abelha.mansilhas.pt/produtos');
+   35:         const clientesResponse = await fetch('https://abelha.mansilhas.pt/clientes');
+   94:         const response = await fetch('https://abelha.mansilhas.pt/movimentacoes', {
+  117:         const response = await fetch(`https://abelha.mansilhas.pt/produtos/quantidade/${produtoId}`, {
+  132:         const response = await fetch('https://abelha.mansilhas.pt/login', {
+
+scripts\solicitacoes\solicitacao-detalhes.js:
+   46:         const response = await fetch(`https://abelha.mansilhas.pt/movimentacoes/${solicitacaoId}`);
+   57:     const response = await fetch(`https://abelha.mansilhas.pt/clientes/${id}`);
+   65:     const response = await fetch(`https://abelha.mansilhas.pt/produtos/${produtoId}`);
+   71:     const response = await fetch(`https://abelha.mansilhas.pt/funcionarios/${funcionarioId}`);
+  104:         const response = await fetch('https://abelha.mansilhas.pt/dadosEmpresa');
+  167:         const solicitacaoResponse = await fetch(`https://abelha.mansilhas.pt/movimentacoes/${solicitacaoId}`);
+  174:         const produtoResponse = await fetch(`https://abelha.mansilhas.pt/produtos/${produtoId}`);
+  180:         const updateResponse = await fetch(`https://abelha.mansilhas.pt/produtos/quantidade/${produtoId}`, {
+  189:         const deleteResponse = await fetch(`https://abelha.mansilhas.pt/movimentacoes/${solicitacaoId}`, {
